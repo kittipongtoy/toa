@@ -797,12 +797,9 @@ namespace TOAMediaPlayer
                     }
                     bRemoveItem = true;
 
-                    bool flag11 = int.Parse(this.lblPlayerId.Text.Trim()) == 1;
-                    if (flag11)
-                    {
-                        string fileName = String.Format("{0}\\{1}-List.txt", System.Environment.CurrentDirectory, 1);
-                        SavePlaylistToFile(fileName);
-                    }
+                    int flag11 = int.Parse(this.lblPlayerId.Text.Trim());
+                    string fileName = String.Format("{0}\\{1}-List.txt", System.Environment.CurrentDirectory, flag11);
+                    SavePlaylistToFile(fileName);
                 }
             }
             bool flag3 = bRemoveItem && this.myListView.Items.Count > 0;
