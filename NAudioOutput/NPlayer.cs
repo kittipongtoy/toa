@@ -11,6 +11,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using TOAMediaPlayer.TOAPlaylist;
@@ -2505,8 +2506,41 @@ namespace TOAMediaPlayer.NAudioOutput
             {
                 log.Error("Error: " + ex.Message + " , Inner: " + ex.InnerException);
             }
+        }
 
+        public async void trigger_warning_url(string message) {
+            RegistryKey configsocket = HKLMSoftwareTOAConfig.OpenSubKey("trackname", true);
+            string ipAddress = configsocket.GetValue("ip1")?.ToString();
+            string port = configsocket.GetValue("port")?.ToString();
+            string apiUrl = "http://" + configsocket.GetValue("ip").ToString() + "/api/messageWarning";
 
+            try {
+                using (HttpClient client = new HttpClient()) {
+                    // สร้าง Body JSON
+                    var requestData = new {
+                        ip_address = ipAddress,
+                        port = port,
+                        message = message
+                    };
+
+                    // แปลง JSON object เป็น string
+                    string json = Newtonsoft.Json.JsonConvert.SerializeObject(requestData);
+                    var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                    // สร้าง HttpRequestMessage แบบ POST
+                    var request = new HttpRequestMessage(HttpMethod.Post, apiUrl) {
+                        Content = content
+                    };
+
+                    var response = await client.SendAsync(request);
+                    response.EnsureSuccessStatusCode();
+
+                    Console.WriteLine(await response.Content.ReadAsStringAsync());
+                    log.Info("Success Trigger");
+                }
+            } catch (Exception ex) {
+                log.Error("Error: " + ex.Message + " , Inner: " + ex.InnerException);
+            }
         }
 
         public void change_text_color(string text, string bg, string fg)

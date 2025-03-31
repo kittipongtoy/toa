@@ -11,6 +11,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Windows.Forms;
 using TOAMediaPlayer.NAudioOutput;
 using static TOAMediaPlayer.jsonWebAPI;
 
@@ -84,7 +85,7 @@ namespace TOAMediaPlayer
 
                     if (!System.IO.File.Exists(fileName))
                     {
-                        using (System.IO.File.Create(fileName));
+                        using (System.IO.File.Create(fileName)) { };
                     }
                     if (System.IO.File.Exists(fileName))
                     {
@@ -180,7 +181,8 @@ namespace TOAMediaPlayer
                 string fileName = String.Format("{0}\\{1}-List.txt", System.Environment.CurrentDirectory, playlistId);
                 if (!System.IO.File.Exists(fileName))
                 {
-                    using (System.IO.File.Create(fileName));
+                    using (System.IO.File.Create(fileName)) { }
+                    ;
                 }
                 if (System.IO.File.Exists(fileName))
                 {
@@ -2649,7 +2651,9 @@ namespace TOAMediaPlayer
                 pl.reorder_playlist(PlayerID, playlistData);
             }
             #endregion
-
+             else if (controlType.ToLower().Trim() == "close_warning") {
+                pl.close_form();
+            }
             return json;
         }
     }

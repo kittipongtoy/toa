@@ -16,11 +16,11 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using TOAMediaPlayer.Helper;
 using TOAMediaPlayer.NAudioOutput;
 using TOAMediaPlayer.Properties;
 using TOAMediaPlayer.TOAPlaylist;
 using MessageBox = System.Windows.Forms.MessageBox;
+using MessageAlert = TOAMediaPlayer.Helper.MessageBox;
 
 namespace TOAMediaPlayer
 {
@@ -1512,6 +1512,19 @@ namespace TOAMediaPlayer
                     this.LoadDefaultPlaylist(short.Parse(playlistId));
                 }
                 this.trigger_url();
+            }
+            return true;
+        }
+
+        public bool close_form() {
+            foreach (Form form in Application.OpenForms) {
+                if (form.Name == "Warning") {
+                    if (form.InvokeRequired) {
+                        form.Invoke(new Action(() => form.Close()));
+                    } else {
+                        form.Close();
+                    }
+                }
             }
             return true;
         }
@@ -3368,7 +3381,7 @@ namespace TOAMediaPlayer
             try
             {
                 var client = new HttpClient();
-                //var request = new HttpRequestMessage(HttpMethod.Get, "http://192.168.22.37/toa/api/updateData?ip_address=192.168.22.37&port=83");
+                //var request = new HttpRequestMessage(HttpMethod.Get, "http://192.168.13.111/toa/api/updateData?ip_address=192.168.13.111&port=83");
                 var request = new HttpRequestMessage(HttpMethod.Get, stringurl);
                 var response = await client.SendAsync(request);
                 response.EnsureSuccessStatusCode();

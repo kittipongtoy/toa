@@ -1,11 +1,17 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using NLog.Fluent;
+using System;
 using System.Drawing;
+using System.Net.Http;
+using System.Text;
 using System.Windows.Forms;
+using TOAMediaPlayer.NAudioOutput;
 
 namespace TOAMediaPlayer.Helper
 {
-    class MessageBox
+    public class MessageBox
     {
+        public Form Form;
         // โชว์ error ปกติ ตรงกลาง
         public string ShowCenter_DialogError(string message, string title)
         {
@@ -13,19 +19,20 @@ namespace TOAMediaPlayer.Helper
             Form mainForm = Application.OpenForms[0];
 
             // 🔹 สร้าง Dialog
-            var form = new Form
+            Form = new Form
             {
                 FormBorderStyle = FormBorderStyle.None, // ไม่มีขอบหน้าต่าง
                 StartPosition = FormStartPosition.Manual,
                 Size = new Size(400, 150),
                 BackColor = Color.LightGray,
+                Name = "Warning",
                 Owner = mainForm // 🔥 ล็อกให้อยู่ในโปรแกรม
             };
 
             // 🔹 คำนวณตำแหน่งให้แสดงที่มุมล่างขวาของหน้าต่างหลัก
             var screen = mainForm.Bounds;
-            form.Left = screen.Left + (screen.Width - form.Width) / 2;
-            form.Top = screen.Top + (screen.Height - form.Height) / 2;
+            Form.Left = screen.Left + (screen.Width - Form.Width) / 2;
+            Form.Top = screen.Top + (screen.Height - Form.Height) / 2;
 
             // 🔹 Panel Header (สีดำ)
             Panel headerPanel = new Panel
@@ -34,7 +41,7 @@ namespace TOAMediaPlayer.Helper
                 Dock = DockStyle.Top,
                 Height = 40
             };
-            form.Controls.Add(headerPanel);
+            Form.Controls.Add(headerPanel);
 
             // 🔹 Icon วงกลมสีแดง
             PictureBox icon = new PictureBox
@@ -64,7 +71,7 @@ namespace TOAMediaPlayer.Helper
                 Location = new Point(20, 60),
                 AutoSize = true
             };
-            form.Controls.Add(messageLabel);
+            Form.Controls.Add(messageLabel);
 
             // 🔹 ปุ่ม "ปิดโปรแกรม"
             Button closeButton = new Button
@@ -76,11 +83,12 @@ namespace TOAMediaPlayer.Helper
                 Size = new Size(100, 30),
                 Location = new Point(260, 100)
             };
-            closeButton.Click += (s, e) => form.Close(); // ปิด Dialog เมื่อกดปุ่ม
-            form.Controls.Add(closeButton);
-
+            closeButton.Click += (s, e) => Form.Close(); // ปิด Dialog เมื่อกดปุ่ม
+            Form.Controls.Add(closeButton);
+            NPlayer nPlayer = new NPlayer();
+            nPlayer.trigger_warning_url(message);
             // 🔥 ล็อก Dialog ไม่ให้ไปนอกโปรแกรม
-            return form.ShowDialog(mainForm) == DialogResult.OK ? message : "";
+            return Form.ShowDialog(mainForm) == DialogResult.OK ? message : "";
         }
 
         // โชว์ error connection ขวาล่าง 
@@ -90,19 +98,20 @@ namespace TOAMediaPlayer.Helper
             Form mainForm = Application.OpenForms[0];
 
             // 🔹 สร้าง Dialog
-            var form = new Form
+            Form = new Form
             {
                 FormBorderStyle = FormBorderStyle.None, // ไม่มีขอบหน้าต่าง
                 StartPosition = FormStartPosition.Manual,
                 Size = new Size(400, 150),
                 BackColor = Color.LightGray,
+                Name = "Warning",
                 Owner = mainForm // 🔥 ล็อกให้อยู่ในโปรแกรม
             };
 
             // 🔹 คำนวณตำแหน่งให้แสดงที่มุมล่างขวาของหน้าต่างหลัก
             var screen = mainForm.Bounds;
-            form.Left = screen.Right - form.Width;
-            form.Top = screen.Bottom - form.Height;
+            Form.Left = screen.Right - Form.Width;
+            Form.Top = screen.Bottom - Form.Height;
 
             // 🔹 Panel Header (สีดำ)
             Panel headerPanel = new Panel
@@ -111,7 +120,7 @@ namespace TOAMediaPlayer.Helper
                 Dock = DockStyle.Top,
                 Height = 40
             };
-            form.Controls.Add(headerPanel);
+            Form.Controls.Add(headerPanel);
 
             // 🔹 Icon วงกลมสีแดง
             PictureBox icon = new PictureBox
@@ -141,7 +150,7 @@ namespace TOAMediaPlayer.Helper
                 Location = new Point(20, 60),
                 AutoSize = true
             };
-            form.Controls.Add(messageLabel);
+            Form.Controls.Add(messageLabel);
 
             // 🔹 ปุ่ม "ปิดโปรแกรม"
             Button closeButton = new Button
@@ -153,11 +162,11 @@ namespace TOAMediaPlayer.Helper
                 Size = new Size(100, 30),
                 Location = new Point(260, 100)
             };
-            closeButton.Click += (s, e) => form.Close(); // ปิด Dialog เมื่อกดปุ่ม
-            form.Controls.Add(closeButton);
+            closeButton.Click += (s, e) => Form.Close(); // ปิด Dialog เมื่อกดปุ่ม
+            Form.Controls.Add(closeButton);
 
             // 🔥 ล็อก Dialog ไม่ให้ไปนอกโปรแกรม
-            return form.ShowDialog(mainForm) == DialogResult.OK ? message : "";
+            return Form.ShowDialog(mainForm) == DialogResult.OK ? message : "";
         }
     }
 }
