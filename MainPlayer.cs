@@ -796,6 +796,13 @@ namespace TOAMediaPlayer
                         this.myListView.Items.RemoveAt(this.myListView.SelectedIndices[i]);
                     }
                     bRemoveItem = true;
+
+                    bool flag11 = int.Parse(this.lblPlayerId.Text.Trim()) == 1;
+                    if (flag11)
+                    {
+                        string fileName = String.Format("{0}\\{1}-List.txt", System.Environment.CurrentDirectory, 1);
+                        SavePlaylistToFile(fileName);
+                    }
                 }
             }
             bool flag3 = bRemoveItem && this.myListView.Items.Count > 0;
@@ -814,7 +821,31 @@ namespace TOAMediaPlayer
                     this.LoadDefaultPlaylist(idsa);
                 }
             }
+        }
 
+        private void SavePlaylistToFile(string filePath)
+        {
+            using (StreamWriter sw = new StreamWriter(filePath))
+            {
+                foreach (ListViewItem item in myListView.Items)
+                {
+                    // ตรวจสอบให้แน่ใจว่า SubItems มีครบ 4 คอลัมน์ก่อนบันทึก
+                    string id = item.Text;
+                    string title = item.SubItems.Count > 1 ? item.SubItems[1].Text : "";
+                    string artist = item.SubItems.Count > 2 ? item.SubItems[2].Text : "";
+                    string filePathData = item.SubItems.Count > 3 ? item.SubItems[3].Text : "";
+
+                    sw.WriteLine($"{id}\t{title}\t{artist}\t{filePathData}");
+                }
+            }
+
+            //using (StreamWriter sw = new StreamWriter(filePath))
+            //{
+            //    foreach (ListViewItem item in myListView.Items)
+            //    {
+            //        sw.WriteLine($"{item.Text},{item.SubItems[1].Text},{item.SubItems[2].Text}");
+            //    }
+            //}
         }
 
         public void change_music_list(string old, int news)
