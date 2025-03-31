@@ -1274,6 +1274,8 @@ namespace TOAMediaPlayer
             }
         }
         
+
+
         public bool import_file(string playlistId, string base64file)
         {
             try
@@ -1282,6 +1284,7 @@ namespace TOAMediaPlayer
                 {
                     this.Invoke(new Action(() =>
                     {
+                        List<jsonWebAPI.MusicErrorList> dd = new List<jsonWebAPI.MusicErrorList>();
                         string pathFile = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "import_" + playlistId + ".txt");
                         Byte[] bytes = Convert.FromBase64String(base64file);
                         File.WriteAllBytes(pathFile, bytes);
@@ -1308,21 +1311,52 @@ namespace TOAMediaPlayer
 
                         //}
                         string fileName = String.Format("{0}\\{1}-List.txt", System.Environment.CurrentDirectory, playlistId);
+                        HashSet<string> set = File.ReadAllLines(fileName).Select(x => {
+                            string[] items = x.Split(new char[]
+                            {
+                                '\t'
+                            }, StringSplitOptions.RemoveEmptyEntries);
+                            return items[3];
+                        }).ToHashSet<string>();
 
                         using (TextWriter tw = new StreamWriter(new FileStream(fileName, FileMode.Create), Encoding.UTF8))
                         {
-
                             foreach (string _item in data)
                             {
+
                                 string[] items = _item.Split(new char[]
                                 {
                             '\t'
                                 }, StringSplitOptions.RemoveEmptyEntries);
 
+                                if (set.Contains(items[3])) {
+                                    dd.Add(new jsonWebAPI.MusicErrorList {
+                                        name = items[1],
+                                        location = items[3],
+                                        PlayerTrack = Convert.ToInt16(items[0])
+                                    });
+                                    continue;
+                                }
+
+                                set.Add(items[3]);
+
+                                //if (ckfi.Item1 == true) {
+                                //    dd.Add(new jsonWebAPI.MusicErrorList {
+                                //        name = items[1],
+                                //        location = items[3],
+                                //        PlayerTrack = ckfi.Item2
+                                //    });
+                                //    continue;
+                                //}
                                 tw.WriteLine(items[0] + "\t" + items[1] + "\t" + items[2] + "\t" + items[3] + "\t");
                             }
                         }
-
+                        if (dd.Count > 0) {
+                            ErrorMusic fms = new ErrorMusic(dd);
+                            fms.TopMost = true;
+                            fms.Owner = this;
+                            fms.ShowDialog();
+                        }
                         //if (int.Parse(playlistId) == 1)
                         //{
                         //    this.nPlayer1.CurrentPlaylist = _PlayList;
@@ -1366,6 +1400,7 @@ namespace TOAMediaPlayer
                 }
                 else
                 {
+                    List<jsonWebAPI.MusicErrorList> dd = new List<jsonWebAPI.MusicErrorList>();
                     string pathFile = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "import_" + playlistId + ".txt");
                     Byte[] bytes = Convert.FromBase64String(base64file);
                     File.WriteAllBytes(pathFile, bytes);
@@ -1392,21 +1427,39 @@ namespace TOAMediaPlayer
 
                     //}
                     string fileName = String.Format("{0}\\{1}-List.txt", System.Environment.CurrentDirectory, playlistId);
-
+                    HashSet<string> set = File.ReadAllLines(fileName).Select(x => {
+                        string[] items = x.Split(new char[]
+                        {
+                                '\t'
+                        }, StringSplitOptions.RemoveEmptyEntries);
+                        return items[3];
+                    }).ToHashSet<string>();
                     using (TextWriter tw = new StreamWriter(new FileStream(fileName, FileMode.Create), Encoding.UTF8))
                     {
-
                         foreach (string _item in data)
                         {
                             string[] items = _item.Split(new char[]
                             {
                             '\t'
                             }, StringSplitOptions.RemoveEmptyEntries);
-
+                            if (set.Contains(items[3])) {
+                                dd.Add(new jsonWebAPI.MusicErrorList {
+                                    name = items[1],
+                                    location = items[3],
+                                    PlayerTrack = Convert.ToInt16(items[0])
+                                });
+                                continue;
+                            }
+                            set.Add(items[3]);
                             tw.WriteLine(items[0] + "\t" + items[1] + "\t" + items[2] + "\t" + items[3] + "\t");
                         }
                     }
-
+                    if (dd.Count > 0) {
+                        ErrorMusic fms = new ErrorMusic(dd);
+                        fms.TopMost = true;
+                        fms.Owner = this;
+                        fms.ShowDialog();
+                    }
                     //if (int.Parse(playlistId) == 1)
                     //{
                     //    this.nPlayer1.CurrentPlaylist = _PlayList;
@@ -1531,6 +1584,7 @@ namespace TOAMediaPlayer
 
         private void btnPlaylistFileImport_Click(object sender, EventArgs e)
         {
+            List<jsonWebAPI.MusicErrorList> dd = new List<jsonWebAPI.MusicErrorList>();
             System.Windows.Forms.OpenFileDialog openFileDlg = new System.Windows.Forms.OpenFileDialog();
             openFileDlg.Multiselect = true;
             openFileDlg.Title = "Import Song List|*.txt";
@@ -1555,6 +1609,15 @@ namespace TOAMediaPlayer
                     {
                     '\t'
                     }, StringSplitOptions.RemoveEmptyEntries);
+                    var ckfi = checkfile_gg(items[3]);
+                    if (ckfi.Item1 == true) {
+                        dd.Add(new jsonWebAPI.MusicErrorList {
+                            name = items[1],
+                            location = items[3],
+                            PlayerTrack = ckfi.Item2
+                        });
+                        continue;
+                    }
                     ListViewItem item = new ListViewItem(items[0]);
                     item.SubItems.Add(items[1]);
                     item.SubItems.Add(items[2]);
@@ -1562,7 +1625,12 @@ namespace TOAMediaPlayer
                     this.myListView.Items.Add(item);
                 }
             }
-
+            if (dd.Count > 0) {
+                ErrorMusic fms = new ErrorMusic(dd);
+                fms.TopMost = true;
+                fms.Owner = this;
+                fms.ShowDialog();
+            }
             //this.ReOrderSequence();
             short idsa = short.Parse(this.lblPlayerId.Text.Trim());
             this.SaveDefaultPlayList(idsa);
