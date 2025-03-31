@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using NAudio.Wave;
 using NLog;
+using Syncfusion.WinForms.Controls;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -749,6 +750,7 @@ namespace TOAMediaPlayer
                         }
                     }
                 }
+
                 this.ReOrderSequence();
                 short idsa = short.Parse(this.lblPlayerId.Text.Trim());
                 this.SaveDefaultPlayList(idsa);
@@ -758,8 +760,14 @@ namespace TOAMediaPlayer
             {
                 ErrorMusic fms = new ErrorMusic(dd);
                 fms.TopMost = true;
-                fms.Owner = this;
-                fms.ShowDialog();
+                //fms.Owner = this;
+
+                if (fms == null || fms.IsDisposed)
+                {
+                    fms = new ErrorMusic(dd);
+                }
+
+                fms.ShowDialog();            
             }
             this.trigger_url();
         }
@@ -775,8 +783,8 @@ namespace TOAMediaPlayer
             bool flag = this.myListView.SelectedIndices.Count > 0;
             if (flag)
             {
-                var messagebox = new Helper.MessageBox();
-                messagebox.ShowCenter_DialogError("ไม่มีข้อมูลเพลงผิดพลาด", "แจ้งเตือน");
+                //var messagebox = new Helper.MessageBox();
+                //messagebox.ShowCenter_DialogError("ไม่มีข้อมูลเพลงผิดพลาด", "แจ้งเตือน");
 
                 DialogResult confirmation = MessageBox.Show("Delete Song", "Confirm!", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 bool flag2 = confirmation == DialogResult.Yes;
@@ -3347,7 +3355,7 @@ namespace TOAMediaPlayer
             if (!showtimeset)
             {
                 showtimeset = true;
-                this.timersc = true;
+                //this.timersc = true;
 
                 #region test ปุ่ม
                 var form = new Settimers(this, this.timername, null);
