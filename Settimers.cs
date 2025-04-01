@@ -101,9 +101,9 @@ namespace TOAMediaPlayer
                     //    //Console.WriteLine("Invalid"); // <-- Control flow goes here
                     //    timeEdit1.Value = DateTime.ParseExact("27/08/2024 " + substring[2], "dd/MM/yyyy HH:mm", null);
                     //}
-                    DateTime tempDate = DateTime.ParseExact("27/08/2024 " + substring[3], "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
+                    DateTime tempDate = DateTime.ParseExact("27/08/2024 " + substring[2], "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
                     string formattedTime = tempDate.ToString("hh:mm tt", CultureInfo.InvariantCulture);
-                    timeEdit2.Value = DateTime.ParseExact("27/08/2024 " + formattedTime, "dd/MM/yyyy hh:mm tt", CultureInfo.InvariantCulture);
+                    timeEdit1.Value = DateTime.ParseExact("27/08/2024 " + formattedTime, "dd/MM/yyyy hh:mm tt", CultureInfo.InvariantCulture);
                 }
                 if (substring[3].IndexOf("AM") != -1 || substring[3].IndexOf("PM") != -1)
                 {
@@ -123,11 +123,11 @@ namespace TOAMediaPlayer
                     string formattedTime = tempDate.ToString("hh:mm tt", CultureInfo.InvariantCulture);
                     timeEdit2.Value = DateTime.ParseExact("27/08/2024 " + formattedTime, "dd/MM/yyyy hh:mm tt", CultureInfo.InvariantCulture);
                 }
-                checkBox12.Checked = false;
+                checkBox12.Checked = true;
             }
             else
             {
-                if (substring[2].IndexOf("AM") != -1 && substring[2].IndexOf("PM") != -1)
+                if (substring[2].IndexOf("AM") != -1 || substring[2].IndexOf("PM") != -1)
                 {
                     timeEdit1.Value = DateTime.ParseExact("27/08/2024 " + substring[2], "dd/MM/yyyy hh:mm tt", CultureInfo.InvariantCulture);
                 }
@@ -147,7 +147,7 @@ namespace TOAMediaPlayer
                     string formattedTime = tempDate.ToString("hh:mm tt", CultureInfo.InvariantCulture);
                     timeEdit1.Value = DateTime.ParseExact("27/08/2024 " + formattedTime, "dd/MM/yyyy hh:mm tt", CultureInfo.InvariantCulture);
                 }
-                if (substring[3].IndexOf("AM") != -1 && substring[3].IndexOf("PM") != -1)
+                if (substring[3].IndexOf("AM") != -1 || substring[3].IndexOf("PM") != -1)
                 {
                     timeEdit2.Value = DateTime.ParseExact("27/08/2024 " + substring[3], "dd/MM/yyyy hh:mm tt", CultureInfo.InvariantCulture);
                 }
@@ -167,7 +167,7 @@ namespace TOAMediaPlayer
                     string formattedTime = tempDate.ToString("hh:mm tt", CultureInfo.InvariantCulture);
                     timeEdit2.Value = DateTime.ParseExact("27/08/2024 " + formattedTime, "dd/MM/yyyy hh:mm tt", CultureInfo.InvariantCulture);
                 }
-                checkBox12.Checked = true;
+                checkBox12.Checked = false;
             }
             foreach (var tt in substring1)
             {
