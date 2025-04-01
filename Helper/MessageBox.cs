@@ -11,7 +11,6 @@ namespace TOAMediaPlayer.Helper
 {
     public class MessageBox
     {
-        public Form Form;
         // โชว์ error ปกติ ตรงกลาง
         public string ShowCenter_DialogError(string message, string title)
         {
@@ -19,8 +18,7 @@ namespace TOAMediaPlayer.Helper
             Form mainForm = Application.OpenForms[0];
 
             // 🔹 สร้าง Dialog
-            Form = new Form
-            {
+            Form form = new Form {
                 FormBorderStyle = FormBorderStyle.None, // ไม่มีขอบหน้าต่าง
                 StartPosition = FormStartPosition.Manual,
                 Size = new Size(400, 150),
@@ -31,21 +29,19 @@ namespace TOAMediaPlayer.Helper
 
             // 🔹 คำนวณตำแหน่งให้แสดงที่มุมล่างขวาของหน้าต่างหลัก
             var screen = mainForm.Bounds;
-            Form.Left = screen.Left + (screen.Width - Form.Width) / 2;
-            Form.Top = screen.Top + (screen.Height - Form.Height) / 2;
+            form.Left = screen.Left + (screen.Width - form.Width) / 2;
+            form.Top = screen.Top + (screen.Height - form.Height) / 2;
 
             // 🔹 Panel Header (สีดำ)
-            Panel headerPanel = new Panel
-            {
+            Panel headerPanel = new Panel {
                 BackColor = Color.Black,
                 Dock = DockStyle.Top,
                 Height = 40
             };
-            Form.Controls.Add(headerPanel);
+            form.Controls.Add(headerPanel);
 
             // 🔹 Icon วงกลมสีแดง
-            PictureBox icon = new PictureBox
-            {
+            PictureBox icon = new PictureBox {
                 Size = new Size(20, 20),
                 Location = new Point(10, 10),
                 BackColor = Color.Red
@@ -53,8 +49,7 @@ namespace TOAMediaPlayer.Helper
             headerPanel.Controls.Add(icon);
 
             // 🔹 Label "Connection Error"
-            Label titleLabel = new Label
-            {
+            Label titleLabel = new Label {
                 Text = title,
                 ForeColor = Color.White,
                 Font = new Font("Arial", 10, FontStyle.Bold),
@@ -64,18 +59,16 @@ namespace TOAMediaPlayer.Helper
             headerPanel.Controls.Add(titleLabel);
 
             // 🔹 Label ข้อความแจ้งเตือน
-            Label messageLabel = new Label
-            {
+            Label messageLabel = new Label {
                 Text = message,
                 Font = new Font("Arial", 10),
                 Location = new Point(20, 60),
                 AutoSize = true
             };
-            Form.Controls.Add(messageLabel);
+            form.Controls.Add(messageLabel);
 
             // 🔹 ปุ่ม "ปิดโปรแกรม"
-            Button closeButton = new Button
-            {
+            Button closeButton = new Button {
                 Text = "Ok",
                 BackColor = Color.Orange,
                 ForeColor = Color.Black,
@@ -83,12 +76,27 @@ namespace TOAMediaPlayer.Helper
                 Size = new Size(100, 30),
                 Location = new Point(260, 100)
             };
-            closeButton.Click += (s, e) => Form.Close(); // ปิด Dialog เมื่อกดปุ่ม
-            Form.Controls.Add(closeButton);
+            closeButton.Click += (s, e) => form.Close(); // ปิด Dialog เมื่อกดปุ่ม
+            form.Controls.Add(closeButton);
+
+            // ถ้าอยู่ใน UI thread แล้ว, สามารถอัปเดต UI ได้โดยตรง
             NPlayer nPlayer = new NPlayer();
-            nPlayer.trigger_warning_url(message);
-            // 🔥 ล็อก Dialog ไม่ให้ไปนอกโปรแกรม
-            return Form.ShowDialog(mainForm) == DialogResult.OK ? message : "";
+            nPlayer.trigger_warning_url(message); // เรียกใช้งาน trigger_warning_url ใน UI thread
+
+            // 🔹 ตรวจสอบว่าเรียกจาก UI thread หรือไม่
+            if (mainForm.InvokeRequired) {
+                // ใช้ Invoke เพื่อให้ฟังก์ชันทำงานบน UI thread
+                mainForm.Invoke(new Action(() =>
+                {
+                    // ทำการแสดง Form บน UI thread
+                    form.ShowDialog(mainForm);
+                }));
+            } else {
+                // ถ้าอยู่ใน UI thread แล้ว, แสดง Form โดยตรง
+                form.ShowDialog(mainForm);
+            }
+
+            return message; // คืนค่าเมื่อกดปุ่ม Ok
         }
 
         // โชว์ error connection ขวาล่าง 
@@ -98,7 +106,7 @@ namespace TOAMediaPlayer.Helper
             Form mainForm = Application.OpenForms[0];
 
             // 🔹 สร้าง Dialog
-            Form = new Form
+            Form form = new Form
             {
                 FormBorderStyle = FormBorderStyle.None, // ไม่มีขอบหน้าต่าง
                 StartPosition = FormStartPosition.Manual,
@@ -110,8 +118,8 @@ namespace TOAMediaPlayer.Helper
 
             // 🔹 คำนวณตำแหน่งให้แสดงที่มุมล่างขวาของหน้าต่างหลัก
             var screen = mainForm.Bounds;
-            Form.Left = screen.Right - Form.Width;
-            Form.Top = screen.Bottom - Form.Height;
+            form.Left = screen.Right - form.Width;
+            form.Top = screen.Bottom - form.Height;
 
             // 🔹 Panel Header (สีดำ)
             Panel headerPanel = new Panel
@@ -120,7 +128,7 @@ namespace TOAMediaPlayer.Helper
                 Dock = DockStyle.Top,
                 Height = 40
             };
-            Form.Controls.Add(headerPanel);
+            form.Controls.Add(headerPanel);
 
             // 🔹 Icon วงกลมสีแดง
             PictureBox icon = new PictureBox
@@ -150,7 +158,7 @@ namespace TOAMediaPlayer.Helper
                 Location = new Point(20, 60),
                 AutoSize = true
             };
-            Form.Controls.Add(messageLabel);
+            form.Controls.Add(messageLabel);
 
             // 🔹 ปุ่ม "ปิดโปรแกรม"
             Button closeButton = new Button
@@ -162,11 +170,11 @@ namespace TOAMediaPlayer.Helper
                 Size = new Size(100, 30),
                 Location = new Point(260, 100)
             };
-            closeButton.Click += (s, e) => Form.Close(); // ปิด Dialog เมื่อกดปุ่ม
-            Form.Controls.Add(closeButton);
+            closeButton.Click += (s, e) => form.Close(); // ปิด Dialog เมื่อกดปุ่ม
+            form.Controls.Add(closeButton);
 
             // 🔥 ล็อก Dialog ไม่ให้ไปนอกโปรแกรม
-            return Form.ShowDialog(mainForm) == DialogResult.OK ? message : "";
+            return form.ShowDialog(mainForm) == DialogResult.OK ? message : "";
         }
     }
 }
