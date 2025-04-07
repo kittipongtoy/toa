@@ -90,6 +90,7 @@ namespace TOAMediaPlayer
                 if (substring[2].IndexOf("AM") != -1 || substring[2].IndexOf("PM") != -1)
                 {
                     timeEdit1.Value = DateTime.ParseExact("27/08/2024 " + substring[2], "dd/MM/yyyy hh:mm tt", CultureInfo.InvariantCulture);
+                    metroLabel3.Text = "PM";
                 }
                 else
                 {
@@ -104,10 +105,12 @@ namespace TOAMediaPlayer
                     DateTime tempDate = DateTime.ParseExact("27/08/2024 " + substring[2], "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
                     string formattedTime = tempDate.ToString("hh:mm tt", CultureInfo.InvariantCulture);
                     timeEdit1.Value = DateTime.ParseExact("27/08/2024 " + formattedTime, "dd/MM/yyyy hh:mm tt", CultureInfo.InvariantCulture);
+                    metroLabel3.Text = "";
                 }
                 if (substring[3].IndexOf("AM") != -1 || substring[3].IndexOf("PM") != -1)
                 {
                     timeEdit2.Value = DateTime.ParseExact("27/08/2024 " + substring[3], "dd/MM/yyyy hh:mm tt", CultureInfo.InvariantCulture);
+                    metroLabel4.Text = "PM";
                 }
                 else
                 {
@@ -122,6 +125,7 @@ namespace TOAMediaPlayer
                     DateTime tempDate = DateTime.ParseExact("27/08/2024 " + substring[3], "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
                     string formattedTime = tempDate.ToString("hh:mm tt", CultureInfo.InvariantCulture);
                     timeEdit2.Value = DateTime.ParseExact("27/08/2024 " + formattedTime, "dd/MM/yyyy hh:mm tt", CultureInfo.InvariantCulture);
+                    metroLabel4.Text = "";
                 }
                 checkBox12.Checked = true;
             }
@@ -130,6 +134,11 @@ namespace TOAMediaPlayer
                 if (substring[2].IndexOf("AM") != -1 || substring[2].IndexOf("PM") != -1)
                 {
                     timeEdit1.Value = DateTime.ParseExact("27/08/2024 " + substring[2], "dd/MM/yyyy hh:mm tt", CultureInfo.InvariantCulture);
+                    if (substring[2].Substring(6, 2) == "AM") {
+                        metroLabel3.Text = "AM";
+                    } else if (substring[2].Substring(6, 2) == "PM") {
+                        metroLabel3.Text = "PM";
+                    }
                 }
                 else
                 {
@@ -146,10 +155,16 @@ namespace TOAMediaPlayer
                     DateTime tempDate = DateTime.ParseExact("27/08/2024 " + substring[2], "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
                     string formattedTime = tempDate.ToString("hh:mm tt", CultureInfo.InvariantCulture);
                     timeEdit1.Value = DateTime.ParseExact("27/08/2024 " + formattedTime, "dd/MM/yyyy hh:mm tt", CultureInfo.InvariantCulture);
+                    metroLabel3.Text = "";
                 }
                 if (substring[3].IndexOf("AM") != -1 || substring[3].IndexOf("PM") != -1)
                 {
                     timeEdit2.Value = DateTime.ParseExact("27/08/2024 " + substring[3], "dd/MM/yyyy hh:mm tt", CultureInfo.InvariantCulture);
+                    if (substring[3].Substring(6,2) == "AM") {
+                        metroLabel4.Text = "AM";
+                    } else if (substring[2].Substring(6, 2) == "PM") {
+                        metroLabel4.Text = "PM";
+                    }
                 }
                 else
                 {
@@ -166,6 +181,7 @@ namespace TOAMediaPlayer
                     DateTime tempDate = DateTime.ParseExact("27/08/2024 " + substring[3], "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
                     string formattedTime = tempDate.ToString("hh:mm tt", CultureInfo.InvariantCulture);
                     timeEdit2.Value = DateTime.ParseExact("27/08/2024 " + formattedTime, "dd/MM/yyyy hh:mm tt", CultureInfo.InvariantCulture);
+                    metroLabel4.Text = "";
                 }
                 checkBox12.Checked = false;
             }
@@ -598,6 +614,19 @@ namespace TOAMediaPlayer
                 //this.timeEdit1.Properties.Mask.EditMask = "hh:mm tt";
                 this.timeEdit2.CustomFormat = "hh:mm tt";
                 //this.timeEdit2.Properties.Mask.EditMask = "hh:mm tt";
+
+                var timehr1 = this.timeEdit1.Text.Split(' ')[1];
+                var timehr2 = this.timeEdit2.Text.Split(' ')[1];
+                if (timehr1 == "AM") {
+                    this.metroLabel3.Text = "AM";
+                } else if (timehr2 == "PM") {
+                    this.metroLabel3.Text = "PM";
+                }
+                if (timehr2 == "AM") {
+                    this.metroLabel4.Text = "AM";
+                } else if (timehr2 == "PM") {
+                    this.metroLabel4.Text = "PM";
+                }
             }
             else
             {
@@ -605,6 +634,8 @@ namespace TOAMediaPlayer
                 //this.timeEdit1.Properties.Mask.EditMask = "HH:mm";
                 this.timeEdit2.CustomFormat = "HH:mm";
                 //this.timeEdit2.Properties.Mask.EditMask = "HH:mm";
+                this.metroLabel3.Text = "";
+                this.metroLabel4.Text = "";
             }
         }
 
