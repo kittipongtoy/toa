@@ -2646,8 +2646,15 @@ namespace TOAMediaPlayer
                 bool is_save = pl.import_file(PlayerID, base64file_import);
                 json = JsonConvert.SerializeObject(is_save, Formatting.Indented);
             }
-            else if (controlType.ToLower().Trim() == "reorder_playlist")
-            {
+            else if (controlType.ToLower().Trim() == "upload_file") {
+                bool is_save = pl.upload_file(PlayerID, base64file_import);
+                json = JsonConvert.SerializeObject(is_save, Formatting.Indented);
+            }
+            //else if (controlType.ToLower().Trim() == "upload_folder") {
+            //    bool is_save = pl.upload_folder(PlayerID);
+            //    json = JsonConvert.SerializeObject(is_save, Formatting.Indented);
+            //}
+            else if (controlType.ToLower().Trim() == "reorder_playlist") {
                 pl.reorder_playlist(PlayerID, playlistData);
             }
             #endregion

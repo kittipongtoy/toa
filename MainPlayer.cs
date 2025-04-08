@@ -22,6 +22,9 @@ using TOAMediaPlayer.Properties;
 using TOAMediaPlayer.TOAPlaylist;
 using MessageBox = System.Windows.Forms.MessageBox;
 using MessageAlert = TOAMediaPlayer.Helper.MessageBox;
+using System.Security.Cryptography;
+using Newtonsoft.Json;
+using System.Buffers.Text;
 
 namespace TOAMediaPlayer
 {
@@ -1390,7 +1393,7 @@ namespace TOAMediaPlayer
                         if (dd.Count > 0) {
                             ErrorMusic fms = new ErrorMusic(dd);
                             fms.TopMost = true;
-                            fms.Owner = this;
+                            //fms.Owner = this;
                             fms.ShowDialog();
                         }
                         //if (int.Parse(playlistId) == 1)
@@ -1545,11 +1548,12 @@ namespace TOAMediaPlayer
                 throw;
             }
         }
-        
+
         public bool reorder_playlist(string playlistId, List<PlaylistItem> playlistData)
         {
             if (this.InvokeRequired)
             {
+                List<jsonWebAPI.MusicErrorList> dd = new List<jsonWebAPI.MusicErrorList>();
                 if (playlistData.Count == 0) return false;
 
                 this.Invoke(new Action(() =>
@@ -1579,6 +1583,7 @@ namespace TOAMediaPlayer
                 return true;
             } else
             {
+                List<jsonWebAPI.MusicErrorList> dd = new List<jsonWebAPI.MusicErrorList>();
                 if (playlistData.Count == 0) return false;
 
                 string fileName = String.Format("{0}\\{1}-List.txt", System.Environment.CurrentDirectory, playlistId);
@@ -1590,6 +1595,7 @@ namespace TOAMediaPlayer
 
                 using (TextWriter tw = new StreamWriter(new FileStream(fileName, FileMode.Create), Encoding.UTF8))
                 {
+
                     foreach (var item in playlistData)
                     {
                         tw.WriteLine(item.newIndex + "\t" + item.name + "\t" + item.duration + "\t" + item.path + "\t");
@@ -1601,6 +1607,120 @@ namespace TOAMediaPlayer
                     this.LoadDefaultPlaylist(short.Parse(playlistId));
                 }
                 this.trigger_url();
+            }
+            return true;
+        }
+
+        public bool upload_file(string playlistId, string base64Array) {
+            try {
+                if (this.InvokeRequired) {
+                    this.Invoke(new Action(() => {
+
+                        List<jsonWebAPI.MusicErrorList> dd = new List<jsonWebAPI.MusicErrorList>();
+                        List<string> pathfile = new List<string>();
+                        byte[] dataByte = Convert.FromBase64String(base64Array);
+                        string json = Encoding.UTF8.GetString(dataByte);
+                        List<string> fileList = JsonConvert.DeserializeObject<List<string>>(json).Select(x => AppDomain.CurrentDomain.BaseDirectory + "music\\" + playlistId + "\\" + x).ToList();
+
+                        // Print the result
+                        foreach (var file in fileList) {
+                            Console.WriteLine(file);
+                        }
+                        string fileName = String.Format("{0}\\{1}-List.txt", System.Environment.CurrentDirectory, playlistId);
+                        List<string> data = File.ReadAllLines(fileName).ToList<string>();
+
+                        using (TextWriter tw = new StreamWriter(new FileStream(fileName, FileMode.Create), Encoding.UTF8)) {
+                            HashSet<string> set = data.Select(x => {
+                                string[] items = x.Split(new char[]
+                                {
+                                '\t'
+                                }, StringSplitOptions.RemoveEmptyEntries);
+                                return items[3];
+                            }).ToHashSet<string>();
+                            foreach (string _item in data) {
+                                string[] items = _item.Split(new char[]
+                                {
+                                '\t'
+                                }, StringSplitOptions.RemoveEmptyEntries);
+                                tw.WriteLine(items[0] + "\t" + items[1] + "\t" + items[2] + "\t" + items[3] + "\t");
+                            }
+                            foreach (var file in fileList) {
+                                FileInfo _file = new FileInfo(file);
+                                string decodedName = Uri.UnescapeDataString(_file.Name);
+                                string decodedPath = Uri.UnescapeDataString(_file.FullName);
+                                if (set.Contains(decodedPath)) {
+                                    dd.Add(new jsonWebAPI.MusicErrorList {
+                                        name = decodedName,
+                                        location = decodedPath,
+                                        PlayerTrack = Convert.ToInt16(playlistId)
+                                    });
+                                    continue;
+                                }
+                                tw.WriteLine(data.Count + 1 + "\t" + decodedName + "\t" + string.Format("{0:hh\\:mm\\:ss}", CoreLibrary.GetNAudoSongLength(decodedPath)) + "\t" + decodedPath + "\t");
+                            }
+
+                        }
+                        if (dd.Count > 0) {
+                            ErrorMusic fms = new ErrorMusic(dd);
+                            fms.TopMost = true;
+                            //fms.Owner = this;
+                            fms.ShowDialog();
+                        }
+                        if (lastId == short.Parse(playlistId)) {
+                            this.LoadDefaultPlaylist(short.Parse(playlistId));
+                        }
+                        this.trigger_url();
+                    }));
+                } else {
+                    List<jsonWebAPI.MusicErrorList> dd = new List<jsonWebAPI.MusicErrorList>();
+                    string pathFile = AppDomain.CurrentDomain.BaseDirectory + "PlayerMusic\\" + playlistId + "\\" + base64Array;
+
+                    FileInfo _file = new FileInfo(pathFile);
+                    string fileName = String.Format("{0}\\{1}-List.txt", System.Environment.CurrentDirectory, playlistId);
+                    List<string> data = File.ReadAllLines(fileName).ToList<string>();
+                    
+                    using (TextWriter tw = new StreamWriter(new FileStream(fileName, FileMode.Create), Encoding.UTF8)) {
+                        string decodedName = Uri.UnescapeDataString(_file.Name);
+                        string decodedPath = Uri.UnescapeDataString(_file.FullName);
+                        HashSet<string> set = data.Select(x => {
+                            string[] items = x.Split(new char[]
+                            {
+                                '\t'
+                            }, StringSplitOptions.RemoveEmptyEntries);
+                            return items[3];
+                        }).ToHashSet<string>();
+                        foreach (string _item in data) {
+                            string[] items = _item.Split(new char[]
+                            {
+                                '\t'
+                            }, StringSplitOptions.RemoveEmptyEntries);
+                            tw.WriteLine(items[0] + "\t" + items[1] + "\t" + items[2] + "\t" + items[3] + "\t");
+                        }
+                        if (set.Contains(decodedPath)) {
+                            dd.Add(new jsonWebAPI.MusicErrorList {
+                                name = decodedName,
+                                location = decodedPath,
+                                PlayerTrack = Convert.ToInt16(playlistId)
+                            });
+                        } else {
+                            tw.WriteLine(data.Count + 1 + "\t" + decodedName + "\t" + string.Format("{0:hh\\:mm\\:ss}", CoreLibrary.GetNAudoSongLength(decodedPath)) + "\t" + decodedPath + "\t");
+                        }
+                    }
+                    if (dd.Count > 0) {
+                        ErrorMusic fms = new ErrorMusic(dd);
+                        fms.TopMost = true;
+                        //fms.Owner = this;
+                        fms.ShowDialog();
+                    }
+                    if (lastId == short.Parse(playlistId)) {
+                        this.LoadDefaultPlaylist(short.Parse(playlistId));
+                    }
+                    this.trigger_url();
+                }
+            } catch (Exception ex) {
+                Console.WriteLine("Import Error : " + ex);
+                return false;
+                throw;
             }
             return true;
         }
