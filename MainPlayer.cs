@@ -1617,15 +1617,10 @@ namespace TOAMediaPlayer
                     this.Invoke(new Action(() => {
 
                         List<jsonWebAPI.MusicErrorList> dd = new List<jsonWebAPI.MusicErrorList>();
-                        List<string> pathfile = new List<string>();
                         byte[] dataByte = Convert.FromBase64String(base64Array);
                         string json = Encoding.UTF8.GetString(dataByte);
                         List<string> fileList = JsonConvert.DeserializeObject<List<string>>(json).Select(x => AppDomain.CurrentDomain.BaseDirectory + "music\\" + playlistId + "\\" + x).ToList();
 
-                        // Print the result
-                        foreach (var file in fileList) {
-                            Console.WriteLine(file);
-                        }
                         string fileName = String.Format("{0}\\{1}-List.txt", System.Environment.CurrentDirectory, playlistId);
                         List<string> data = File.ReadAllLines(fileName).ToList<string>();
 
