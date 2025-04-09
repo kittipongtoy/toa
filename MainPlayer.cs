@@ -26,6 +26,7 @@ using System.Security.Cryptography;
 using Newtonsoft.Json;
 using System.Buffers.Text;
 using System.Collections.Concurrent;
+using System.Windows.Markup;
 
 namespace TOAMediaPlayer
 {
@@ -1632,68 +1633,74 @@ namespace TOAMediaPlayer
         //}
 
         public bool upload_file(string playlistId, string base64Array) {
+            var isSuccess = true;
             try {
                 if (this.InvokeRequired) {
-                    this.Invoke(new Action(async () => {
+                    this.Invoke(new Action(() => {
+                        try {
+                            List<jsonWebAPI.MusicErrorList> dd = new List<jsonWebAPI.MusicErrorList>();
+                            byte[] dataByte = Convert.FromBase64String(base64Array);
+                            string json = Encoding.UTF8.GetString(dataByte);
+                            List<string> fileList = JsonConvert.DeserializeObject<List<string>>(json).Select(x => AppDomain.CurrentDomain.BaseDirectory + "music\\" + playlistId + "\\" + x).ToList();
+                            //List<string> matchingFolders = new List<string>();
 
-                        List<jsonWebAPI.MusicErrorList> dd = new List<jsonWebAPI.MusicErrorList>();
-                        byte[] dataByte = Convert.FromBase64String(base64Array);
-                        string json = Encoding.UTF8.GetString(dataByte);
-                        List<string> fileList = JsonConvert.DeserializeObject<List<string>>(json).Select(x => AppDomain.CurrentDomain.BaseDirectory + "music\\" + playlistId + "\\" + x).ToList();
-                        //List<string> matchingFolders = new List<string>();
+                            //foreach (DriveInfo drive in DriveInfo.GetDrives()) {
+                            //    if (drive.IsReady) {
+                            //        Console.WriteLine($"Scanning drive: {drive.Name}");
+                            //        ScanDirectory(drive.RootDirectory.FullName, matchingFolders);
+                            //    }
+                            //}
 
-                        //foreach (DriveInfo drive in DriveInfo.GetDrives()) {
-                        //    if (drive.IsReady) {
-                        //        Console.WriteLine($"Scanning drive: {drive.Name}");
-                        //        ScanDirectory(drive.RootDirectory.FullName, matchingFolders);
-                        //    }
-                        //}
+                            string fileName = String.Format("{0}\\{1}-List.txt", System.Environment.CurrentDirectory, playlistId);
+                            List<string> data = File.ReadAllLines(fileName).ToList<string>();
 
-                        string fileName = String.Format("{0}\\{1}-List.txt", System.Environment.CurrentDirectory, playlistId);
-                        List<string> data = File.ReadAllLines(fileName).ToList<string>();
-
-                        using (TextWriter tw = new StreamWriter(new FileStream(fileName, FileMode.Create), Encoding.UTF8)) {
-                            HashSet<string> set = data.Select(x => {
-                            string[] items = x.Split(new char[]{'\t'}, StringSplitOptions.RemoveEmptyEntries);
-                                return items[3];
-                            }).ToHashSet<string>();
-                            foreach (string _item in data) {
-                                string[] items = _item.Split(new char[]
-                                {
+                            using (TextWriter tw = new StreamWriter(new FileStream(fileName, FileMode.Create), Encoding.UTF8)) {
+                                HashSet<string> set = data.Select(x => {
+                                    string[] items = x.Split(new char[] { '\t' }, StringSplitOptions.RemoveEmptyEntries);
+                                    return items[3];
+                                }).ToHashSet<string>();
+                                foreach (string _item in data) {
+                                    string[] items = _item.Split(new char[]
+                                    {
                                 '\t'
-                                }, StringSplitOptions.RemoveEmptyEntries);
-                                tw.WriteLine(items[0] + "\t" + items[1] + "\t" + items[2] + "\t" + items[3] + "\t");
-                            }
-                            foreach (var file in fileList) {
-                                FileInfo _file = new FileInfo(file);
-                                string decodedName = Uri.UnescapeDataString(_file.Name);
-                                string decodedPath = Uri.UnescapeDataString(_file.FullName);
-                                if (set.Contains(decodedPath)) {
-                                    dd.Add(new jsonWebAPI.MusicErrorList {
-                                        name = decodedName,
-                                        location = decodedPath,
-                                        PlayerTrack = Convert.ToInt16(playlistId)
-                                    });
-                                    tw.WriteLine();
-                                    continue;
+                                    }, StringSplitOptions.RemoveEmptyEntries);
+                                    tw.WriteLine(items[0] + "\t" + items[1] + "\t" + items[2] + "\t" + items[3] + "\t");
                                 }
-                                if (_file.Exists) {
-                                    tw.WriteLine(data.Count + 1 + "\t" + decodedName + "\t" + string.Format("{0:hh\\:mm\\:ss}", CoreLibrary.GetNAudoSongLength(decodedPath)) + "\t" + decodedPath + "\t");
-                                } else {
-                                    tw.WriteLine(data.Count + 1 + "\t" + decodedName + "\t" +"00:00:00"+ "\t" + decodedPath + "\t");
+                                foreach (var file in fileList) {
+                                    FileInfo _file = new FileInfo(file);
+                                    string decodedName = Uri.UnescapeDataString(_file.Name);
+                                    string decodedPath = Uri.UnescapeDataString(_file.FullName);
+                                    if (set.Contains(decodedPath)) {
+                                        dd.Add(new jsonWebAPI.MusicErrorList {
+                                            name = decodedName,
+                                            location = decodedPath,
+                                            PlayerTrack = Convert.ToInt16(playlistId)
+                                        });
+                                        tw.WriteLine();
+                                        continue;
+                                    }
+                                    if (_file.Exists) {
+                                        tw.WriteLine(data.Count + 1 + "\t" + decodedName + "\t" + string.Format("{0:hh\\:mm\\:ss}", CoreLibrary.GetNAudoSongLength(decodedPath)) + "\t" + decodedPath + "\t");
+                                    } else {
+                                        tw.WriteLine(data.Count + 1 + "\t" + decodedName + "\t" + "00:00:00" + "\t" + decodedPath + "\t");
+                                    }
                                 }
                             }
+                            if (dd.Count > 0) {
+                                ErrorMusic fms = new ErrorMusic(dd);
+                                fms.TopMost = true;
+                                //fms.Owner = this;
+                                fms.ShowDialog();
+                            }
+                            if (lastId == short.Parse(playlistId)) {
+                                this.LoadDefaultPlaylist(short.Parse(playlistId));
+                            }
+                            this.trigger_url();
+                        } catch (Exception ex) {
+                            isSuccess = false;
+                            var messagebox = new Helper.MessageBox();
+                            messagebox.ShowCenter_DialogError(ex.Message, "เกิดข้อผิดพลาด");
                         }
-                        if (dd.Count > 0) {
-                            ErrorMusic fms = new ErrorMusic(dd);
-                            fms.TopMost = true;
-                            //fms.Owner = this;
-                            fms.ShowDialog();
-                        }
-                        if (lastId == short.Parse(playlistId)) {
-                            this.LoadDefaultPlaylist(short.Parse(playlistId));
-                        }
-                        this.trigger_url();
                     }));
                 } else {
                     List<jsonWebAPI.MusicErrorList> dd = new List<jsonWebAPI.MusicErrorList>();
@@ -1756,11 +1763,11 @@ namespace TOAMediaPlayer
                     this.trigger_url();
                 }
             } catch (Exception ex) {
-                Console.WriteLine("Import Error : " + ex);
-                return false;
-                throw;
+                isSuccess = false;
+                var messagebox = new Helper.MessageBox();
+                messagebox.ShowCenter_DialogError(ex.Message, "เกิดข้อผิดพลาด");
             }
-            return true;
+            return isSuccess;
         }
 
         public bool close_form() {
