@@ -25,6 +25,7 @@ using MessageAlert = TOAMediaPlayer.Helper.MessageBox;
 using System.Security.Cryptography;
 using Newtonsoft.Json;
 using System.Buffers.Text;
+using System.Collections.Concurrent;
 
 namespace TOAMediaPlayer
 {
@@ -269,7 +270,6 @@ namespace TOAMediaPlayer
 
             this.myListView.AllowDrop = true;
             this.ts = new TOASocket(this);
-
             //iconButtonPlayer1_Click(null, new EventArgs());
             #endregion
         }
@@ -1611,25 +1611,50 @@ namespace TOAMediaPlayer
             return true;
         }
 
+        //static void ScanDirectory(string path, List<string> result) {
+        //    try {
+        //        foreach (var dir in Directory.GetDirectories(path)) {
+        //            // เงื่อนไขที่คุณต้องการ เช่น มีคำว่า "music" และอยู่ใน path "debug"
+        //            if (dir.ToLower().Contains(Path.Combine("debug", "music").ToLower())) {
+        //                result.Add(dir);
+        //            }
+
+        //            // เรียกใช้แบบ recursive เพื่อไล่เข้า subfolders
+        //            ScanDirectory(dir, result);
+        //        }
+        //    } catch (UnauthorizedAccessException) {
+        //        // ข้ามโฟลเดอร์ที่เข้าไม่ได้
+        //    } catch (PathTooLongException) {
+        //        // ข้ามโฟลเดอร์ที่ path ยาวเกินไป
+        //    } catch (Exception ex) {
+        //        Console.WriteLine($"Unexpected error at {path}: {ex.Message}");
+        //    }
+        //}
+
         public bool upload_file(string playlistId, string base64Array) {
             try {
                 if (this.InvokeRequired) {
-                    this.Invoke(new Action(() => {
+                    this.Invoke(new Action(async () => {
 
                         List<jsonWebAPI.MusicErrorList> dd = new List<jsonWebAPI.MusicErrorList>();
                         byte[] dataByte = Convert.FromBase64String(base64Array);
                         string json = Encoding.UTF8.GetString(dataByte);
                         List<string> fileList = JsonConvert.DeserializeObject<List<string>>(json).Select(x => AppDomain.CurrentDomain.BaseDirectory + "music\\" + playlistId + "\\" + x).ToList();
+                        //List<string> matchingFolders = new List<string>();
+
+                        //foreach (DriveInfo drive in DriveInfo.GetDrives()) {
+                        //    if (drive.IsReady) {
+                        //        Console.WriteLine($"Scanning drive: {drive.Name}");
+                        //        ScanDirectory(drive.RootDirectory.FullName, matchingFolders);
+                        //    }
+                        //}
 
                         string fileName = String.Format("{0}\\{1}-List.txt", System.Environment.CurrentDirectory, playlistId);
                         List<string> data = File.ReadAllLines(fileName).ToList<string>();
 
                         using (TextWriter tw = new StreamWriter(new FileStream(fileName, FileMode.Create), Encoding.UTF8)) {
                             HashSet<string> set = data.Select(x => {
-                                string[] items = x.Split(new char[]
-                                {
-                                '\t'
-                                }, StringSplitOptions.RemoveEmptyEntries);
+                            string[] items = x.Split(new char[]{'\t'}, StringSplitOptions.RemoveEmptyEntries);
                                 return items[3];
                             }).ToHashSet<string>();
                             foreach (string _item in data) {
@@ -1649,11 +1674,15 @@ namespace TOAMediaPlayer
                                         location = decodedPath,
                                         PlayerTrack = Convert.ToInt16(playlistId)
                                     });
+                                    tw.WriteLine();
                                     continue;
                                 }
-                                tw.WriteLine(data.Count + 1 + "\t" + decodedName + "\t" + string.Format("{0:hh\\:mm\\:ss}", CoreLibrary.GetNAudoSongLength(decodedPath)) + "\t" + decodedPath + "\t");
+                                if (_file.Exists) {
+                                    tw.WriteLine(data.Count + 1 + "\t" + decodedName + "\t" + string.Format("{0:hh\\:mm\\:ss}", CoreLibrary.GetNAudoSongLength(decodedPath)) + "\t" + decodedPath + "\t");
+                                } else {
+                                    tw.WriteLine(data.Count + 1 + "\t" + decodedName + "\t" +"00:00:00"+ "\t" + decodedPath + "\t");
+                                }
                             }
-
                         }
                         if (dd.Count > 0) {
                             ErrorMusic fms = new ErrorMusic(dd);
@@ -1668,20 +1697,24 @@ namespace TOAMediaPlayer
                     }));
                 } else {
                     List<jsonWebAPI.MusicErrorList> dd = new List<jsonWebAPI.MusicErrorList>();
-                    string pathFile = AppDomain.CurrentDomain.BaseDirectory + "PlayerMusic\\" + playlistId + "\\" + base64Array;
+                    byte[] dataByte = Convert.FromBase64String(base64Array);
+                    string json = Encoding.UTF8.GetString(dataByte);
+                    List<string> fileList = JsonConvert.DeserializeObject<List<string>>(json).Select(x => AppDomain.CurrentDomain.BaseDirectory + "music\\" + playlistId + "\\" + x).ToList();
+                    //List<string> matchingFolders = new List<string>();
 
-                    FileInfo _file = new FileInfo(pathFile);
+                    //foreach (DriveInfo drive in DriveInfo.GetDrives()) {
+                    //    if (drive.IsReady) {
+                    //        Console.WriteLine($"Scanning drive: {drive.Name}");
+                    //        ScanDirectory(drive.RootDirectory.FullName, matchingFolders);
+                    //    }
+                    //}
+
                     string fileName = String.Format("{0}\\{1}-List.txt", System.Environment.CurrentDirectory, playlistId);
                     List<string> data = File.ReadAllLines(fileName).ToList<string>();
-                    
+
                     using (TextWriter tw = new StreamWriter(new FileStream(fileName, FileMode.Create), Encoding.UTF8)) {
-                        string decodedName = Uri.UnescapeDataString(_file.Name);
-                        string decodedPath = Uri.UnescapeDataString(_file.FullName);
                         HashSet<string> set = data.Select(x => {
-                            string[] items = x.Split(new char[]
-                            {
-                                '\t'
-                            }, StringSplitOptions.RemoveEmptyEntries);
+                            string[] items = x.Split(new char[] { '\t' }, StringSplitOptions.RemoveEmptyEntries);
                             return items[3];
                         }).ToHashSet<string>();
                         foreach (string _item in data) {
@@ -1691,14 +1724,24 @@ namespace TOAMediaPlayer
                             }, StringSplitOptions.RemoveEmptyEntries);
                             tw.WriteLine(items[0] + "\t" + items[1] + "\t" + items[2] + "\t" + items[3] + "\t");
                         }
-                        if (set.Contains(decodedPath)) {
-                            dd.Add(new jsonWebAPI.MusicErrorList {
-                                name = decodedName,
-                                location = decodedPath,
-                                PlayerTrack = Convert.ToInt16(playlistId)
-                            });
-                        } else {
-                            tw.WriteLine(data.Count + 1 + "\t" + decodedName + "\t" + string.Format("{0:hh\\:mm\\:ss}", CoreLibrary.GetNAudoSongLength(decodedPath)) + "\t" + decodedPath + "\t");
+                        foreach (var file in fileList) {
+                            FileInfo _file = new FileInfo(file);
+                            string decodedName = Uri.UnescapeDataString(_file.Name);
+                            string decodedPath = Uri.UnescapeDataString(_file.FullName);
+                            if (set.Contains(decodedPath)) {
+                                dd.Add(new jsonWebAPI.MusicErrorList {
+                                    name = decodedName,
+                                    location = decodedPath,
+                                    PlayerTrack = Convert.ToInt16(playlistId)
+                                });
+                                tw.WriteLine();
+                                continue;
+                            }
+                            if (_file.Exists) {
+                                tw.WriteLine(data.Count + 1 + "\t" + decodedName + "\t" + string.Format("{0:hh\\:mm\\:ss}", CoreLibrary.GetNAudoSongLength(decodedPath)) + "\t" + decodedPath + "\t");
+                            } else {
+                                tw.WriteLine(data.Count + 1 + "\t" + decodedName + "\t" + "00:00:00" + "\t" + decodedPath + "\t");
+                            }
                         }
                     }
                     if (dd.Count > 0) {
