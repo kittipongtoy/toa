@@ -1637,7 +1637,7 @@ namespace TOAMediaPlayer
             try {
                 if (this.InvokeRequired) {
                     this.Invoke(new Action(() => {
-                        //try {
+                        try {
                             List<jsonWebAPI.MusicErrorList> dd = new List<jsonWebAPI.MusicErrorList>();
                             byte[] dataByte = Convert.FromBase64String(base64Array);
                             string json = Encoding.UTF8.GetString(dataByte);
@@ -1695,11 +1695,11 @@ namespace TOAMediaPlayer
                                 this.LoadDefaultPlaylist(short.Parse(playlistId));
                             }
                             this.trigger_url();
-                        //} catch (Exception ex) {
-                        //    isSuccess = false;
-                        //    var messagebox = new Helper.MessageBox();
-                        //    messagebox.ShowCenter_DialogError(ex.Message, "เกิดข้อผิดพลาด");
-                        //}
+                        } catch (Exception ex) {
+                            isSuccess = false;
+                            var messagebox = new Helper.MessageBox();
+                            messagebox.ShowCenter_DialogError(ex.Message, "เกิดข้อผิดพลาด");
+                        }
                     }));
                 } else {
                     List<jsonWebAPI.MusicErrorList> dd = new List<jsonWebAPI.MusicErrorList>();
