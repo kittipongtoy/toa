@@ -2669,94 +2669,180 @@ namespace TOAMediaPlayer.NAudioOutput
         public static string ShowDialog(string text, string caption, string nametrack, string nametrackC, string nametrackCF)
         {
             RegistryKey HKLMSoftwareTOAConfig = Registry.CurrentUser.OpenSubKey(@"Software\TOA\Config", true);
-            RegistryKey configsocket = HKLMSoftwareTOAConfig.OpenSubKey("trackname", true);
-            var text1 = configsocket.GetValue(nametrack);
-            var text2 = configsocket.GetValue(nametrackC);
-            var text3 = configsocket.GetValue(nametrackCF);
+            RegistryKey configsocket = HKLMSoftwareTOAConfig?.OpenSubKey("trackname", true);
+
+            var text1 = configsocket?.GetValue(nametrack) as string ?? "";
+            var text2 = configsocket?.GetValue(nametrackC) as string ?? "0,0,0,255";
+            var text3 = configsocket?.GetValue(nametrackCF) as string ?? "0,0,0,255";
 
             Form prompt = new Form()
             {
-                Width = 650,
-                Height = 120,
+                Width = 700,
+                Height = 130,
                 FormBorderStyle = FormBorderStyle.FixedDialog,
                 Text = "Track Setting",
                 StartPosition = FormStartPosition.CenterScreen,
-                BackColor= ColorTranslator.FromHtml("#D9D9D9")
+                BackColor = ColorTranslator.FromHtml("#D9D9D9")
             };
 
-            var textLabel = new Label() { Left = 20, Top = 20, Text = "Track Setting" };
-            textLabel.ForeColor = ColorTranslator.FromHtml("#5A5A5A");
+            Label textLabel = new Label() { Left = 20, Top = 15, Width = 80, Text = "Track Setting" };
+            TextBox textBox = new TextBox() { Left = 110, Top = 12, Width = 520, Height = 25, Text = text1 };
 
-            var textBox = new TextBox() { Left = 110, Top = 18, Width = 500, Text = text1.ToString() };
+            Label trackColorLabel = new Label() { Left = 20, Top = 50, Width = 80, Text = "Track Color" };
+            Panel trackColorPreview = new Panel() { Left = 110, Top = 47, Width = 30, Height = 25, BorderStyle = BorderStyle.FixedSingle };
+            TextBox trackColorBox = new TextBox() { Left = 150, Top = 47, Width = 120, Text = text2 + " ", ReadOnly = true };
+            //Button trackColorButton = new Button() { Text = "Pick Color", Left = 280, Top = 47, Width = 80, Height = 25 };
 
-            #region color 1
-            var textBox1 = new TextBox() { Left = 170, Top = 50, Width = 80, Text = text2.ToString() };
-            var subsc1 = text2.ToString().Split(',');
-            var textlabel1 = new TextBox() { Left = 110, Top = 50, Width = 40, BackColor = Color.FromArgb(Convert.ToInt32(subsc1[3]), Convert.ToInt32(subsc1[0]), Convert.ToInt32(subsc1[1]), Convert.ToInt32(subsc1[2])) };
-            #endregion
+            Label fontColorLabel = new Label() { Left = 290, Top = 50, Width = 70, Text = "Font Color" };
+            Panel fontColorPreview = new Panel() { Left = 370, Top = 47, Width = 30, Height = 25, BorderStyle = BorderStyle.FixedSingle };
+            TextBox fontColorBox = new TextBox() { Left = 420, Top = 47, Width = 120, Text = text3 + " ", ReadOnly = true };
+            //Button fontColorButton = new Button() { Text = "Pick Color", Left = 620, Top = 47, Width = 80, Height = 25 };
 
-            #region color 2
-            var textBox2 = new TextBox() { Left = 405, Top = 50, Width = 80, Text = text3.ToString() };
-            var subsc2 = text3.ToString().Split(',');
-            var textlabel2 = new TextBox() { Left = 345, Top = 50, Width = 40, BackColor = Color.FromArgb(Convert.ToInt32(subsc2[3]), Convert.ToInt32(subsc2[0]), Convert.ToInt32(subsc2[1]), Convert.ToInt32(subsc2[2])) };
-            #endregion
-
-            textBox1.ReadOnly = true;
-            textBox2.ReadOnly = true;
-            var colorback = new Button() { Text = "Track Color", Left = 260, Width = 75, Height = 23, Top = 50 };
-            var colorfont = new Button() { Text = "Font Color", Left = 20, Width = 75, Height = 23, Top = 50 };
-            colorback.ForeColor = Color.White;
-            colorfont.ForeColor = Color.White;
-            colorback.BackColor = ColorTranslator.FromHtml("#B0B0B0");
-            colorfont.BackColor = ColorTranslator.FromHtml("#B0B0B0");
-
-            var confirmation = new Button() { Text = "Ok", Left = 520, Width = 80, Height = 30, Top = 45, DialogResult = DialogResult.OK };
+            Button confirmation = new Button() { Text = "OK", Left = 550, Width = 80, Height = 30, Top = 45, DialogResult = DialogResult.OK };
+            confirmation.BackColor = ColorTranslator.FromHtml("#FFA500");
             confirmation.ForeColor = Color.White;
-            confirmation.BackColor = ColorTranslator.FromHtml("#FFA500");  //ColorTranslator.FromHtml("#5A5A5A");
             confirmation.Click += (sender, e) => { prompt.Close(); };
 
-            colorback.Click += (sender, e) =>
+            void SetColorFromText(TextBox textBox1, Panel previewBox)
             {
-                ColorDialog myDialogColor = new ColorDialog();
-                myDialogColor.AllowFullOpen = true;
-                myDialogColor.ShowHelp = true;
-                if (myDialogColor.ShowDialog() == DialogResult.OK)
+                var parts = textBox1.Text.Replace(" Color", "").Split(',');
+                if (parts.Length == 4 && parts.All(s => int.TryParse(s, out _)))
                 {
-                    var ss = myDialogColor.Color.R + "," + myDialogColor.Color.G + "," + myDialogColor.Color.B + "," + myDialogColor.Color.A;
-                    textBox2.Text = ss.ToString();
-                    textlabel2.BackColor = Color.FromArgb(Convert.ToInt32(myDialogColor.Color.A), Convert.ToInt32(myDialogColor.Color.R), Convert.ToInt32(myDialogColor.Color.G), Convert.ToInt32(myDialogColor.Color.B));
+                    previewBox.BackColor = Color.FromArgb(int.Parse(parts[3]), int.Parse(parts[0]), int.Parse(parts[1]), int.Parse(parts[2]));
                 }
-            };
+                else
+                {
+                    previewBox.BackColor = Color.Black;
+                }
+            }
 
-            colorfont.Click += (sender, e) =>
+            SetColorFromText(trackColorBox, trackColorPreview);
+            SetColorFromText(fontColorBox, fontColorPreview);
+
+            void SelectColor(TextBox textBox2, Panel previewBox)
             {
-                ColorDialog myDialogColor = new ColorDialog();
-                myDialogColor.AllowFullOpen = true;
-                myDialogColor.ShowHelp = true;
-                if (myDialogColor.ShowDialog() == DialogResult.OK)
+                using (ColorDialog myDialogColor = new ColorDialog())
                 {
-                    var ss = myDialogColor.Color.R + "," + myDialogColor.Color.G + "," + myDialogColor.Color.B + "," + myDialogColor.Color.A;
-                    textBox1.Text = ss.ToString();
-                    textlabel1.BackColor = Color.FromArgb(Convert.ToInt32(myDialogColor.Color.A), Convert.ToInt32(myDialogColor.Color.R), Convert.ToInt32(myDialogColor.Color.G), Convert.ToInt32(myDialogColor.Color.B));
+                    if (myDialogColor.ShowDialog() == DialogResult.OK)
+                    {
+                        string colorString = $"{myDialogColor.Color.R},{myDialogColor.Color.G},{myDialogColor.Color.B},{myDialogColor.Color.A} Color";
+                        textBox2.Text = colorString;
+                        previewBox.BackColor = myDialogColor.Color;
+                    }
                 }
-            };
+            }
 
-            prompt.Controls.Add(textBox);
+            trackColorPreview.Click += (sender, e) => SelectColor(trackColorBox, trackColorPreview);
+            //trackColorButton.Click += (sender, e) => SelectColor(trackColorBox, trackColorPreview);
+            fontColorPreview.Click += (sender, e) => SelectColor(fontColorBox, fontColorPreview);
+            //fontColorButton.Click += (sender, e) => SelectColor(fontColorBox, fontColorPreview);
 
-            prompt.Controls.Add(textBox1);
-            prompt.Controls.Add(textlabel1);
-
-            prompt.Controls.Add(textBox2);
-            prompt.Controls.Add(textlabel2);
-
-            prompt.Controls.Add(confirmation);
-            prompt.Controls.Add(colorback);
-            prompt.Controls.Add(colorfont);
             prompt.Controls.Add(textLabel);
-            prompt.AcceptButton = confirmation;
+            prompt.Controls.Add(textBox);
+            prompt.Controls.Add(trackColorLabel);
+            prompt.Controls.Add(trackColorPreview);
+            prompt.Controls.Add(trackColorBox);
+            //prompt.Controls.Add(trackColorButton);
+            prompt.Controls.Add(fontColorLabel);
+            prompt.Controls.Add(fontColorPreview);
+            prompt.Controls.Add(fontColorBox);
+            //prompt.Controls.Add(fontColorButton);
+            prompt.Controls.Add(confirmation);
 
-            return prompt.ShowDialog() == DialogResult.OK ? textBox.Text + "+" + textBox1.Text + "+" + textBox2.Text : "";
+            return prompt.ShowDialog() == DialogResult.OK ? textBox.Text + "+" + trackColorBox.Text.Replace(" Color", "") + "+" + fontColorBox.Text.Replace(" Color", "") : "";
         }
+
+        //public static string ShowDialog(string text, string caption, string nametrack, string nametrackC, string nametrackCF)
+        //{
+        //    RegistryKey HKLMSoftwareTOAConfig = Registry.CurrentUser.OpenSubKey(@"Software\TOA\Config", true);
+        //    RegistryKey configsocket = HKLMSoftwareTOAConfig.OpenSubKey("trackname", true);
+        //    var text1 = configsocket.GetValue(nametrack);
+        //    var text2 = configsocket.GetValue(nametrackC);
+        //    var text3 = configsocket.GetValue(nametrackCF);
+
+        //    Form prompt = new Form()
+        //    {
+        //        Width = 650,
+        //        Height = 120,
+        //        FormBorderStyle = FormBorderStyle.FixedDialog,
+        //        Text = "Track Setting",
+        //        StartPosition = FormStartPosition.CenterScreen,
+        //        BackColor= ColorTranslator.FromHtml("#D9D9D9")
+        //    };
+
+        //    var textLabel = new Label() { Left = 20, Top = 20, Text = "Track Setting" };
+        //    textLabel.ForeColor = ColorTranslator.FromHtml("#5A5A5A");
+
+        //    var textBox = new TextBox() { Left = 110, Top = 18, Width = 500, Text = text1.ToString() };
+
+        //    #region color 1
+        //    var textBox1 = new TextBox() { Left = 170, Top = 50, Width = 80, Text = text2.ToString() };
+        //    var subsc1 = text2.ToString().Split(',');
+        //    var textlabel1 = new TextBox() { Left = 110, Top = 50, Width = 40, BackColor = Color.FromArgb(Convert.ToInt32(subsc1[3]), Convert.ToInt32(subsc1[0]), Convert.ToInt32(subsc1[1]), Convert.ToInt32(subsc1[2])) };
+        //    #endregion
+
+        //    #region color 2
+        //    var textBox2 = new TextBox() { Left = 405, Top = 50, Width = 80, Text = text3.ToString() };
+        //    var subsc2 = text3.ToString().Split(',');
+        //    var textlabel2 = new TextBox() { Left = 345, Top = 50, Width = 40, BackColor = Color.FromArgb(Convert.ToInt32(subsc2[3]), Convert.ToInt32(subsc2[0]), Convert.ToInt32(subsc2[1]), Convert.ToInt32(subsc2[2])) };
+        //    #endregion
+
+        //    textBox1.ReadOnly = true;
+        //    textBox2.ReadOnly = true;
+        //    var colorback = new Button() { Text = "Track Color", Left = 260, Width = 75, Height = 23, Top = 50 };
+        //    var colorfont = new Button() { Text = "Font Color", Left = 20, Width = 75, Height = 23, Top = 50 };
+        //    colorback.ForeColor = Color.White;
+        //    colorfont.ForeColor = Color.White;
+        //    colorback.BackColor = ColorTranslator.FromHtml("#B0B0B0");
+        //    colorfont.BackColor = ColorTranslator.FromHtml("#B0B0B0");
+
+        //    var confirmation = new Button() { Text = "Ok", Left = 520, Width = 80, Height = 30, Top = 45, DialogResult = DialogResult.OK };
+        //    confirmation.ForeColor = Color.White;
+        //    confirmation.BackColor = ColorTranslator.FromHtml("#FFA500");  //ColorTranslator.FromHtml("#5A5A5A");
+        //    confirmation.Click += (sender, e) => { prompt.Close(); };
+
+        //    colorback.Click += (sender, e) =>
+        //    {
+        //        ColorDialog myDialogColor = new ColorDialog();
+        //        myDialogColor.AllowFullOpen = true;
+        //        myDialogColor.ShowHelp = true;
+        //        if (myDialogColor.ShowDialog() == DialogResult.OK)
+        //        {
+        //            var ss = myDialogColor.Color.R + "," + myDialogColor.Color.G + "," + myDialogColor.Color.B + "," + myDialogColor.Color.A;
+        //            textBox2.Text = ss.ToString();
+        //            textlabel2.BackColor = Color.FromArgb(Convert.ToInt32(myDialogColor.Color.A), Convert.ToInt32(myDialogColor.Color.R), Convert.ToInt32(myDialogColor.Color.G), Convert.ToInt32(myDialogColor.Color.B));
+        //        }
+        //    };
+
+        //    colorfont.Click += (sender, e) =>
+        //    {
+        //        ColorDialog myDialogColor = new ColorDialog();
+        //        myDialogColor.AllowFullOpen = true;
+        //        myDialogColor.ShowHelp = true;
+        //        if (myDialogColor.ShowDialog() == DialogResult.OK)
+        //        {
+        //            var ss = myDialogColor.Color.R + "," + myDialogColor.Color.G + "," + myDialogColor.Color.B + "," + myDialogColor.Color.A;
+        //            textBox1.Text = ss.ToString();
+        //            textlabel1.BackColor = Color.FromArgb(Convert.ToInt32(myDialogColor.Color.A), Convert.ToInt32(myDialogColor.Color.R), Convert.ToInt32(myDialogColor.Color.G), Convert.ToInt32(myDialogColor.Color.B));
+        //        }
+        //    };
+
+        //    prompt.Controls.Add(textBox);
+
+        //    prompt.Controls.Add(textBox1);
+        //    prompt.Controls.Add(textlabel1);
+
+        //    prompt.Controls.Add(textBox2);
+        //    prompt.Controls.Add(textlabel2);
+
+        //    prompt.Controls.Add(confirmation);
+        //    prompt.Controls.Add(colorback);
+        //    prompt.Controls.Add(colorfont);
+        //    prompt.Controls.Add(textLabel);
+        //    prompt.AcceptButton = confirmation;
+
+        //    return prompt.ShowDialog() == DialogResult.OK ? textBox.Text + "+" + textBox1.Text + "+" + textBox2.Text : "";
+        //}
     }
 
 }

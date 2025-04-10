@@ -53,6 +53,7 @@ namespace TOAMediaPlayer
             this.metroPanel2 = new MetroFramework.Controls.MetroPanel();
             this.metroLabel4 = new MetroFramework.Controls.MetroLabel();
             this.metroLabel3 = new MetroFramework.Controls.MetroLabel();
+            this.label1 = new System.Windows.Forms.Label();
             this.timeEdit2.SuspendLayout();
             this.metroPanel1.SuspendLayout();
             this.metroPanel2.SuspendLayout();
@@ -248,7 +249,7 @@ namespace TOAMediaPlayer
             // 
             this.metroLabel1.AutoSize = true;
             this.metroLabel1.ForeColor = System.Drawing.Color.Black;
-            this.metroLabel1.Location = new System.Drawing.Point(8, 13);
+            this.metroLabel1.Location = new System.Drawing.Point(143, 160);
             this.metroLabel1.Name = "metroLabel1";
             this.metroLabel1.Size = new System.Drawing.Size(36, 19);
             this.metroLabel1.TabIndex = 17;
@@ -268,7 +269,7 @@ namespace TOAMediaPlayer
             // metroPanel1
             // 
             this.metroPanel1.BorderStyle = MetroFramework.Drawing.MetroBorderStyle.FixedSingle;
-            this.metroPanel1.Controls.Add(this.metroLabel1);
+            this.metroPanel1.Controls.Add(this.label1);
             this.metroPanel1.Controls.Add(this.checkBox3);
             this.metroPanel1.Controls.Add(this.checkBox1);
             this.metroPanel1.Controls.Add(this.checkBox2);
@@ -332,12 +333,22 @@ namespace TOAMediaPlayer
             this.metroLabel3.Text = "AM";
             this.metroLabel3.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(17, 15);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(30, 13);
+            this.label1.TabIndex = 21;
+            this.label1.Text = "Date";
+            // 
             // Settimers
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(526, 199);
             this.Controls.Add(this.metroPanel2);
+            this.Controls.Add(this.metroLabel1);
             this.Controls.Add(this.metroPanel1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.checkBox9);
@@ -382,5 +393,6 @@ namespace TOAMediaPlayer
         private MetroFramework.Controls.MetroPanel metroPanel2;
         private MetroFramework.Controls.MetroLabel metroLabel3;
         private MetroFramework.Controls.MetroLabel metroLabel4;
+        private Label label1;
     }
 }
