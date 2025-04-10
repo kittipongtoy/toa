@@ -1654,36 +1654,74 @@ namespace TOAMediaPlayer
                             string fileName = String.Format("{0}\\{1}-List.txt", System.Environment.CurrentDirectory, playlistId);
                             List<string> data = File.ReadAllLines(fileName).ToList<string>();
 
-                            using (TextWriter tw = new StreamWriter(new FileStream(fileName, FileMode.Create), Encoding.UTF8)) {
+                            //using (TextWriter tw = new StreamWriter(new FileStream(fileName, FileMode.Create), Encoding.UTF8)) {
                                 HashSet<string> set = data.Select(x => {
                                     string[] items = x.Split(new char[] { '\t' }, StringSplitOptions.RemoveEmptyEntries);
                                     return items[3];
                                 }).ToHashSet<string>();
-                                foreach (string _item in data) {
-                                    string[] items = _item.Split(new char[]
-                                    {
-                                '\t'
-                                    }, StringSplitOptions.RemoveEmptyEntries);
-                                    tw.WriteLine(items[0] + "\t" + items[1] + "\t" + items[2] + "\t" + items[3] + "\t");
+                            //foreach (string _item in data) {
+                            //    string[] items = _item.Split(new char[]
+                            //    {
+                            //'\t'
+                            //    }, StringSplitOptions.RemoveEmptyEntries);
+                            //    tw.WriteLine(items[0] + "\t" + items[1] + "\t" + items[2] + "\t" + items[3] + "\t");
+                            //}
+
+                            // auto select when api trigger at this status
+                            if (playlistId == "1") {
+                                this.iconButtonPlayer1_Click(null, null);
+                            } else if (playlistId == "2") {
+                                this.iconButtonPlayer2_Click(null, null);
+                            } else if (playlistId == "3") {
+                                this.iconButtonPlayer3_Click(null, null);
+                            } else if (playlistId == "4") {
+                                this.iconButtonPlayer4_Click(null, null);
+                            } else if (playlistId == "5") {
+                                this.iconButtonPlayer5_Click(null, null);
+                            } else if (playlistId == "6") {
+                                this.iconButtonPlayer6_Click(null, null);
+                            } else if (playlistId == "7") {
+                                this.iconButtonPlayer7_Click(null, null);
+                            } else if (playlistId == "8") {
+                                this.iconButtonPlayer8_Click(null, null);
+                            }
+
+                            int seq = this.myListView.Items.Count;
+                            foreach (var file in fileList) {
+                                FileInfo _file = new FileInfo(file);
+                                string decodedName = Uri.UnescapeDataString(_file.Name);
+                                string decodedPath = Uri.UnescapeDataString(_file.FullName);
+                                if (set.Contains(decodedPath)) {
+                                    dd.Add(new jsonWebAPI.MusicErrorList {
+                                        name = decodedName,
+                                        location = decodedPath,
+                                        PlayerTrack = Convert.ToInt16(playlistId)
+                                    });
+                                    continue;
                                 }
-                                foreach (var file in fileList) {
-                                    FileInfo _file = new FileInfo(file);
-                                    string decodedName = Uri.UnescapeDataString(_file.Name);
-                                    string decodedPath = Uri.UnescapeDataString(_file.FullName);
-                                    if (set.Contains(decodedPath)) {
-                                        dd.Add(new jsonWebAPI.MusicErrorList {
-                                            name = decodedName,
-                                            location = decodedPath,
-                                            PlayerTrack = Convert.ToInt16(playlistId)
-                                        });
-                                        continue;
-                                    }
-                                    if (_file.Exists) {
-                                        tw.WriteLine(data.Count + 1 + "\t" + decodedName + "\t" + string.Format("{0:hh\\:mm\\:ss}", CoreLibrary.GetNAudoSongLength(decodedPath)) + "\t" + decodedPath + "\t");
-                                    } else {
-                                        tw.WriteLine(data.Count + 1 + "\t" + decodedName + "\t" + "00:00:00" + "\t" + decodedPath + "\t");
-                                    }
+
+                                //int checkfile = decodedName.IndexOf(".mp3");
+                                ////int checkfile = (_file.Name.IndexOf(".wav") == -1) ? _file.Name.IndexOf(".mp3") : _file.Name.IndexOf(".wav");
+                                //bool flag4 = checkfile != -1;
+                                //if (flag4) {
+                                bool flag5 = CoreLibrary.check_audio_file(_file.FullName);
+                                if (flag5) {
+                                    seq++;
+                                    var ggg = _file.FullName.Split('\\');
+                                    //string strCmdText;
+                                    //strCmdText = "ffmpeg -i "+ _file.FullName + " -filter:a loudnorm output.mp3";
+                                    //System.Diagnostics.Process.Start("CMD.exe", strCmdText);
+                                    ListViewItem item = new ListViewItem(seq.ToString());
+                                    item.SubItems.Add(_file.Name);
+                                    item.SubItems.Add(string.Format("{0:hh\\:mm\\:ss}", CoreLibrary.GetNAudoSongLength(_file.FullName)));
+                                    item.SubItems.Add(_file.FullName);
+                                    this.myListView.Items.Add(item);
+                                } else {
+                                    string messagemusc = "ไฟล์เสีย ชื่อ " + _file.Name;
+                                    var messagebox = new Helper.MessageBox();
+                                    messagebox.ShowCenter_DialogError(messagemusc, "แจ้งเตือน");
                                 }
+                                //}
                             }
                             if (dd.Count > 0) {
                                 ErrorMusic fms = new ErrorMusic(dd);
@@ -1691,14 +1729,19 @@ namespace TOAMediaPlayer
                                 //fms.Owner = this;
                                 fms.ShowDialog();
                             }
-                            if (lastId == short.Parse(playlistId)) {
-                                this.LoadDefaultPlaylist(short.Parse(playlistId));
-                            }
+                            this.ReOrderSequence();
+                            short idsa = short.Parse(playlistId);
+                            this.SaveDefaultPlayList(idsa);
+                            this.LoadDefaultPlaylist(idsa);
+                            //if (lastId == short.Parse(playlistId)) {
+                            //    this.LoadDefaultPlaylist(short.Parse(playlistId));
+                            //}
                             this.trigger_url();
                         } catch (Exception ex) {
                             isSuccess = false;
-                            var messagebox = new Helper.MessageBox();
-                            messagebox.ShowCenter_DialogError(ex.Message, "เกิดข้อผิดพลาด");
+                            //var messagebox = new Helper.MessageBox();
+                            //messagebox.ShowCenter_DialogError(ex.Message, "เกิดข้อผิดพลาด");
+                            log.Error("upload_file Error: " + ex.Message + " , trigger_url Inner: " + ex.InnerException);
                         }
                     }));
                 } else {
@@ -1718,36 +1761,74 @@ namespace TOAMediaPlayer
                     string fileName = String.Format("{0}\\{1}-List.txt", System.Environment.CurrentDirectory, playlistId);
                     List<string> data = File.ReadAllLines(fileName).ToList<string>();
 
-                    using (TextWriter tw = new StreamWriter(new FileStream(fileName, FileMode.Create), Encoding.UTF8)) {
-                        HashSet<string> set = data.Select(x => {
-                            string[] items = x.Split(new char[] { '\t' }, StringSplitOptions.RemoveEmptyEntries);
-                            return items[3];
-                        }).ToHashSet<string>();
-                        foreach (string _item in data) {
-                            string[] items = _item.Split(new char[]
-                            {
-                                '\t'
-                            }, StringSplitOptions.RemoveEmptyEntries);
-                            tw.WriteLine(items[0] + "\t" + items[1] + "\t" + items[2] + "\t" + items[3] + "\t");
+                    //using (TextWriter tw = new StreamWriter(new FileStream(fileName, FileMode.Create), Encoding.UTF8)) {
+                    HashSet<string> set = data.Select(x => {
+                        string[] items = x.Split(new char[] { '\t' }, StringSplitOptions.RemoveEmptyEntries);
+                        return items[3];
+                    }).ToHashSet<string>();
+                    //foreach (string _item in data) {
+                    //    string[] items = _item.Split(new char[]
+                    //    {
+                    //'\t'
+                    //    }, StringSplitOptions.RemoveEmptyEntries);
+                    //    tw.WriteLine(items[0] + "\t" + items[1] + "\t" + items[2] + "\t" + items[3] + "\t");
+                    //}
+
+                    // auto select when api trigger at this status
+                    if (playlistId == "1") {
+                        this.iconButtonPlayer1_Click(null, null);
+                    } else if (playlistId == "2") {
+                        this.iconButtonPlayer2_Click(null, null);
+                    } else if (playlistId == "3") {
+                        this.iconButtonPlayer3_Click(null, null);
+                    } else if (playlistId == "4") {
+                        this.iconButtonPlayer4_Click(null, null);
+                    } else if (playlistId == "5") {
+                        this.iconButtonPlayer5_Click(null, null);
+                    } else if (playlistId == "6") {
+                        this.iconButtonPlayer6_Click(null, null);
+                    } else if (playlistId == "7") {
+                        this.iconButtonPlayer7_Click(null, null);
+                    } else if (playlistId == "8") {
+                        this.iconButtonPlayer8_Click(null, null);
+                    }
+
+                    int seq = this.myListView.Items.Count;
+                    foreach (var file in fileList) {
+                        FileInfo _file = new FileInfo(file);
+                        string decodedName = Uri.UnescapeDataString(_file.Name);
+                        string decodedPath = Uri.UnescapeDataString(_file.FullName);
+                        if (set.Contains(decodedPath)) {
+                            dd.Add(new jsonWebAPI.MusicErrorList {
+                                name = decodedName,
+                                location = decodedPath,
+                                PlayerTrack = Convert.ToInt16(playlistId)
+                            });
+                            continue;
                         }
-                        foreach (var file in fileList) {
-                            FileInfo _file = new FileInfo(file);
-                            string decodedName = Uri.UnescapeDataString(_file.Name);
-                            string decodedPath = Uri.UnescapeDataString(_file.FullName);
-                            if (set.Contains(decodedPath)) {
-                                dd.Add(new jsonWebAPI.MusicErrorList {
-                                    name = decodedName,
-                                    location = decodedPath,
-                                    PlayerTrack = Convert.ToInt16(playlistId)
-                                });
-                                continue;
-                            }
-                            if (_file.Exists) {
-                                tw.WriteLine(data.Count + 1 + "\t" + decodedName + "\t" + string.Format("{0:hh\\:mm\\:ss}", CoreLibrary.GetNAudoSongLength(decodedPath)) + "\t" + decodedPath + "\t");
-                            } else {
-                                tw.WriteLine(data.Count + 1 + "\t" + decodedName + "\t" + "00:00:00" + "\t" + decodedPath + "\t");
-                            }
+
+                        //int checkfile = decodedName.IndexOf(".mp3");
+                        ////int checkfile = (_file.Name.IndexOf(".wav") == -1) ? _file.Name.IndexOf(".mp3") : _file.Name.IndexOf(".wav");
+                        //bool flag4 = checkfile != -1;
+                        //if (flag4) {
+                        bool flag5 = CoreLibrary.check_audio_file(_file.FullName);
+                        if (flag5) {
+                            seq++;
+                            var ggg = _file.FullName.Split('\\');
+                            //string strCmdText;
+                            //strCmdText = "ffmpeg -i "+ _file.FullName + " -filter:a loudnorm output.mp3";
+                            //System.Diagnostics.Process.Start("CMD.exe", strCmdText);
+                            ListViewItem item = new ListViewItem(seq.ToString());
+                            item.SubItems.Add(_file.Name);
+                            item.SubItems.Add(string.Format("{0:hh\\:mm\\:ss}", CoreLibrary.GetNAudoSongLength(_file.FullName)));
+                            item.SubItems.Add(_file.FullName);
+                            this.myListView.Items.Add(item);
+                        } else {
+                            string messagemusc = "ไฟล์เสีย ชื่อ " + _file.Name;
+                            var messagebox = new Helper.MessageBox();
+                            messagebox.ShowCenter_DialogError(messagemusc, "แจ้งเตือน");
                         }
+                        //}
                     }
                     if (dd.Count > 0) {
                         ErrorMusic fms = new ErrorMusic(dd);
@@ -1755,28 +1836,45 @@ namespace TOAMediaPlayer
                         //fms.Owner = this;
                         fms.ShowDialog();
                     }
-                    if (lastId == short.Parse(playlistId)) {
-                        this.LoadDefaultPlaylist(short.Parse(playlistId));
-                    }
+                    this.ReOrderSequence();
+                    short idsa = short.Parse(playlistId);
+                    this.SaveDefaultPlayList(idsa);
+                    this.LoadDefaultPlaylist(idsa);
+                    //if (lastId == short.Parse(playlistId)) {
+                    //    this.LoadDefaultPlaylist(short.Parse(playlistId));
+                    //}
                     this.trigger_url();
                 }
             } catch (Exception ex) {
                 isSuccess = false;
-                var messagebox = new Helper.MessageBox();
-                messagebox.ShowCenter_DialogError(ex.Message, "เกิดข้อผิดพลาด");
+                //var messagebox = new Helper.MessageBox();
+                //messagebox.ShowCenter_DialogError(ex.Message, "เกิดข้อผิดพลาด");
+                log.Error("upload_file Error: " + ex.Message + " , trigger_url Inner: " + ex.InnerException);
             }
             return isSuccess;
         }
 
         public bool close_form() {
-            foreach (Form form in Application.OpenForms) {
-                if (form.Name == "Warning") {
-                    if (form.InvokeRequired) {
-                        form.Invoke(new Action(() => form.Close()));
-                    } else {
-                        form.Close();
+            try {
+                // Make a copy of the open forms to avoid modifying the collection during iteration
+                List<Form> openForms = Application.OpenForms.Cast<Form>().ToList();
+
+                foreach (Form form in openForms) {
+                    if (form.Name == "Warning") {
+                        if (form.InvokeRequired) {
+                            form.Invoke(new Action(() => {
+                                if (!form.IsDisposed)
+                                    form.Close();
+                            }));
+                        } else {
+                            if (!form.IsDisposed)
+                                form.Close();
+                        }
                     }
                 }
+            } catch (Exception ex) {
+                log.Error("close_form Error: " + ex.Message + " , trigger_url Inner: " + ex.InnerException);
+                return false;
             }
             return true;
         }
@@ -3333,10 +3431,13 @@ namespace TOAMediaPlayer
                     mylistView_doubleclick1(ids);
                     bool bRemoveItem = false;
                     myListView.SelectedIndices.Clear();
+
                     foreach (var ig in music)
                     {
+                        if (myListView.Items.Count - 1 > Convert.ToInt32(ig)) {
+                            myListView.SelectedIndices.Add(Convert.ToInt32(ig));
+                        }
                         //this.myListView.Items[Convert.ToInt32(ig)].Selected = true;
-                        myListView.SelectedIndices.Add(Convert.ToInt32(ig));
                     }
                     for (int i = this.myListView.SelectedIndices.Count - 1; i >= 0; i--)
                     {
