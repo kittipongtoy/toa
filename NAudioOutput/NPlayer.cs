@@ -854,6 +854,7 @@ namespace TOAMediaPlayer.NAudioOutput
 
         public string get_status_music()
         {
+            
             if (wavePlayer != null)
             {
                 if (wavePlayer.PlaybackState == PlaybackState.Playing)

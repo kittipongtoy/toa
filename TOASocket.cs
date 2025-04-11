@@ -298,6 +298,7 @@ namespace TOAMediaPlayer
                 _thread = new Thread(new ThreadStart(ConnectionThreadMethod));
                 _thread1 = new Thread(new ThreadStart(detect_file));
                 _thread.Start();
+                //_socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
                 //_thread1.Start();
                 ServerStarted = true;
             }

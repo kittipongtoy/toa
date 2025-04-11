@@ -4,6 +4,7 @@ using System;
 using System.Drawing;
 using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using TOAMediaPlayer.NAudioOutput;
 
@@ -84,18 +85,18 @@ namespace TOAMediaPlayer.Helper
             nPlayer.trigger_warning_url(message); // เรียกใช้งาน trigger_warning_url ใน UI thread
 
             // 🔹 ตรวจสอบว่าเรียกจาก UI thread หรือไม่
-            if (mainForm.InvokeRequired) {
-                // ใช้ Invoke เพื่อให้ฟังก์ชันทำงานบน UI thread
-                mainForm.Invoke(new Action(() =>
-                {
+            Task.Run(() => {
+                if (mainForm.InvokeRequired) {
                     // ทำการแสดง Form บน UI thread
+                    mainForm.Invoke(new Action(() =>
+                    {
+                        form.ShowDialog(mainForm);
+                    }));
+                } else {
+                    // ถ้าอยู่ใน UI thread แล้ว, แสดง Form โดยตรง
                     form.ShowDialog(mainForm);
-                }));
-            } else {
-                // ถ้าอยู่ใน UI thread แล้ว, แสดง Form โดยตรง
-                form.ShowDialog(mainForm);
-            }
-
+                }
+            });
             return message; // คืนค่าเมื่อกดปุ่ม Ok
         }
 
