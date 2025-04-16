@@ -27,6 +27,7 @@ using Newtonsoft.Json;
 using System.Buffers.Text;
 using System.Collections.Concurrent;
 using System.Windows.Markup;
+using Newtonsoft.Json.Linq;
 
 namespace TOAMediaPlayer
 {
@@ -3452,15 +3453,19 @@ namespace TOAMediaPlayer
             {
                 this.Invoke(new Action(() =>
                 {
+                    music = music.Where(item => int.TryParse(item, out int num) && num >= 0)
+                            .OrderByDescending(item => int.Parse(item)) // Sort in descending order
+                            .ToArray();
                     mylistView_doubleclick1(ids);
                     bool bRemoveItem = false;
                     myListView.SelectedIndices.Clear();
 
                     foreach (var ig in music)
                     {
-                        if (myListView.Items.Count - 1 > Convert.ToInt32(ig)) {
-                            myListView.SelectedIndices.Add(Convert.ToInt32(ig));
-                            this.stop_music_id(short.Parse(ig) + 1);
+                        var id = short.Parse(ig);
+                        if (myListView.Items.Count > id) {
+                            myListView.SelectedIndices.Add(id);
+                            this.stop_music_id(id + 1);
                         }
                         //this.myListView.Items[Convert.ToInt32(ig)].Selected = true;
                     }
@@ -3482,7 +3487,7 @@ namespace TOAMediaPlayer
 
                     for (int i = this.myListView.SelectedIndices.Count - 1; i >= 0; i--)
                     {
-                        this.stop_music_id(this.myListView.SelectedItems[i].Index);
+                        //this.stop_music_id(this.myListView.SelectedItems[i].Index);
                         this.myListView.Items.RemoveAt(this.myListView.SelectedIndices[i]);
                     }
                     bRemoveItem = true;
@@ -3507,14 +3512,18 @@ namespace TOAMediaPlayer
             }
             else
             {
+                music = music.Where(item => int.TryParse(item, out int num) && num >= 0)
+                        .OrderByDescending(item => int.Parse(item)) // Sort in descending order
+                        .ToArray();
                 mylistView_doubleclick1(ids);
                 bool bRemoveItem = false;
                 myListView.SelectedIndices.Clear();
 
                 foreach (var ig in music) {
-                    if (myListView.Items.Count - 1 > Convert.ToInt32(ig)) {
-                        myListView.SelectedIndices.Add(Convert.ToInt32(ig));
-                        this.stop_music_id(short.Parse(ig) + 1);
+                    var id = short.Parse(ig);
+                    if (myListView.Items.Count - 1 > id) {
+                        myListView.SelectedIndices.Add(id);
+                        this.stop_music_id(id + 1);
                     }
                     //this.myListView.Items[Convert.ToInt32(ig)].Selected = true;
                 }
@@ -3556,15 +3565,57 @@ namespace TOAMediaPlayer
         }
 
         public void getDeleteFileApi(string fileName, string[] music) {
-            if (File.Exists(fileName)) {
-                List<string> data = System.IO.File.ReadAllLines(fileName).ToList();
-                foreach (var m in music) {
-                    if (data.Count > 0) {
-                        var filter = data[short.Parse(m)].Split('\t');
-                        if (filter.Count() > 4 && filter[4] == "api") {
-                            File.Delete(filter[3]);
+            //if (File.Exists(fileName)) {
+            //    List<string> data = System.IO.File.ReadAllLines(fileName).ToList();
+            //    foreach (var m in music) {
+            //        if (data.Count > 0) {
+            //            var filter = data[short.Parse(m)].Split('\t');
+            //            if (filter.Count() > 4 && filter[4] == "api") {
+            //                File.Delete(filter[3]);
+            //            }
+            //        }
+            //    }
+            //}
+            if (!File.Exists(fileName))
+                return;
+
+            List<string> data;
+
+            // Read the file safely
+            try {
+                using (var reader = new StreamReader(fileName)) {
+                    data = new List<string>();
+                    string line;
+                    while ((line = reader.ReadLine()) != null) {
+                        data.Add(line);
+                    }
+                }
+            } catch (IOException ioEx) {
+                log.Error($"Error reading file: {ioEx.Message}");
+                return;
+            }
+
+            foreach (var m in music) {
+                try {
+                    if (short.TryParse(m, out short index) && index >= 0 && index < data.Count) {
+                        var filter = data[index].Split('\t');
+                        if (filter.Length > 4 && filter[4] == "api") {
+                            string fileToDelete = filter[3];
+
+                            // Log for debugging
+                            log.Info("Attempting to delete: " + fileToDelete);
+
+                            if (File.Exists(fileToDelete)) {
+                                // Try to delete safely
+                                File.Delete(fileToDelete);
+                                log.Info("Deleted: " + fileToDelete);
+                            }
                         }
                     }
+                } catch (IOException ioEx) {
+                    log.Error($"Could not delete file: {ioEx.Message}");
+                } catch (Exception ex) {
+                    log.Error($"Unexpected error: {ex.Message}");
                 }
             }
         }
