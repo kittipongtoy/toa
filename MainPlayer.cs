@@ -3516,6 +3516,7 @@ namespace TOAMediaPlayer
                     short idsa = short.Parse(this.lblPlayerId.Text.Trim());
                     this.SaveDefaultPlayList(idsa, true);
                     this.LoadDefaultPlaylist(idsa);
+                    this.trigger_url();
                 }));
             }
             else
@@ -3569,6 +3570,7 @@ namespace TOAMediaPlayer
                 short idsa = short.Parse(this.lblPlayerId.Text.Trim());
                 this.SaveDefaultPlayList(idsa, true);
                 this.LoadDefaultPlaylist(idsa);
+                this.trigger_url();
             }
         }
 
