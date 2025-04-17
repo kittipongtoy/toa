@@ -689,6 +689,7 @@ namespace TOAMediaPlayer
                 }
                 if (dd.Count > 0)
                 {
+                    this.trigger_errormusic_url(dd);
                     ErrorMusic fms = new ErrorMusic(dd);
                     fms.TopMost = true;
                     fms.Owner = this;
@@ -763,6 +764,7 @@ namespace TOAMediaPlayer
             }
             if (dd.Count > 0)
             {
+                this.trigger_errormusic_url(dd);
                 ErrorMusic fms = new ErrorMusic(dd);
                 fms.TopMost = true;
                 //fms.Owner = this;
@@ -826,6 +828,7 @@ namespace TOAMediaPlayer
                     this.LoadDefaultPlaylist(idsa);
                 }
             }
+            this.trigger_url();
         }
 
         private void SavePlaylistToFile(string filePath)
@@ -1374,7 +1377,7 @@ namespace TOAMediaPlayer
                                 }, StringSplitOptions.RemoveEmptyEntries);
 
                                 if (set.Contains(items[3])) {
-                                    dd.Add(new jsonWebAPI.MusicErrorList {
+                                     dd.Add(new jsonWebAPI.MusicErrorList {
                                         name = items[1],
                                         location = items[3],
                                         PlayerTrack = Convert.ToInt16(items[0])
@@ -1397,6 +1400,7 @@ namespace TOAMediaPlayer
                         }
                         if (dd.Count > 0) {
                             Task.Run(() => {
+                                this.trigger_errormusic_url(dd);
                                 ErrorMusic fms = new ErrorMusic(dd);
                                 fms.TopMost = true;
                                 //fms.Owner = this;
@@ -1502,6 +1506,7 @@ namespace TOAMediaPlayer
                     }
                     if (dd.Count > 0) {
                         Task.Run(() => {
+                            this.trigger_errormusic_url(dd);
                             ErrorMusic fms = new ErrorMusic(dd);
                             fms.TopMost = true;
                             //fms.Owner = this;
@@ -1738,6 +1743,7 @@ namespace TOAMediaPlayer
                             }
                             if (dd.Count > 0) {
                                 Task.Run(() => {
+                                    this.trigger_errormusic_url(dd);
                                     ErrorMusic fms = new ErrorMusic(dd);
                                     fms.TopMost = true;
                                     //fms.Owner = this;
@@ -1849,6 +1855,7 @@ namespace TOAMediaPlayer
                     }
                     if (dd.Count > 0) {
                         Task.Run(() => {
+                            this.trigger_errormusic_url(dd);
                             ErrorMusic fms = new ErrorMusic(dd);
                             fms.TopMost = true;
                             //fms.Owner = this;
@@ -1942,6 +1949,7 @@ namespace TOAMediaPlayer
                 }
             }
             if (dd.Count > 0) {
+                this.trigger_errormusic_url(dd);
                 ErrorMusic fms = new ErrorMusic(dd);
                 fms.TopMost = true;
                 fms.Owner = this;
@@ -3880,6 +3888,42 @@ namespace TOAMediaPlayer
             catch (Exception ex)
             {
                 log.Error("trigger_url Error: " + ex.Message + " , trigger_url Inner: " + ex.InnerException);
+            }
+        }
+
+        public async void trigger_errormusic_url(List<jsonWebAPI.MusicErrorList> musiclist) {
+            RegistryKey configsocket = HKLMSoftwareTOAConfig.OpenSubKey("trackname", true);
+            string ipAddress = configsocket.GetValue("ip1")?.ToString();
+            string port = configsocket.GetValue("port")?.ToString();
+            string apiUrl = "http://" + configsocket.GetValue("ip").ToString() + "/api/errorMessage";
+            string[] arrayMusic = musiclist.Select(m => m.name).ToArray();
+            string jsonString = "[\"" + string.Join("\",\"", arrayMusic) + "\"]";
+            try {
+                using (HttpClient client = new HttpClient()) {
+                    // สร้าง Body JSON
+                    var requestData = new {
+                        ip_address = ipAddress,
+                        port = port,
+                        duplicate = jsonString
+                    };
+
+                    // แปลง JSON object เป็น string
+                    string json = Newtonsoft.Json.JsonConvert.SerializeObject(requestData);
+                    var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                    // สร้าง HttpRequestMessage แบบ POST
+                    var request = new HttpRequestMessage(HttpMethod.Post, apiUrl) {
+                        Content = content
+                    };
+
+                    var response = await client.SendAsync(request);
+                    response.EnsureSuccessStatusCode();
+
+                    Console.WriteLine(await response.Content.ReadAsStringAsync());
+                    log.Info("Success Trigger");
+                }
+            } catch (Exception ex) {
+                log.Error("Error: " + ex.Message + " , Inner: " + ex.InnerException);
             }
         }
     }
