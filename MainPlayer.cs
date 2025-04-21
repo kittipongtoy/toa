@@ -692,7 +692,7 @@ namespace TOAMediaPlayer
                     this.trigger_errormusic_url(dd);
                     ErrorMusic fms = new ErrorMusic(dd);
                     fms.TopMost = true;
-                    fms.Owner = this;
+                    //fms.Owner = this;
                     fms.ShowDialog();
                 }
             }
@@ -842,8 +842,7 @@ namespace TOAMediaPlayer
                     string title = item.SubItems.Count > 1 ? item.SubItems[1].Text : "";
                     string artist = item.SubItems.Count > 2 ? item.SubItems[2].Text : "";
                     string filePathData = item.SubItems.Count > 3 ? item.SubItems[3].Text : "";
-                    string api = item.SubItems.Count > 4 ? item.SubItems[4].Text : "";
-                    sw.WriteLine($"{id}\t{title}\t{artist}\t{filePathData}\t{api}");
+                    sw.WriteLine($"{id}\t{title}\t{artist}\t{filePathData}\t");
                 }
             }
 
@@ -1320,8 +1319,6 @@ namespace TOAMediaPlayer
                 return "";
             }
         }
-        
-
 
         public bool import_file(string playlistId, string base64file)
         {
@@ -1728,7 +1725,6 @@ namespace TOAMediaPlayer
                                     item.SubItems.Add(_file.Name);
                                     item.SubItems.Add(string.Format("{0:hh\\:mm\\:ss}", CoreLibrary.GetNAudoSongLength(_file.FullName)));
                                     item.SubItems.Add(_file.FullName);
-                                    item.SubItems.Add("api");
                                     this.myListView.Items.Add(item);
                                 } else {
                                     string messagemusc = "ไฟล์เสีย ชื่อ " + _file.Name;
@@ -1843,13 +1839,15 @@ namespace TOAMediaPlayer
                             item.SubItems.Add(_file.Name);
                             item.SubItems.Add(string.Format("{0:hh\\:mm\\:ss}", CoreLibrary.GetNAudoSongLength(_file.FullName)));
                             item.SubItems.Add(_file.FullName);
-                            item.SubItems.Add("api");
                             this.myListView.Items.Add(item);
                         } else {
                             string messagemusc = "ไฟล์เสีย ชื่อ " + _file.Name;
                             var messagebox = new Helper.MessageBox();
                             messagebox.ShowCenter_DialogError(messagemusc, "แจ้งเตือน");
                             isSuccess = false;
+                            if (_file.Exists) {
+                                File.Delete(_file.FullName);
+                            }
                         }
                         //}
                     }
@@ -1952,7 +1950,7 @@ namespace TOAMediaPlayer
                 this.trigger_errormusic_url(dd);
                 ErrorMusic fms = new ErrorMusic(dd);
                 fms.TopMost = true;
-                fms.Owner = this;
+                //fms.Owner = this;
                 fms.ShowDialog();
             }
             //this.ReOrderSequence();
@@ -3605,11 +3603,12 @@ namespace TOAMediaPlayer
                 return;
             }
 
+            var basePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"music\\");
             foreach (var m in music) {
                 try {
                     if (short.TryParse(m, out short index) && index >= 0 && index < data.Count) {
                         var filter = data[index].Split('\t');
-                        if (filter.Length > 4 && filter[4] == "api") {
+                        if (filter[3].Contains(basePath)) {
                             string fileToDelete = filter[3];
 
                             // Log for debugging

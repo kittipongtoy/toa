@@ -23,6 +23,7 @@ namespace TOAMediaPlayer
         public string name { get; set; }
         public string duration { get; set; }
         public string path { get; set; }
+        public string api { get; set; }
     }
     /// <summary>
     /// Create : 2022-10-10
