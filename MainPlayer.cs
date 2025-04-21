@@ -28,6 +28,7 @@ using System.Buffers.Text;
 using System.Collections.Concurrent;
 using System.Windows.Markup;
 using Newtonsoft.Json.Linq;
+using System.Reflection;
 
 namespace TOAMediaPlayer
 {
@@ -1436,10 +1437,14 @@ namespace TOAMediaPlayer
                         //{
                         //    this.nPlayer8.CurrentPlaylist = _PlayList;
                         //}
-                        if (lastId == short.Parse(playlistId))
-                        {
-                            this.LoadDefaultPlaylist(short.Parse(playlistId));
-                        }
+                        //if (lastId == short.Parse(playlistId))
+                        //{
+                        //    this.LoadDefaultPlaylist(short.Parse(playlistId));
+                        //}
+                        //this.trigger_url();
+                        short idsa = short.Parse(this.lblPlayerId.Text.Trim());
+                        this.SaveDefaultPlayList(idsa);
+                        this.LoadDefaultPlaylist(idsa);
                         this.trigger_url();
                     }));
                     return true;
@@ -1543,10 +1548,14 @@ namespace TOAMediaPlayer
                     //    this.nPlayer8.CurrentPlaylist = _PlayList;
                     //}
 
-                    if (lastId == short.Parse(playlistId))
-                    {
-                        this.LoadDefaultPlaylist(short.Parse(playlistId));
-                    }
+                    ////if (lastId == short.Parse(playlistId))
+                    ////{
+                    ////    this.LoadDefaultPlaylist(short.Parse(playlistId));
+                    ////}
+                    ////this.trigger_url();
+                    short idsa = short.Parse(this.lblPlayerId.Text.Trim());
+                    this.SaveDefaultPlayList(idsa);
+                    this.LoadDefaultPlaylist(idsa);
                     this.trigger_url();
                     return true;
                 }
@@ -3452,9 +3461,9 @@ namespace TOAMediaPlayer
             {
                 this.Invoke(new Action(() =>
                 {
-                    music = music.Where(item => int.TryParse(item, out int num) && num >= 0)
-                            .OrderByDescending(item => int.Parse(item)) // Sort in descending order
-                            .ToArray();
+                    //music = music.Where(item => int.TryParse(item, out int num) && num >= 0)
+                    //        .OrderByDescending(item => int.Parse(item)) // Sort in descending order
+                    //        .ToArray();
                     mylistView_doubleclick1(ids);
                     bool bRemoveItem = false;
                     myListView.SelectedIndices.Clear();
@@ -3468,7 +3477,6 @@ namespace TOAMediaPlayer
                         }
                         //this.myListView.Items[Convert.ToInt32(ig)].Selected = true;
                     }
-
                     //string fileName = String.Format("{0}\\{1}-List.txt", System.Environment.CurrentDirectory, ids);
                     //if (File.Exists(fileName)) {
                     //    List<string> data = System.IO.File.ReadAllLines(fileName).ToList();
@@ -3512,10 +3520,6 @@ namespace TOAMediaPlayer
             }
             else
             {
-                music = music.Where(item => int.TryParse(item, out int num) && num >= 0)
-                        .OrderByDescending(item => int.Parse(item)) // Sort in descending order
-                        .ToArray();
-                mylistView_doubleclick1(ids);
                 bool bRemoveItem = false;
                 myListView.SelectedIndices.Clear();
 
@@ -3565,7 +3569,7 @@ namespace TOAMediaPlayer
             }
         }
 
-        public void getDeleteFileApi(int ids, string fileName, string[] music) {
+        public async void getDeleteFileApi(int ids, string fileName, string[] music) {
             //if (File.Exists(fileName)) {
             //    List<string> data = System.IO.File.ReadAllLines(fileName).ToList();
             //    foreach (var m in music) {
@@ -3606,16 +3610,20 @@ namespace TOAMediaPlayer
 
                             // Log for debugging
                             log.Info("Attempting to delete: " + fileToDelete);
+                            Console.WriteLine("Attempting to delete: " + fileToDelete);
 
                             if (File.Exists(fileToDelete)) {
                                 // Try to delete safely
-                                File.Delete(fileToDelete);
+                               File.Delete(fileToDelete);
                                 log.Info("Deleted: " + fileToDelete);
                             }
+                            Thread.Sleep(100);
                         }
                     }
                 } catch (IOException ioEx) {
                     log.Error($"Could not delete file: {ioEx.Message}");
+                    Console.WriteLine(ioEx.Message);
+                    Console.WriteLine(ioEx.StackTrace);
                 } catch (Exception ex) {
                     log.Error($"Unexpected error: {ex.Message}");
                 }
