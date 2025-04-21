@@ -808,7 +808,7 @@ namespace TOAMediaPlayer
 
                     int flag11 = int.Parse(this.lblPlayerId.Text.Trim());
                     string fileName = String.Format("{0}\\{1}-List.txt", System.Environment.CurrentDirectory, flag11);
-                    this.getDeleteFileApi(fileName,removeIndex);
+                    this.getDeleteFileApi(flag11,fileName, removeIndex);
                     SavePlaylistToFile(fileName);
                 }
             }
@@ -3076,11 +3076,7 @@ namespace TOAMediaPlayer
                 {
                     foreach (System.Windows.Forms.ListViewItem item in myListView.Items)
                     {
-                        if (item.SubItems.Count == 4) {
-                            tw.WriteLine(item.SubItems[0].Text + "\t" + item.SubItems[1].Text + "\t" + item.SubItems[2].Text + "\t" + item.SubItems[3].Text + "\t");
-                        } else {
-                            tw.WriteLine(item.SubItems[0].Text + "\t" + item.SubItems[1].Text + "\t" + item.SubItems[2].Text + "\t" + item.SubItems[3].Text + "\t" + item.SubItems[4].Text);
-                        }
+                        tw.WriteLine(item.SubItems[0].Text + "\t" + item.SubItems[1].Text + "\t" + item.SubItems[2].Text + "\t" + item.SubItems[3].Text + "\t");
                     }
                 }
                 myListView.Items.Clear();
@@ -3121,9 +3117,6 @@ namespace TOAMediaPlayer
                     item.SubItems.Add(items[1]);
                     item.SubItems.Add(items[2]);
                     item.SubItems.Add(items[3]);
-                    if (items.Length > 4) {
-                        item.SubItems.Add(items[4]);
-                    }
                     if (CoreLibrary.check_audio_file(items[3]) == false)
                     {
                         item.BackColor = Color.Red;
@@ -3489,7 +3482,7 @@ namespace TOAMediaPlayer
                     //    }
                     //}
                     string fileName = String.Format("{0}\\{1}-List.txt", System.Environment.CurrentDirectory, ids);
-                    this.getDeleteFileApi(fileName, music);
+                    this.getDeleteFileApi(ids, fileName, music);
 
                     for (int i = this.myListView.SelectedIndices.Count - 1; i >= 0; i--)
                     {
@@ -3548,7 +3541,7 @@ namespace TOAMediaPlayer
                 //    }
                 //}
                 string fileName = String.Format("{0}\\{1}-List.txt", System.Environment.CurrentDirectory, ids);
-                this.getDeleteFileApi(fileName, music);
+                this.getDeleteFileApi(ids, fileName, music);
 
                 for (int i = this.myListView.SelectedIndices.Count - 1; i >= 0; i--) {
                     this.stop_music_id(this.myListView.SelectedItems[i].Index);
@@ -3572,7 +3565,7 @@ namespace TOAMediaPlayer
             }
         }
 
-        public void getDeleteFileApi(string fileName, string[] music) {
+        public void getDeleteFileApi(int ids, string fileName, string[] music) {
             //if (File.Exists(fileName)) {
             //    List<string> data = System.IO.File.ReadAllLines(fileName).ToList();
             //    foreach (var m in music) {
@@ -3603,7 +3596,7 @@ namespace TOAMediaPlayer
                 return;
             }
 
-            var basePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"music\\");
+            var basePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"music\\"+ids);
             foreach (var m in music) {
                 try {
                     if (short.TryParse(m, out short index) && index >= 0 && index < data.Count) {
