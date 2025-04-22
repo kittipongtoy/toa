@@ -689,7 +689,7 @@ namespace TOAMediaPlayer
                 }
                 if (dd.Count > 0)
                 {
-                    this.trigger_errormusic_url(dd);
+                    //this.trigger_errormusic_url(dd);
                     ErrorMusic fms = new ErrorMusic(dd);
                     fms.TopMost = true;
                     fms.Name = "ErrorMusic";
@@ -765,7 +765,7 @@ namespace TOAMediaPlayer
             }
             if (dd.Count > 0)
             {
-                this.trigger_errormusic_url(dd);
+                //this.trigger_errormusic_url(dd);
                 ErrorMusic fms = new ErrorMusic(dd);
                 fms.TopMost = true;
                 //fms.Owner = this;
@@ -808,6 +808,7 @@ namespace TOAMediaPlayer
                     bRemoveItem = true;
 
                     int flag11 = int.Parse(this.lblPlayerId.Text.Trim());
+                    
                     string fileName = String.Format("{0}\\{1}-List.txt", System.Environment.CurrentDirectory, flag11);
                     this.getDeleteFileApi(flag11,fileName, removeIndex);
                     SavePlaylistToFile(fileName);
@@ -1334,55 +1335,49 @@ namespace TOAMediaPlayer
                         Byte[] bytes = Convert.FromBase64String(base64file);
                         File.WriteAllBytes(pathFile, bytes);
 
-                        List<string> data = File.ReadAllLines(pathFile).ToList<string>();
-                        //OTSPlaylist _PlayList = new OTSPlaylist();
+                        // Step 2: Read imported data
+                        List<string> data = File.ReadAllLines(pathFile).ToList();
+                        // Step 3: Collect all existing item[3] values from 1-List.txt to 8-List.txt
+                        HashSet<string> set = new HashSet<string>();
 
-                        //foreach (string _item in data)
-                        //{
-                        //    string[] items = _item.Split(new char[]
-                        //    {
-                        //        '\t'
-                        //    }, StringSplitOptions.RemoveEmptyEntries);
+                        for (int i = 1; i < 9; i++) {
+                            string fileName = Path.Combine(Environment.CurrentDirectory, $"{i}-List.txt");
 
-                        //    _PlayList.appendItem(new OTSMedia
-                        //    {
-                        //        Shuffle = this.bShuffle,
-                        //        Loop = this.bLoop,
-                        //        Id = int.Parse(items[0]),
-                        //        fileName = items[1],
-                        //        duration = TimeSpan.Parse(items[2]),
-                        //        fileLocation = items[3]
-                        //    });
+                            if (File.Exists(fileName)) {
+                                var itemsFromFile = File.ReadAllLines(fileName)
+                                    .Select(x => x.Split('\t'))
+                                    .Where(parts => parts.Length > 3)
+                                    .Select(parts => parts[3]);
 
-                        //}
-                        string fileName = String.Format("{0}\\{1}-List.txt", System.Environment.CurrentDirectory, playlistId);
-                        HashSet<string> set = File.ReadAllLines(fileName).Select(x => {
-                            string[] items = x.Split(new char[]
-                            {
-                                '\t'
-                            }, StringSplitOptions.RemoveEmptyEntries);
-                            return items[3];
-                        }).ToHashSet<string>();
-
-                        foreach (string _item in data) {
-                            string[] items = _item.Split(new char[]
-                            {
-                    '\t'
-                            }, StringSplitOptions.RemoveEmptyEntries);
-                            if (set.Contains(items[3])) {
-                                dd.Add(new jsonWebAPI.MusicErrorList {
-                                    name = items[1],
-                                    location = items[3],
-                                    PlayerTrack = short.Parse(playlistId)
-                                });
-                                continue;
+                                foreach (var item in itemsFromFile) {
+                                    set.Add(item); // accumulate all items
+                                }
                             }
-                            set.Add(items[3]);
-                            ListViewItem item = new ListViewItem(items[0]);
-                            item.SubItems.Add(items[1]);
-                            item.SubItems.Add(items[2]);
-                            item.SubItems.Add(items[3]);
-                            this.myListView.Items.Add(item);
+                        }
+
+                        // Step 4: Process imported data
+                        foreach (string _item in data) {
+                            string[] items = _item.Split(new char[] { '\t' }, StringSplitOptions.RemoveEmptyEntries);
+
+                            if (items.Length > 3) {
+                                if (set.Contains(items[3])) {
+                                    dd.Add(new jsonWebAPI.MusicErrorList {
+                                        name = items[1],
+                                        location = items[3],
+                                        PlayerTrack = short.Parse(playlistId)
+                                    });
+                                    continue;
+                                }
+
+                                set.Add(items[3]); // mark as seen
+
+                                // Add to ListView
+                                ListViewItem item = new ListViewItem(items[0]);
+                                item.SubItems.Add(items[1]);
+                                item.SubItems.Add(items[2]);
+                                item.SubItems.Add(items[3]);
+                                this.myListView.Items.Add(item);
+                            }
                         }
 
                         //using (TextWriter tw = new StreamWriter(new FileStream(fileName, FileMode.Create), Encoding.UTF8))
@@ -2026,7 +2021,7 @@ namespace TOAMediaPlayer
                 }
             }
             if (dd.Count > 0) {
-                this.trigger_errormusic_url(dd);
+                //this.trigger_errormusic_url(dd);
                 ErrorMusic fms = new ErrorMusic(dd);
                 fms.TopMost = true;
                 fms.Name = "ErrorMusic";
