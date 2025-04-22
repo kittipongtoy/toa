@@ -27,7 +27,6 @@ using Newtonsoft.Json;
 using System.Buffers.Text;
 using System.Collections.Concurrent;
 using System.Windows.Markup;
-using Newtonsoft.Json.Linq;
 using System.Reflection;
 
 namespace TOAMediaPlayer
@@ -693,6 +692,7 @@ namespace TOAMediaPlayer
                     this.trigger_errormusic_url(dd);
                     ErrorMusic fms = new ErrorMusic(dd);
                     fms.TopMost = true;
+                    fms.Name = "ErrorMusic";
                     //fms.Owner = this;
                     fms.ShowDialog();
                 }
@@ -774,7 +774,7 @@ namespace TOAMediaPlayer
                 {
                     fms = new ErrorMusic(dd);
                 }
-
+                fms.Name = "ErrorMusic";
                 fms.ShowDialog();            
             }
             this.trigger_url();
@@ -1364,44 +1364,66 @@ namespace TOAMediaPlayer
                             return items[3];
                         }).ToHashSet<string>();
 
-                        using (TextWriter tw = new StreamWriter(new FileStream(fileName, FileMode.Create), Encoding.UTF8))
-                        {
-                            foreach (string _item in data)
+                        foreach (string _item in data) {
+                            string[] items = _item.Split(new char[]
                             {
-
-                                string[] items = _item.Split(new char[]
-                                {
-                            '\t'
-                                }, StringSplitOptions.RemoveEmptyEntries);
-
-                                if (set.Contains(items[3])) {
-                                     dd.Add(new jsonWebAPI.MusicErrorList {
-                                        name = items[1],
-                                        location = items[3],
-                                        PlayerTrack = Convert.ToInt16(items[0])
-                                    });
-                                    continue;
-                                }
-
-                                set.Add(items[3]);
-
-                                //if (ckfi.Item1 == true) {
-                                //    dd.Add(new jsonWebAPI.MusicErrorList {
-                                //        name = items[1],
-                                //        location = items[3],
-                                //        PlayerTrack = ckfi.Item2
-                                //    });
-                                //    continue;
-                                //}
-                                tw.WriteLine(items[0] + "\t" + items[1] + "\t" + items[2] + "\t" + items[3] + "\t");
+                    '\t'
+                            }, StringSplitOptions.RemoveEmptyEntries);
+                            if (set.Contains(items[3])) {
+                                dd.Add(new jsonWebAPI.MusicErrorList {
+                                    name = items[1],
+                                    location = items[3],
+                                    PlayerTrack = short.Parse(playlistId)
+                                });
+                                continue;
                             }
+                            set.Add(items[3]);
+                            ListViewItem item = new ListViewItem(items[0]);
+                            item.SubItems.Add(items[1]);
+                            item.SubItems.Add(items[2]);
+                            item.SubItems.Add(items[3]);
+                            this.myListView.Items.Add(item);
                         }
+
+                        //using (TextWriter tw = new StreamWriter(new FileStream(fileName, FileMode.Create), Encoding.UTF8))
+                        //{
+                        //    foreach (string _item in data)
+                        //    {
+
+                        //string[] items = _item.Split(new char[]
+                        //{
+                        //    '\t'
+                        //}, StringSplitOptions.RemoveEmptyEntries);
+
+                        //        if (set.Contains(items[3])) {
+                        //             dd.Add(new jsonWebAPI.MusicErrorList {
+                        //                name = items[1],
+                        //                location = items[3],
+                        //                PlayerTrack = Convert.ToInt16(items[0])
+                        //            });
+                        //            continue;
+                        //        }
+
+                        //        set.Add(items[3]);
+
+                        //        //if (ckfi.Item1 == true) {
+                        //        //    dd.Add(new jsonWebAPI.MusicErrorList {
+                        //        //        name = items[1],
+                        //        //        location = items[3],
+                        //        //        PlayerTrack = ckfi.Item2
+                        //        //    });
+                        //        //    continue;
+                        //        //}
+                        //        tw.WriteLine(items[0] + "\t" + items[1] + "\t" + items[2] + "\t" + items[3] + "\t");
+                        //    }
+                        //}
                         if (dd.Count > 0) {
                             Task.Run(() => {
                                 this.trigger_errormusic_url(dd);
                                 ErrorMusic fms = new ErrorMusic(dd);
                                 fms.TopMost = true;
                                 //fms.Owner = this;
+                                fms.Name = "ErrorMusic";
                                 fms.ShowDialog();
                             });
                         }
@@ -1486,32 +1508,53 @@ namespace TOAMediaPlayer
                         }, StringSplitOptions.RemoveEmptyEntries);
                         return items[3];
                     }).ToHashSet<string>();
-                    using (TextWriter tw = new StreamWriter(new FileStream(fileName, FileMode.Create), Encoding.UTF8))
-                    {
-                        foreach (string _item in data)
+                    foreach (string _item in data) {
+                        string[] items = _item.Split(new char[]
                         {
-                            string[] items = _item.Split(new char[]
-                            {
-                            '\t'
-                            }, StringSplitOptions.RemoveEmptyEntries);
-                            if (set.Contains(items[3])) {
-                                dd.Add(new jsonWebAPI.MusicErrorList {
-                                    name = items[1],
-                                    location = items[3],
-                                    PlayerTrack = Convert.ToInt16(items[0])
-                                });
-                                continue;
-                            }
-                            set.Add(items[3]);
-                            tw.WriteLine(items[0] + "\t" + items[1] + "\t" + items[2] + "\t" + items[3] + "\t");
+                    '\t'
+                        }, StringSplitOptions.RemoveEmptyEntries);
+                        if (set.Contains(items[3])) {
+                            dd.Add(new jsonWebAPI.MusicErrorList {
+                                name = items[1],
+                                location = items[3],
+                                PlayerTrack = short.Parse(playlistId)
+                            });
+                            continue;
                         }
+                        set.Add(items[3]);
+                        ListViewItem item = new ListViewItem(items[0]);
+                        item.SubItems.Add(items[1]);
+                        item.SubItems.Add(items[2]);
+                        item.SubItems.Add(items[3]);
+                        this.myListView.Items.Add(item);
                     }
+                    //using (TextWriter tw = new StreamWriter(new FileStream(fileName, FileMode.Create), Encoding.UTF8))
+                    //{
+                    //    foreach (string _item in data)
+                    //    {
+                    //        string[] items = _item.Split(new char[]
+                    //        {
+                    //        '\t'
+                    //        }, StringSplitOptions.RemoveEmptyEntries);
+                    //        if (set.Contains(items[3])) {
+                    //            dd.Add(new jsonWebAPI.MusicErrorList {
+                    //                name = items[1],
+                    //                location = items[3],
+                    //                PlayerTrack = Convert.ToInt16(items[0])
+                    //            });
+                    //            continue;
+                    //        }
+                    //        set.Add(items[3]);
+                    //        tw.WriteLine(items[0] + "\t" + items[1] + "\t" + items[2] + "\t" + items[3] + "\t");
+                    //    }
+                    //}
                     if (dd.Count > 0) {
                         Task.Run(() => {
                             this.trigger_errormusic_url(dd);
                             ErrorMusic fms = new ErrorMusic(dd);
                             fms.TopMost = true;
                             //fms.Owner = this;
+                            fms.Name = "ErrorMusic";
                             fms.ShowDialog();
                         });
                     }
@@ -1752,6 +1795,7 @@ namespace TOAMediaPlayer
                                     ErrorMusic fms = new ErrorMusic(dd);
                                     fms.TopMost = true;
                                     //fms.Owner = this;
+                                    fms.Name = "ErrorMusic";
                                     fms.ShowDialog();
                                 });
                             }
@@ -1866,6 +1910,7 @@ namespace TOAMediaPlayer
                             ErrorMusic fms = new ErrorMusic(dd);
                             fms.TopMost = true;
                             //fms.Owner = this;
+                            fms.Name = "ErrorMusic";
                             fms.ShowDialog();
                         });
                     }
@@ -1894,6 +1939,31 @@ namespace TOAMediaPlayer
 
                 foreach (Form form in openForms) {
                     if (form.Name == "Warning") {
+                        if (form.InvokeRequired) {
+                            form.Invoke(new Action(() => {
+                                if (!form.IsDisposed)
+                                    form.Close();
+                            }));
+                        } else {
+                            if (!form.IsDisposed)
+                                form.Close();
+                        }
+                    }
+                }
+            } catch (Exception ex) {
+                log.Error("close_form Error: " + ex.Message + " , trigger_url Inner: " + ex.InnerException);
+                return false;
+            }
+            return true;
+        }
+
+        public bool close_musicerror() {
+            try {
+                // Make a copy of the open forms to avoid modifying the collection during iteration
+                List<Form> openForms = Application.OpenForms.Cast<Form>().ToList();
+
+                foreach (Form form in openForms) {
+                    if (form.Name == "ErrorMusic") {
                         if (form.InvokeRequired) {
                             form.Invoke(new Action(() => {
                                 if (!form.IsDisposed)
@@ -1959,6 +2029,7 @@ namespace TOAMediaPlayer
                 this.trigger_errormusic_url(dd);
                 ErrorMusic fms = new ErrorMusic(dd);
                 fms.TopMost = true;
+                fms.Name = "ErrorMusic";
                 //fms.Owner = this;
                 fms.ShowDialog();
             }
@@ -3569,18 +3640,7 @@ namespace TOAMediaPlayer
             }
         }
 
-        public async void getDeleteFileApi(int ids, string fileName, string[] music) {
-            //if (File.Exists(fileName)) {
-            //    List<string> data = System.IO.File.ReadAllLines(fileName).ToList();
-            //    foreach (var m in music) {
-            //        if (data.Count > 0) {
-            //            var filter = data[short.Parse(m)].Split('\t');
-            //            if (filter.Count() > 4 && filter[4] == "api") {
-            //                File.Delete(filter[3]);
-            //            }
-            //        }
-            //    }
-            //}
+        public void getDeleteFileApi(int ids, string fileName, string[] music) {
             if (!File.Exists(fileName))
                 return;
 
@@ -3599,35 +3659,46 @@ namespace TOAMediaPlayer
                 log.Error($"Error reading file: {ioEx.Message}");
                 return;
             }
-
             var basePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"music\\"+ids);
-            foreach (var m in music) {
-                try {
+            //if (data.Where) {
+                foreach (var m in music) {
                     if (short.TryParse(m, out short index) && index >= 0 && index < data.Count) {
                         var filter = data[index].Split('\t');
                         if (filter[3].Contains(basePath)) {
                             string fileToDelete = filter[3];
-
                             // Log for debugging
                             log.Info("Attempting to delete: " + fileToDelete);
                             Console.WriteLine("Attempting to delete: " + fileToDelete);
-
+                            
                             if (File.Exists(fileToDelete)) {
                                 // Try to delete safely
-                               File.Delete(fileToDelete);
+                                File.Delete(fileToDelete);
                                 log.Info("Deleted: " + fileToDelete);
+                                
                             }
-                            Thread.Sleep(100);
                         }
                     }
-                } catch (IOException ioEx) {
-                    log.Error($"Could not delete file: {ioEx.Message}");
-                    Console.WriteLine(ioEx.Message);
-                    Console.WriteLine(ioEx.StackTrace);
-                } catch (Exception ex) {
-                    log.Error($"Unexpected error: {ex.Message}");
                 }
-            }
+            //} 
+        //else {
+        //        foreach (string file in Directory.GetFiles(basePath)) {
+        //            using (FileStream fs = new FileStream(file, FileMode.Open, FileAccess.ReadWrite, FileShare.None)) {
+        //                fs.Close(); // Close after locking, then delete
+        //                File.Delete(file);
+        //                Console.WriteLine($"Deleted: {file}");
+        //            }
+        //        }
+        //    }
+
+                //try {
+                //} catch (IOException ioEx) {
+                //    log.Error($"Could not delete file: {ioEx.Message}");
+                //    Console.WriteLine(ioEx.Message);
+                //    Console.WriteLine(ioEx.StackTrace);
+                //} catch (Exception ex) {
+                //    log.Error($"Unexpected error: {ex.Message}");
+                //}
+            
         }
 
         public void mylistView_doubleclick1(short ids)
@@ -3897,9 +3968,15 @@ namespace TOAMediaPlayer
             RegistryKey configsocket = HKLMSoftwareTOAConfig.OpenSubKey("trackname", true);
             string ipAddress = configsocket.GetValue("ip1")?.ToString();
             string port = configsocket.GetValue("port")?.ToString();
-            string apiUrl = "http://" + configsocket.GetValue("ip").ToString() + "/api/errorMessage";
-            string[] arrayMusic = musiclist.Select(m => m.name).ToArray();
-            string jsonString = "[\"" + string.Join("\",\"", arrayMusic) + "\"]";
+            string apiUrl = "http://" + configsocket.GetValue("ip").ToString() + "/api/errorMusic";
+
+            var formattedList = musiclist.Select(m => new
+            {
+                source = m.PlayerTrack.ToString(),
+                file = m.name
+            }).ToList();
+            string jsonString = JsonConvert.SerializeObject(formattedList);
+
             try {
                 using (HttpClient client = new HttpClient()) {
                     // สร้าง Body JSON

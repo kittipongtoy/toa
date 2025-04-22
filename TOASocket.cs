@@ -2662,6 +2662,9 @@ namespace TOAMediaPlayer
             #endregion
              else if (controlType.ToLower().Trim() == "close_warning") {
                 pl.close_form();
+            } 
+            else if (controlType.ToLower().Trim() == "close_musicerror") {
+                pl.close_musicerror();
             }
             return json;
         }
