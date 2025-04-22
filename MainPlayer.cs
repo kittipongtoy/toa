@@ -3654,9 +3654,10 @@ namespace TOAMediaPlayer
                 log.Error($"Error reading file: {ioEx.Message}");
                 return;
             }
-            var basePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"music\\"+ids);
-            //if (data.Where) {
-                foreach (var m in music) {
+
+            var basePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "music\\" + ids);
+            foreach (var m in music) {
+                try {
                     if (short.TryParse(m, out short index) && index >= 0 && index < data.Count) {
                         var filter = data[index].Split('\t');
                         if (filter[3].Contains(basePath)) {
@@ -3664,36 +3665,22 @@ namespace TOAMediaPlayer
                             // Log for debugging
                             log.Info("Attempting to delete: " + fileToDelete);
                             Console.WriteLine("Attempting to delete: " + fileToDelete);
-                            
+
                             if (File.Exists(fileToDelete)) {
                                 // Try to delete safely
                                 File.Delete(fileToDelete);
                                 log.Info("Deleted: " + fileToDelete);
-                                
+
                             }
                         }
                     }
+                } catch (IOException ioEx) {
+                    log.Error($"Could not delete file: {ioEx.Message}");
+                } catch (Exception ex) {
+                    log.Error($"Unexpected error: {ex.Message}");
                 }
-            //} 
-        //else {
-        //        foreach (string file in Directory.GetFiles(basePath)) {
-        //            using (FileStream fs = new FileStream(file, FileMode.Open, FileAccess.ReadWrite, FileShare.None)) {
-        //                fs.Close(); // Close after locking, then delete
-        //                File.Delete(file);
-        //                Console.WriteLine($"Deleted: {file}");
-        //            }
-        //        }
-        //    }
+            }
 
-                //try {
-                //} catch (IOException ioEx) {
-                //    log.Error($"Could not delete file: {ioEx.Message}");
-                //    Console.WriteLine(ioEx.Message);
-                //    Console.WriteLine(ioEx.StackTrace);
-                //} catch (Exception ex) {
-                //    log.Error($"Unexpected error: {ex.Message}");
-                //}
-            
         }
 
         public void mylistView_doubleclick1(short ids)

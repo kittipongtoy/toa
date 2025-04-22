@@ -40,29 +40,49 @@ namespace TOAMediaPlayer
             return $"{numBytes / 1152921504606846976d:0.#0} EB";
         }
 
-        public static bool check_audio_file(String fileName)
-        {
-            try
-            {
-                if (fileName.EndsWith(".mp3"))
-                {
-                    WaveStream pcm = WaveFormatConversionStream.CreatePcmStream(new Mp3FileReader(fileName));
-                    BlockAlignReductionStream stream = new BlockAlignReductionStream(pcm);
-                    return true;
+        //public static bool check_audio_file(String fileName)
+        //{
+        //    try
+        //    {
+        //        if (fileName.EndsWith(".mp3"))
+        //        {
+        //            WaveStream pcm = WaveFormatConversionStream.CreatePcmStream(new Mp3FileReader(fileName));
+        //            BlockAlignReductionStream stream = new BlockAlignReductionStream(pcm);
+        //            return true;
 
-                }
-                else if (fileName.EndsWith(".wav"))
-                {
-                    WaveFileReader wave = new WaveFileReader(fileName);
-                    return true;
+        //        }
+        //        else if (fileName.EndsWith(".wav"))
+        //        {
+        //            WaveFileReader wave = new WaveFileReader(fileName);
+        //            return true;
 
+        //        }
+        //        return false;
+        //    }catch(Exception ex)
+        //    {
+        //        return false;
+        //    }
+        //}
+
+        public static bool check_audio_file(string fileName) {
+            try {
+                if (fileName.EndsWith(".mp3", StringComparison.OrdinalIgnoreCase)) {
+                    using (var mp3Reader = new Mp3FileReader(fileName))
+                    using (var pcmStream = WaveFormatConversionStream.CreatePcmStream(mp3Reader))
+                    using (var stream = new BlockAlignReductionStream(pcmStream)) {
+                        return true;
+                    }
+                } else if (fileName.EndsWith(".wav", StringComparison.OrdinalIgnoreCase)) {
+                    using (var waveReader = new WaveFileReader(fileName)) {
+                        return true;
+                    }
                 }
                 return false;
-            }catch(Exception ex)
-            {
+            } catch {
                 return false;
             }
         }
+
 
         public static TimeSpan GetNAudoSongLength(String fileName)
         {
