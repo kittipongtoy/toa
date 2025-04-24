@@ -1,11 +1,10 @@
 ﻿using Microsoft.Win32;
 using NAudio.Wave;
+using Newtonsoft.Json;
 using NLog;
-using Syncfusion.WinForms.Controls;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Globalization;
@@ -21,13 +20,6 @@ using TOAMediaPlayer.NAudioOutput;
 using TOAMediaPlayer.Properties;
 using TOAMediaPlayer.TOAPlaylist;
 using MessageBox = System.Windows.Forms.MessageBox;
-using MessageAlert = TOAMediaPlayer.Helper.MessageBox;
-using System.Security.Cryptography;
-using Newtonsoft.Json;
-using System.Buffers.Text;
-using System.Collections.Concurrent;
-using System.Windows.Markup;
-using System.Reflection;
 
 namespace TOAMediaPlayer
 {
@@ -1330,6 +1322,7 @@ namespace TOAMediaPlayer
                 {
                     this.Invoke(new Action(() =>
                     {
+                        mylistView_doubleclick1(short.Parse(playlistId));
                         List<jsonWebAPI.MusicErrorList> dd = new List<jsonWebAPI.MusicErrorList>();
                         string pathFile = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "import_" + playlistId + ".txt");
                         Byte[] bytes = Convert.FromBase64String(base64file);
@@ -1469,12 +1462,11 @@ namespace TOAMediaPlayer
                 }
                 else
                 {
+                    mylistView_doubleclick1(short.Parse(playlistId));
                     List<jsonWebAPI.MusicErrorList> dd = new List<jsonWebAPI.MusicErrorList>();
                     string pathFile = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "import_" + playlistId + ".txt");
                     Byte[] bytes = Convert.FromBase64String(base64file);
                     File.WriteAllBytes(pathFile, bytes);
-
-                    List<string> data = File.ReadAllLines(pathFile).ToList<string>();
                     //OTSPlaylist _PlayList = new OTSPlaylist();
 
                     //foreach (string _item in data)
@@ -1495,33 +1487,50 @@ namespace TOAMediaPlayer
                     //    });
 
                     //}
-                    string fileName = String.Format("{0}\\{1}-List.txt", System.Environment.CurrentDirectory, playlistId);
-                    HashSet<string> set = File.ReadAllLines(fileName).Select(x => {
-                        string[] items = x.Split(new char[]
-                        {
-                                '\t'
-                        }, StringSplitOptions.RemoveEmptyEntries);
-                        return items[3];
-                    }).ToHashSet<string>();
-                    foreach (string _item in data) {
-                        string[] items = _item.Split(new char[]
-                        {
-                    '\t'
-                        }, StringSplitOptions.RemoveEmptyEntries);
-                        if (set.Contains(items[3])) {
-                            dd.Add(new jsonWebAPI.MusicErrorList {
-                                name = items[1],
-                                location = items[3],
-                                PlayerTrack = short.Parse(playlistId)
-                            });
-                            continue;
+
+                    // Step 2: Read imported data
+                    List<string> data = File.ReadAllLines(pathFile).ToList();
+                    // Step 3: Collect all existing item[3] values from 1-List.txt to 8-List.txt
+                    HashSet<string> set = new HashSet<string>();
+
+                    for (int i = 1; i < 9; i++) {
+                        string fileName = Path.Combine(Environment.CurrentDirectory, $"{i}-List.txt");
+
+                        if (File.Exists(fileName)) {
+                            var itemsFromFile = File.ReadAllLines(fileName)
+                                .Select(x => x.Split('\t'))
+                                .Where(parts => parts.Length > 3)
+                                .Select(parts => parts[3]);
+
+                            foreach (var item in itemsFromFile) {
+                                set.Add(item); // accumulate all items
+                            }
                         }
-                        set.Add(items[3]);
-                        ListViewItem item = new ListViewItem(items[0]);
-                        item.SubItems.Add(items[1]);
-                        item.SubItems.Add(items[2]);
-                        item.SubItems.Add(items[3]);
-                        this.myListView.Items.Add(item);
+                    }
+
+                    // Step 4: Process imported data
+                    foreach (string _item in data) {
+                        string[] items = _item.Split(new char[] { '\t' }, StringSplitOptions.RemoveEmptyEntries);
+
+                        if (items.Length > 3) {
+                            if (set.Contains(items[3])) {
+                                dd.Add(new jsonWebAPI.MusicErrorList {
+                                    name = items[1],
+                                    location = items[3],
+                                    PlayerTrack = short.Parse(playlistId)
+                                });
+                                continue;
+                            }
+
+                            set.Add(items[3]); // mark as seen
+
+                            // Add to ListView
+                            ListViewItem item = new ListViewItem(items[0]);
+                            item.SubItems.Add(items[1]);
+                            item.SubItems.Add(items[2]);
+                            item.SubItems.Add(items[3]);
+                            this.myListView.Items.Add(item);
+                        }
                     }
                     //using (TextWriter tw = new StreamWriter(new FileStream(fileName, FileMode.Create), Encoding.UTF8))
                     //{
