@@ -2427,7 +2427,7 @@ namespace TOAMediaPlayer.NAudioOutput
                 }
                 if (substring[2] != "")
                 {
-                    configsocket.SetValue(nametrackC, substring[2]);
+                    configsocket.SetValue(nametrackCF, substring[2]);
                     bool flag = substring[2] != "" && substring[2] != " ";
                     if (flag)
                     {
@@ -2449,7 +2449,7 @@ namespace TOAMediaPlayer.NAudioOutput
                 }
                 if (substring[1] != "")
                 {
-                    configsocket.SetValue(nametrackCF, substring[1]);
+                    configsocket.SetValue(nametrackC, substring[1]);
                     bool flag = substring[1] != "" && substring[1] != " ";
                     if (flag)
                     {
