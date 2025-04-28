@@ -162,7 +162,7 @@ namespace TOAMediaPlayer
                     timeEdit2.Value = DateTime.ParseExact("27/08/2024 " + substring[3], "dd/MM/yyyy hh:mm tt", CultureInfo.InvariantCulture);
                     if (substring[3].Substring(6,2) == "AM") {
                         label4.Text = "AM";
-                    } else if (substring[2].Substring(6, 2) == "PM") {
+                    } else if (substring[3].Substring(6, 2) == "PM") {
                         label4.Text = "PM";
                     }
                 }
@@ -521,8 +521,41 @@ namespace TOAMediaPlayer
             var days = "";
             RegistryKey configsocket = this.HKLMSoftwareTOAConfig.OpenSubKey("trackname", true);
             string decodedString = Uri.UnescapeDataString(configs);
-            configsocket.SetValue(name, decodedString);
-            return "success";
+            var sub = decodedString.Split(',');
+            try {
+                var type24 = sub[6];
+                var startDate = sub[2];
+                var endDate = sub[3];
+
+                // case unactive but send 12 hr value
+                if (type24 == "unactive" && ((startDate.IndexOf("AM") != -1 && startDate.IndexOf("PM") != -1) || (endDate.IndexOf("AM") != -1 && endDate.IndexOf("PM") != -1))) {
+                    
+                    sub[2] = DateTime.ParseExact("27/08/2024 " + sub[2], "dd/MM/yyyy hh:mm tt", CultureInfo.InvariantCulture).ToString("hh:mm tt");
+                    sub[3] = DateTime.ParseExact("27/08/2024 " + sub[3], "dd/MM/yyyy hh:mm tt", CultureInfo.InvariantCulture).ToString("hh:mm tt");
+                }
+                // case unactive but send 24 hr value
+                if (type24 == "unactive" && ((startDate.IndexOf("AM") == -1 && startDate.IndexOf("PM") == -1) || (endDate.IndexOf("AM") == -1 && endDate.IndexOf("PM") == -1))) {
+                    sub[2] = DateTime.ParseExact("27/08/2024 " + sub[2], "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture).ToString("hh:mm tt");
+                    sub[3] = DateTime.ParseExact("27/08/2024 " + sub[3], "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture).ToString("hh:mm tt");
+                }
+                // case active but send 24 hr value
+                if (type24 == "active" && ((startDate.IndexOf("AM") == -1 && startDate.IndexOf("PM") == -1) || (endDate.IndexOf("AM") == -1 && endDate.IndexOf("PM") == -1))) {
+                    sub[2] = DateTime.ParseExact("27/08/2024 " + sub[2], "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture).ToString("HH:mm");
+                    sub[3] = DateTime.ParseExact("27/08/2024 " + sub[3], "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture).ToString("HH:mm");
+                }
+                // case active but send 12 hr value
+                if (type24 == "active" && ((startDate.IndexOf("AM") != -1 || startDate.IndexOf("PM") != -1) || (endDate.IndexOf("AM") != -1 || endDate.IndexOf("PM") != -1))) {
+                    sub[2] = DateTime.ParseExact("27/08/2024 " + sub[2], "dd/MM/yyyy hh:mm tt", CultureInfo.InvariantCulture).ToString("HH:mm");
+                    sub[3] = DateTime.ParseExact("27/08/2024 " + sub[3], "dd/MM/yyyy hh:mm tt", CultureInfo.InvariantCulture).ToString("HH:mm");
+                }
+
+                decodedString = string.Join(",", sub);
+
+                configsocket.SetValue(name, decodedString);
+                return "success";
+            } catch (Exception ex) {
+                return ex.Message;
+            }
         }
 
         public Tuple<bool, string> cksetting()

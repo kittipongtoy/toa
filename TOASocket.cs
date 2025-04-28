@@ -2189,10 +2189,12 @@ namespace TOAMediaPlayer
             }
             else if (controlType.ToLower().Trim() == "set_timer")
             {
+                var sepConfig = configs.Split(',').Length;
+
                 if (PlayerID == "1")
                 {
                     Settimers ggg = new Settimers(pl, "timers1",null);
-
+                    // Check if date is invalid format
                     json = JsonConvert.SerializeObject(ggg.updatereg(configs, "timers1"), Formatting.Indented);
                 }
                 else if (PlayerID == "2")
