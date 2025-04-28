@@ -2425,38 +2425,16 @@ namespace TOAMediaPlayer.NAudioOutput
                     this.label2.Text = substring[0];
                     this.textfont = substring[0];
                 }
-                if (substring[1] != "")
-                {
-                    configsocket.SetValue(nametrackC, substring[1]);
-                    bool flag = substring[1] != "" && substring[1] != " ";
-                    if (flag)
-                    {
-                        bool flag2 = substring[1].IndexOf(",") == -1;
-                        if (flag2)
-                        {
-                            this.label2.ForeColor = Color.FromName(substring[1]);
-                        }
-                        else
-                        {
-                            string[] subtext = substring[1].Split(new char[]
-                            {
-                        ','
-                            });
-                            this.label2.ForeColor = Color.FromArgb(Convert.ToInt32(subtext[3]), Convert.ToInt32(subtext[0]), Convert.ToInt32(subtext[1]), Convert.ToInt32(subtext[2]));
-                        }
-                        this.fgcolor = substring[1];
-                    }
-                }
                 if (substring[2] != "")
                 {
-                    configsocket.SetValue(nametrackCF, substring[2]);
+                    configsocket.SetValue(nametrackC, substring[2]);
                     bool flag = substring[2] != "" && substring[2] != " ";
                     if (flag)
                     {
                         bool flag2 = substring[2].IndexOf(",") == -1;
                         if (flag2)
                         {
-                            this.panel1.BackColor = Color.FromName(substring[2]);
+                            this.label2.ForeColor = Color.FromName(substring[2]);
                         }
                         else
                         {
@@ -2464,9 +2442,31 @@ namespace TOAMediaPlayer.NAudioOutput
                             {
                         ','
                             });
+                            this.label2.ForeColor = Color.FromArgb(Convert.ToInt32(subtext[3]), Convert.ToInt32(subtext[0]), Convert.ToInt32(subtext[1]), Convert.ToInt32(subtext[2]));
+                        }
+                        this.fgcolor = substring[2];
+                    }
+                }
+                if (substring[1] != "")
+                {
+                    configsocket.SetValue(nametrackCF, substring[1]);
+                    bool flag = substring[1] != "" && substring[1] != " ";
+                    if (flag)
+                    {
+                        bool flag2 = substring[1].IndexOf(",") == -1;
+                        if (flag2)
+                        {
+                            this.panel1.BackColor = Color.FromName(substring[1]);
+                        }
+                        else
+                        {
+                            string[] subtext = substring[1].Split(new char[]
+                            {
+                        ','
+                            });
                             this.panel1.BackColor = Color.FromArgb(Convert.ToInt32(subtext[3]), Convert.ToInt32(subtext[0]), Convert.ToInt32(subtext[1]), Convert.ToInt32(subtext[2]));
                         }
-                        this.bgcolor = substring[2];
+                        this.bgcolor = substring[1];
                     }
                 }
 
@@ -2559,7 +2559,7 @@ namespace TOAMediaPlayer.NAudioOutput
                     }
                     if (fg != "")
                     {
-                        configsocket.SetValue(nametrackC, fg);
+                        configsocket.SetValue(nametrackCF, fg);
                         bool flag = fg != "" && fg != " ";
                         if (flag)
                         {
@@ -2581,7 +2581,7 @@ namespace TOAMediaPlayer.NAudioOutput
                     }
                     if (bg != "")
                     {
-                        configsocket.SetValue(nametrackCF, bg);
+                        configsocket.SetValue(nametrackC, bg);
                         bool flag = bg != "" && bg != " ";
                         if (flag)
                         {
@@ -2615,7 +2615,7 @@ namespace TOAMediaPlayer.NAudioOutput
                 }
                 if (fg != "")
                 {
-                    configsocket.SetValue(nametrackC, fg);
+                    configsocket.SetValue(nametrackCF, fg);
                     bool flag = fg != "" && fg != " ";
                     if (flag)
                     {
@@ -2637,7 +2637,7 @@ namespace TOAMediaPlayer.NAudioOutput
                 }
                 if (bg != "")
                 {
-                    configsocket.SetValue(nametrackCF, bg);
+                    configsocket.SetValue(nametrackC, bg);
                     bool flag = bg != "" && bg != " ";
                     if (flag)
                     {

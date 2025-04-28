@@ -428,7 +428,7 @@ namespace TOAMediaPlayer
                     data.status = substring[0] == "active" ? true : false;
                     data.time_start = substring[2];
                     data.time_end = substring[3];
-                    data.typstime = substring[6] == "active" ? "12 AM/PM" : "24 hr";
+                    data.typstime = substring[6] == "active" ? "24 hr" : "12 AM/PM";
                     data.active_start = substring[4] == "active" ? true : false;
                     data.active_end = substring[5] == "active" ? true : false;
                     foreach (var tt in substring1)
@@ -477,7 +477,7 @@ namespace TOAMediaPlayer
                 data.status = substring[0] == "active" ? true : false;
                 data.time_start = substring[2];
                 data.time_end = substring[3];
-                data.typstime = substring[6] == "active" ? "12 AM/PM" : "24 hr";
+                data.typstime = substring[6] == "active" ? "24 hr" : "12 AM/PM";
                 data.active_start = substring[4] == "active" ? true : false;
                 data.active_end = substring[5] == "active" ? true : false;
                 foreach (var tt in substring1)
@@ -627,6 +627,8 @@ namespace TOAMediaPlayer
                 } else if (timehr2 == "PM") {
                     this.label4.Text = "PM";
                 }
+
+
             }
             else
             {
