@@ -2559,7 +2559,7 @@ namespace TOAMediaPlayer.NAudioOutput
                     }
                     if (fg != "")
                     {
-                        configsocket.SetValue(nametrackCF, fg);
+                        configsocket.SetValue(nametrackC, fg);
                         bool flag = fg != "" && fg != " ";
                         if (flag)
                         {
@@ -2581,7 +2581,7 @@ namespace TOAMediaPlayer.NAudioOutput
                     }
                     if (bg != "")
                     {
-                        configsocket.SetValue(nametrackC, bg);
+                        configsocket.SetValue(nametrackCF, bg);
                         bool flag = bg != "" && bg != " ";
                         if (flag)
                         {
@@ -2615,7 +2615,7 @@ namespace TOAMediaPlayer.NAudioOutput
                 }
                 if (fg != "")
                 {
-                    configsocket.SetValue(nametrackCF, fg);
+                    configsocket.SetValue(nametrackC, fg);
                     bool flag = fg != "" && fg != " ";
                     if (flag)
                     {
@@ -2637,7 +2637,7 @@ namespace TOAMediaPlayer.NAudioOutput
                 }
                 if (bg != "")
                 {
-                    configsocket.SetValue(nametrackC, bg);
+                    configsocket.SetValue(nametrackCF, bg);
                     bool flag = bg != "" && bg != " ";
                     if (flag)
                     {
@@ -2691,12 +2691,12 @@ namespace TOAMediaPlayer.NAudioOutput
 
             Label trackColorLabel = new Label() { Left = 20, Top = 50, Width = 80, Text = "Track Color" };
             Panel trackColorPreview = new Panel() { Left = 110, Top = 47, Width = 30, Height = 25, BorderStyle = BorderStyle.FixedSingle };
-            TextBox trackColorBox = new TextBox() { Left = 150, Top = 47, Width = 120, Text = text2 + " ", ReadOnly = true };
+            TextBox trackColorBox = new TextBox() { Left = 150, Top = 47, Width = 120, Text = text3 + " ", ReadOnly = true };
             //Button trackColorButton = new Button() { Text = "Pick Color", Left = 280, Top = 47, Width = 80, Height = 25 };
 
             Label fontColorLabel = new Label() { Left = 290, Top = 50, Width = 70, Text = "Font Color" };
             Panel fontColorPreview = new Panel() { Left = 370, Top = 47, Width = 30, Height = 25, BorderStyle = BorderStyle.FixedSingle };
-            TextBox fontColorBox = new TextBox() { Left = 420, Top = 47, Width = 120, Text = text3 + " ", ReadOnly = true };
+            TextBox fontColorBox = new TextBox() { Left = 420, Top = 47, Width = 120, Text = text2 + " ", ReadOnly = true };
             //Button fontColorButton = new Button() { Text = "Pick Color", Left = 620, Top = 47, Width = 80, Height = 25 };
 
             Button confirmation = new Button() { Text = "OK", Left = 550, Width = 80, Height = 30, Top = 45, DialogResult = DialogResult.OK };
