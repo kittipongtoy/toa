@@ -329,7 +329,6 @@ namespace TOAMediaPlayer
 
         public void start()
         {
-
             InitializeComponent();
             PrepareRegistryKey();
             //playerControl1.TOABackgroundColorChanged += PlayerControl1_TOABackgroundColorChanged;
@@ -342,6 +341,10 @@ namespace TOAMediaPlayer
             this.myListView.ListViewItemSorter = lvwColumnSorter;
             splitContainer1.SplitterDistance = (iconButtonPlayer1.Width + nPlayer1.Width) + 2;
             splitContainer2.SplitterDistance = panel2.Height;
+            for (short i = 2; i < 9; i++) {
+                this.lblPlayerId.Text = i.ToString();
+                LoadDefaultPlaylist(i);
+            }
             iconButtonPlayer1_Click(null, new EventArgs());
 
             //RunProcess("noderun.bat", source.Token);
