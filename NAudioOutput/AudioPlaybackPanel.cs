@@ -506,7 +506,7 @@ namespace TOAMediaPlayer.NAudioOutput
 
         private void button4_Click(object sender, EventArgs e)
         {
-            var form = new Form4();
+            var form = new Form4(pl.GetSocketInstance());
             form.TopMost = true;
             form.Owner = this.pl;
             form.ShowDialog();

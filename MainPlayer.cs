@@ -11,6 +11,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
@@ -266,6 +267,10 @@ namespace TOAMediaPlayer
             this.ts = new TOASocket(this);
             //iconButtonPlayer1_Click(null, new EventArgs());
             #endregion
+        }
+
+        public TOASocket GetSocketInstance() {
+            return server;
         }
 
         private void BgWorker_DoWork(object sender, DoWorkEventArgs e)

@@ -1716,7 +1716,7 @@ namespace TOAMediaPlayer.NAudioOutput
                     {
                         if (playlist.Count == runmusicindexOld)
                         {
-                            log.Error(String.Format("{0} ที่อยู่เพลง: {1}", "ไม่พบไฟล์เพง", fileName));
+                            log.Error(String.Format("{0} ที่อยู่เพลง: {1}", "ไม่พบไฟล์เพลง", fileName));
                             pl.change_file_kag(fileName);
                             this.PlayerControlStop();
                             return;
@@ -1724,7 +1724,7 @@ namespace TOAMediaPlayer.NAudioOutput
                         var gggg = 1;
                         do
                         {
-                            log.Error(String.Format("{0} ที่อยู่เพลง: {1}", "ไม่พบไฟล์เพง", fileName));
+                            log.Error(String.Format("{0} ที่อยู่เพลง: {1}", "ไม่พบไฟล์เพลง", fileName));
                             pl.change_file_kag(fileName);
                             if (playlist.Count == runmusicindexOld)
                             {
@@ -1828,7 +1828,8 @@ namespace TOAMediaPlayer.NAudioOutput
             catch (Exception ex)
             {
                 System.Console.WriteLine(ex);
-                MessageBox.Show("Output Device เปลื่ยนไป กรุณาตั้งค่าใหม่ \n (ติดต่อเจ้าหน้าที่ดูแลระบบ)");
+                //MessageBox.Show("Output Device เปลื่ยนไป กรุณาตั้งค่าใหม่ \n (ติดต่อเจ้าหน้าที่ดูแลระบบ)");
+                log.Error(String.Format("PlayMusicError, " + ex.Message));
             }
         }
 
