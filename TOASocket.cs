@@ -293,9 +293,9 @@ namespace TOAMediaPlayer
             {
                 RegistryKey configsocket = this.HKLMSoftwareTOAConfig.OpenSubKey("trackname", true);
                 var prc = new ProcManager();
-                prc.KillByPort(Convert.ToInt32(configsocket.GetValue("port")));
+                //prc.KillByPort(Convert.ToInt32(configsocket.GetValue("port")));
                 _socket = new Socket(SocketType.Stream, ProtocolType.Tcp);
-                //_socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+                _socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
                 _thread = new Thread(new ThreadStart(ConnectionThreadMethod));
                 //_thread1 = new Thread(new ThreadStart(detect_file));
                 _thread.Start();
@@ -315,13 +315,8 @@ namespace TOAMediaPlayer
             if (!ServerStarted) return;
             try
             {
-                try {
-                    _socket?.Close();
-                    _socket?.Dispose();
-                } catch { }
-                
+                _socket.Close();
                 _thread.Abort();
-
                 //_thread1.Abort();
                 ServerStarted = false;
             }
@@ -338,7 +333,7 @@ namespace TOAMediaPlayer
                 RegistryKey configsocket = this.HKLMSoftwareTOAConfig.OpenSubKey("trackname", true);
                 // IPAddress.Any
                 IPEndPoint iPEndPoint = new IPEndPoint(IPAddress.Parse(configsocket.GetValue("ip1").ToString()), Convert.ToInt32(configsocket.GetValue("port")));
-               _socket.Bind(iPEndPoint);
+                _socket.Bind(iPEndPoint);
                 _socket.Listen(BACKLOG_QTY);
                 StartListening();
             }
@@ -359,151 +354,148 @@ namespace TOAMediaPlayer
             {
                 while (true)
                 {
-                    if (_socket.Poll(100000, SelectMode.SelectRead)) {
-                        DateTime dateTime = DateTime.Now;
-                        String request = String.Empty;
-                        byte[] bytes = new byte[2048];
-                        Socket client = _socket.Accept();
-                        //Reading the inbound connection data
-                        while (true)
-                        {
-                            int numBytes = client.Receive(bytes);
-                            request += Encoding.ASCII.GetString(bytes, 0, numBytes);
-                            if (request.IndexOf("\r\n") > -1) break;
-                        }
-                        //GET , POST, PUT, PATCH, DELETE
-                        //GET
-                        string pattern = @"PlayerID=([0-8\-])";
-                        string pattern1 = @"controltype=([^&]*)([\s\S]*?)\sHTTP";
-                        string pattern2 = @"sec=([0-9]+(?:\.[0-9]+)?)";
-                        string pattern3 = @"music=([^&]*)([\s\S]*?)\sHTTP";
-                        string pattern4 = @"text=([^&]*)([\s\S]*?)\sHTTP";
-                        string pattern5 = @"bgcolor=([^&]*)([\s\S]*?)\sHTTP";
-                        string pattern6 = @"fgcolor=([^&]*)([\s\S]*?)\sHTTP";
-                        string pattern7 = @"dmusic=([^&]*)([\s\S]*?)\sHTTP";
-                        string pattern8 = @"configs=([^&]*)([\s\S]*?)\sHTTP";
-                        string pattern9 = @"base64file=([^&]*)([\s\S]*?)\sHTTP";
-                        string pattern10 = @"playlist=([^&]*)([\s\S]*?)\sHTTP";
-
-                        string retJsonString = string.Empty;
-                        try
-                        {
-                            //Match match = Regex.Match(request, pattern, RegexOptions.IgnoreCase);
-                            //{
-                            //    Console.WriteLine(match.Groups[1].Value);
-                            //}
-                            //Regex r = new Regex(pattern, RegexOptions.IgnoreCase);
-                            //// Match the regular expression pattern against a text string.
-                            //Match match = r.Match(request);
-
-                            Match match = Regex.Match(request, pattern, RegexOptions.IgnoreCase);
-                            Match match1 = Regex.Match(request, pattern1, RegexOptions.IgnoreCase);
-                            Match match2 = Regex.Match(request, pattern2, RegexOptions.IgnoreCase);
-                            Match match3 = Regex.Match(request, pattern3, RegexOptions.IgnoreCase);
-                            Match match4 = Regex.Match(request, pattern4, RegexOptions.IgnoreCase);
-                            Match match5 = Regex.Match(request, pattern5, RegexOptions.IgnoreCase);
-                            Match match6 = Regex.Match(request, pattern6, RegexOptions.IgnoreCase);
-                            Match match7 = Regex.Match(request, pattern7, RegexOptions.IgnoreCase);
-                            Match match8 = Regex.Match(request, pattern8, RegexOptions.IgnoreCase);
-                            Match match9 = Regex.Match(request, pattern9, RegexOptions.IgnoreCase);
-                            Match match10 = Regex.Match(request, pattern10, RegexOptions.IgnoreCase);
-
-                            //int matchCount = 0;
-                            while (match.Success)
-                            {
-                                //Console.WriteLine("Match" + (++matchCount));
-                                for (int i = 1; i <= 1; i++)
-                                {
-                                    Group g = match.Groups[i];
-                                    Group g1 = match1.Groups[i];
-                                    Group g2 = match2.Groups[i];
-                                    Group g3 = match3.Groups[i];
-                                    Group g4 = match4.Groups[i];
-                                    Group g5 = match5.Groups[i];
-                                    Group g6 = match6.Groups[i];
-                                    Group g7 = match7.Groups[i];
-                                    Group g8 = match8.Groups[i];
-                                    Group g9 = match9.Groups[i];
-                                    Group g10 = match10.Groups[i];
-
-                                    //dynamic g10json = JsonConvert.DeserializeObject(g10.Value);
-                                    // 2. แปลง JSON เป็น List<PlaylistItem>
-                                    List<PlaylistItem> playlistData = new List<PlaylistItem>();
-
-                                    if (g10.Value != "")
-                                    {
-                                        string decoder = WebUtility.UrlDecode(g10.Value);
-                                        playlistData = JsonConvert.DeserializeObject<List<PlaylistItem>>(decoder);
-                                    }
-
-                                    Console.WriteLine("Group" + 0 + "='" + g + "'");
-                                    retJsonString = GetReponsePlayList(
-                                        g.Value, 
-                                        g1.Value, 
-                                        g2.Value, 
-                                        g3.Value, 
-                                        g4.Value, 
-                                        g5.Value, 
-                                        g6.Value, 
-                                        g7.Value, 
-                                        g8.Value, 
-                                        g9.Value,
-                                        playlistData
-                                    );
-                                    //CaptureCollection cc = g.Captures;
-                                    //for (int j = 0; j < cc.Count; j++)
-                                    //{
-                                    //    Capture c = cc[j];
-                                    //    //retJsonString = Tr(i);
-                                    //    System.Console.WriteLine("Capture" + j + "='" + c + "', Position=" + c.Index);
-                                    //}
-                                }
-                                match = match.NextMatch();
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine(ex);
-                            Stop();
-                            Start();
-                        }
-                        //if (new Regex("^GET").IsMatch(request))
-                        //{
-                        //    Regex _regx = new Regex(@"\b\w+GET\b", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-                        //    MatchCollection matchedsx = _regx.Matches(request);
-                        //}
-                        //else if (new Regex("^GET").IsMatch(request))
-                        //{
-                        //}
-                        //Data Read
-                        StringBuilder stringBuilder = new StringBuilder();
-                        stringBuilder.Append("\r\n\r\n");
-                        stringBuilder.Append(request);
-                        stringBuilder.Append("\r\n----- End of Request -----");
-                        NSEventLog.Write(EventLogEntryType.Information, "Request", stringBuilder.ToString(), LogScope.TOA_Socket);
-
-                        //HTML Response
-                        //String header = "HTTP/1.1 200 TOA is Fine\nServer: TOA Multi-Player\nContent-Type: text/html; charset: UTF-8\n\n";
-                        //String body = "<!doctype html>" +
-                        //              "<html>" +
-                        //              "<head><title>TOA Multi-Player </title></head>" +
-                        //              "<body>" +
-                        //              "<h4>Server Time is :" + dateTime.ToString() + "</h4>" +
-                        //              "</body>" +
-                        //              "</html>";
-
-                        //JSON Reponse
-                        String header = "HTTP/1.1 200\nServer: Player API\nAccept-Language: th\nContent-type:application/json;Charset: UTF-8\n\n";
-                        //String header = "HTTP/1.1 200 TOA is Fine\nServer: TOA Web API\nContent-type:application/json; charset=utf-8\n";
-                        String body = retJsonString;
-
-
-                        String response = header + body;
-                        byte[] resData = Encoding.UTF8.GetBytes(response);
-                        client.SendTo(resData, client.RemoteEndPoint);
-                        client.Close();
+                    DateTime dateTime = DateTime.Now;
+                    String request = String.Empty;
+                    byte[] bytes = new byte[2048];
+                    Socket client = _socket.Accept();
+                    //Reading the inbound connection data
+                    while (true)
+                    {
+                        int numBytes = client.Receive(bytes);
+                        request += Encoding.ASCII.GetString(bytes, 0, numBytes);
+                        if (request.IndexOf("\r\n") > -1) break;
                     }
+                    //GET , POST, PUT, PATCH, DELETE
+                    //GET
+                    string pattern = @"PlayerID=([0-8\-])";
+                    string pattern1 = @"controltype=([^&]*)([\s\S]*?)\sHTTP";
+                    string pattern2 = @"sec=([0-9]+(?:\.[0-9]+)?)";
+                    string pattern3 = @"music=([^&]*)([\s\S]*?)\sHTTP";
+                    string pattern4 = @"text=([^&]*)([\s\S]*?)\sHTTP";
+                    string pattern5 = @"bgcolor=([^&]*)([\s\S]*?)\sHTTP";
+                    string pattern6 = @"fgcolor=([^&]*)([\s\S]*?)\sHTTP";
+                    string pattern7 = @"dmusic=([^&]*)([\s\S]*?)\sHTTP";
+                    string pattern8 = @"configs=([^&]*)([\s\S]*?)\sHTTP";
+                    string pattern9 = @"base64file=([^&]*)([\s\S]*?)\sHTTP";
+                    string pattern10 = @"playlist=([^&]*)([\s\S]*?)\sHTTP";
 
+                    string retJsonString = string.Empty;
+                    try
+                    {
+                        //Match match = Regex.Match(request, pattern, RegexOptions.IgnoreCase);
+                        //{
+                        //    Console.WriteLine(match.Groups[1].Value);
+                        //}
+                        //Regex r = new Regex(pattern, RegexOptions.IgnoreCase);
+                        //// Match the regular expression pattern against a text string.
+                        //Match match = r.Match(request);
+
+                        Match match = Regex.Match(request, pattern, RegexOptions.IgnoreCase);
+                        Match match1 = Regex.Match(request, pattern1, RegexOptions.IgnoreCase);
+                        Match match2 = Regex.Match(request, pattern2, RegexOptions.IgnoreCase);
+                        Match match3 = Regex.Match(request, pattern3, RegexOptions.IgnoreCase);
+                        Match match4 = Regex.Match(request, pattern4, RegexOptions.IgnoreCase);
+                        Match match5 = Regex.Match(request, pattern5, RegexOptions.IgnoreCase);
+                        Match match6 = Regex.Match(request, pattern6, RegexOptions.IgnoreCase);
+                        Match match7 = Regex.Match(request, pattern7, RegexOptions.IgnoreCase);
+                        Match match8 = Regex.Match(request, pattern8, RegexOptions.IgnoreCase);
+                        Match match9 = Regex.Match(request, pattern9, RegexOptions.IgnoreCase);
+                        Match match10 = Regex.Match(request, pattern10, RegexOptions.IgnoreCase);
+
+                        //int matchCount = 0;
+                        while (match.Success)
+                        {
+                            //Console.WriteLine("Match" + (++matchCount));
+                            for (int i = 1; i <= 1; i++)
+                            {
+                                Group g = match.Groups[i];
+                                Group g1 = match1.Groups[i];
+                                Group g2 = match2.Groups[i];
+                                Group g3 = match3.Groups[i];
+                                Group g4 = match4.Groups[i];
+                                Group g5 = match5.Groups[i];
+                                Group g6 = match6.Groups[i];
+                                Group g7 = match7.Groups[i];
+                                Group g8 = match8.Groups[i];
+                                Group g9 = match9.Groups[i];
+                                Group g10 = match10.Groups[i];
+
+                                //dynamic g10json = JsonConvert.DeserializeObject(g10.Value);
+                                // 2. แปลง JSON เป็น List<PlaylistItem>
+                                List<PlaylistItem> playlistData = new List<PlaylistItem>();
+
+                                if (g10.Value != "")
+                                {
+                                    string decoder = WebUtility.UrlDecode(g10.Value);
+                                    playlistData = JsonConvert.DeserializeObject<List<PlaylistItem>>(decoder);
+                                }
+
+                                Console.WriteLine("Group" + 0 + "='" + g + "'");
+                                retJsonString = GetReponsePlayList(
+                                    g.Value, 
+                                    g1.Value, 
+                                    g2.Value, 
+                                    g3.Value, 
+                                    g4.Value, 
+                                    g5.Value, 
+                                    g6.Value, 
+                                    g7.Value, 
+                                    g8.Value, 
+                                    g9.Value,
+                                    playlistData
+                                );
+                                //CaptureCollection cc = g.Captures;
+                                //for (int j = 0; j < cc.Count; j++)
+                                //{
+                                //    Capture c = cc[j];
+                                //    //retJsonString = Tr(i);
+                                //    System.Console.WriteLine("Capture" + j + "='" + c + "', Position=" + c.Index);
+                                //}
+                            }
+                            match = match.NextMatch();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex);
+                        Stop();
+                        Start();
+                    }
+                    //if (new Regex("^GET").IsMatch(request))
+                    //{
+                    //    Regex _regx = new Regex(@"\b\w+GET\b", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+                    //    MatchCollection matchedsx = _regx.Matches(request);
+                    //}
+                    //else if (new Regex("^GET").IsMatch(request))
+                    //{
+                    //}
+                    //Data Read
+                    StringBuilder stringBuilder = new StringBuilder();
+                    stringBuilder.Append("\r\n\r\n");
+                    stringBuilder.Append(request);
+                    stringBuilder.Append("\r\n----- End of Request -----");
+                    NSEventLog.Write(EventLogEntryType.Information, "Request", stringBuilder.ToString(), LogScope.TOA_Socket);
+
+                    //HTML Response
+                    //String header = "HTTP/1.1 200 TOA is Fine\nServer: TOA Multi-Player\nContent-Type: text/html; charset: UTF-8\n\n";
+                    //String body = "<!doctype html>" +
+                    //              "<html>" +
+                    //              "<head><title>TOA Multi-Player </title></head>" +
+                    //              "<body>" +
+                    //              "<h4>Server Time is :" + dateTime.ToString() + "</h4>" +
+                    //              "</body>" +
+                    //              "</html>";
+
+                    //JSON Reponse
+                    String header = "HTTP/1.1 200\nServer: Player API\nAccept-Language: th\nContent-type:application/json;Charset: UTF-8\n\n";
+                    //String header = "HTTP/1.1 200 TOA is Fine\nServer: TOA Web API\nContent-type:application/json; charset=utf-8\n";
+                    String body = retJsonString;
+
+
+                    String response = header + body;
+                    byte[] resData = Encoding.UTF8.GetBytes(response);
+                    client.SendTo(resData, client.RemoteEndPoint);
+                    client.Close();
                 }
             }
             catch (Exception ex)
