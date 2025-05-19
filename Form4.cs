@@ -1,16 +1,19 @@
 ﻿using Microsoft.Win32;
 using System;
+using System.Net.Sockets;
 using System.Windows.Forms;
 
 namespace TOAMediaPlayer
 {
     public partial class Form4 : Form
     {
+        private readonly TOASocket _socket;
         private const int MIN_VALUE = 50;
         private const int MAX_VALUE = 93;
         RegistryKey HKLMSoftwareTOAConfig = Registry.CurrentUser.OpenSubKey(@"Software\TOA\Config", true);
-        public Form4()
+        public Form4(TOASocket socket)
         {
+            _socket = socket;
             RegistryKey configsocket = this.HKLMSoftwareTOAConfig.OpenSubKey("trackname", true);
             InitializeComponent();
             textEdit3.Leave += TextBox_Leave;
@@ -245,6 +248,8 @@ namespace TOAMediaPlayer
         {
             RegistryKey configsocket = this.HKLMSoftwareTOAConfig.OpenSubKey("trackname", true);
             configsocket.SetValue("port", textEdit2.Text);
+            _socket.Stop();
+            _socket.Start();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -352,6 +357,8 @@ namespace TOAMediaPlayer
         {
             RegistryKey configsocket = this.HKLMSoftwareTOAConfig.OpenSubKey("trackname", true);
             configsocket.SetValue("ip1", textEdit11.Text);
+            _socket.Stop();
+            _socket.Start();
         }
     }
 }

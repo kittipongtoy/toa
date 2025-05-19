@@ -1716,7 +1716,7 @@ namespace TOAMediaPlayer.NAudioOutput
                     {
                         if (playlist.Count == runmusicindexOld)
                         {
-                            log.Error(String.Format("{0} ที่อยู่เพลง: {1}", "ไม่พบไฟล์เพง", fileName));
+                            log.Error(String.Format("{0} ที่อยู่เพลง: {1}", "ไม่พบไฟล์เพลง", fileName));
                             pl.change_file_kag(fileName);
                             this.PlayerControlStop();
                             return;
@@ -1724,7 +1724,7 @@ namespace TOAMediaPlayer.NAudioOutput
                         var gggg = 1;
                         do
                         {
-                            log.Error(String.Format("{0} ที่อยู่เพลง: {1}", "ไม่พบไฟล์เพง", fileName));
+                            log.Error(String.Format("{0} ที่อยู่เพลง: {1}", "ไม่พบไฟล์เพลง", fileName));
                             pl.change_file_kag(fileName);
                             if (playlist.Count == runmusicindexOld)
                             {
@@ -1828,7 +1828,8 @@ namespace TOAMediaPlayer.NAudioOutput
             catch (Exception ex)
             {
                 System.Console.WriteLine(ex);
-                MessageBox.Show("Output Device เปลื่ยนไป กรุณาตั้งค่าใหม่ \n (ติดต่อเจ้าหน้าที่ดูแลระบบ)");
+                //MessageBox.Show("Output Device เปลื่ยนไป กรุณาตั้งค่าใหม่ \n (ติดต่อเจ้าหน้าที่ดูแลระบบ)");
+                log.Error(String.Format("PlayMusicError, " + ex.Message));
             }
         }
 
@@ -2425,38 +2426,16 @@ namespace TOAMediaPlayer.NAudioOutput
                     this.label2.Text = substring[0];
                     this.textfont = substring[0];
                 }
-                if (substring[1] != "")
-                {
-                    configsocket.SetValue(nametrackC, substring[1]);
-                    bool flag = substring[1] != "" && substring[1] != " ";
-                    if (flag)
-                    {
-                        bool flag2 = substring[1].IndexOf(",") == -1;
-                        if (flag2)
-                        {
-                            this.label2.ForeColor = Color.FromName(substring[1]);
-                        }
-                        else
-                        {
-                            string[] subtext = substring[1].Split(new char[]
-                            {
-                        ','
-                            });
-                            this.label2.ForeColor = Color.FromArgb(Convert.ToInt32(subtext[3]), Convert.ToInt32(subtext[0]), Convert.ToInt32(subtext[1]), Convert.ToInt32(subtext[2]));
-                        }
-                        this.fgcolor = substring[1];
-                    }
-                }
                 if (substring[2] != "")
                 {
-                    configsocket.SetValue(nametrackCF, substring[2]);
+                    configsocket.SetValue(nametrackC, substring[2]);
                     bool flag = substring[2] != "" && substring[2] != " ";
                     if (flag)
                     {
                         bool flag2 = substring[2].IndexOf(",") == -1;
                         if (flag2)
                         {
-                            this.panel1.BackColor = Color.FromName(substring[2]);
+                            this.label2.ForeColor = Color.FromName(substring[2]);
                         }
                         else
                         {
@@ -2464,9 +2443,31 @@ namespace TOAMediaPlayer.NAudioOutput
                             {
                         ','
                             });
+                            this.label2.ForeColor = Color.FromArgb(Convert.ToInt32(subtext[3]), Convert.ToInt32(subtext[0]), Convert.ToInt32(subtext[1]), Convert.ToInt32(subtext[2]));
+                        }
+                        this.fgcolor = substring[2];
+                    }
+                }
+                if (substring[1] != "")
+                {
+                    configsocket.SetValue(nametrackCF, substring[1]);
+                    bool flag = substring[1] != "" && substring[1] != " ";
+                    if (flag)
+                    {
+                        bool flag2 = substring[1].IndexOf(",") == -1;
+                        if (flag2)
+                        {
+                            this.panel1.BackColor = Color.FromName(substring[1]);
+                        }
+                        else
+                        {
+                            string[] subtext = substring[1].Split(new char[]
+                            {
+                        ','
+                            });
                             this.panel1.BackColor = Color.FromArgb(Convert.ToInt32(subtext[3]), Convert.ToInt32(subtext[0]), Convert.ToInt32(subtext[1]), Convert.ToInt32(subtext[2]));
                         }
-                        this.bgcolor = substring[2];
+                        this.bgcolor = substring[1];
                     }
                 }
 
@@ -2691,12 +2692,12 @@ namespace TOAMediaPlayer.NAudioOutput
 
             Label trackColorLabel = new Label() { Left = 20, Top = 50, Width = 80, Text = "Track Color" };
             Panel trackColorPreview = new Panel() { Left = 110, Top = 47, Width = 30, Height = 25, BorderStyle = BorderStyle.FixedSingle };
-            TextBox trackColorBox = new TextBox() { Left = 150, Top = 47, Width = 120, Text = text2 + " ", ReadOnly = true };
+            TextBox trackColorBox = new TextBox() { Left = 150, Top = 47, Width = 120, Text = text3 + " ", ReadOnly = true };
             //Button trackColorButton = new Button() { Text = "Pick Color", Left = 280, Top = 47, Width = 80, Height = 25 };
 
             Label fontColorLabel = new Label() { Left = 290, Top = 50, Width = 70, Text = "Font Color" };
             Panel fontColorPreview = new Panel() { Left = 370, Top = 47, Width = 30, Height = 25, BorderStyle = BorderStyle.FixedSingle };
-            TextBox fontColorBox = new TextBox() { Left = 420, Top = 47, Width = 120, Text = text3 + " ", ReadOnly = true };
+            TextBox fontColorBox = new TextBox() { Left = 420, Top = 47, Width = 120, Text = text2 + " ", ReadOnly = true };
             //Button fontColorButton = new Button() { Text = "Pick Color", Left = 620, Top = 47, Width = 80, Height = 25 };
 
             Button confirmation = new Button() { Text = "OK", Left = 550, Width = 80, Height = 30, Top = 45, DialogResult = DialogResult.OK };

@@ -11,6 +11,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
@@ -268,6 +269,10 @@ namespace TOAMediaPlayer
             #endregion
         }
 
+        public TOASocket GetSocketInstance() {
+            return server;
+        }
+
         private void BgWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             System.Threading.Thread.Sleep(3000); // จำลองโหลดข้อมูล
@@ -329,7 +334,6 @@ namespace TOAMediaPlayer
 
         public void start()
         {
-
             InitializeComponent();
             PrepareRegistryKey();
             //playerControl1.TOABackgroundColorChanged += PlayerControl1_TOABackgroundColorChanged;
@@ -342,6 +346,10 @@ namespace TOAMediaPlayer
             this.myListView.ListViewItemSorter = lvwColumnSorter;
             splitContainer1.SplitterDistance = (iconButtonPlayer1.Width + nPlayer1.Width) + 2;
             splitContainer2.SplitterDistance = panel2.Height;
+            for (short i = 2; i < 9; i++) {
+                this.lblPlayerId.Text = i.ToString();
+                LoadDefaultPlaylist(i);
+            }
             iconButtonPlayer1_Click(null, new EventArgs());
 
             //RunProcess("noderun.bat", source.Token);

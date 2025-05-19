@@ -35,6 +35,7 @@ namespace TOAMediaPlayer
     public class TOASocket
     {
         private Socket _socket;
+        public Socket Socket => _socket;
         private const int WEB_PORT = 80;
         private Thread _thread;
         private Thread _thread1;
@@ -46,7 +47,6 @@ namespace TOAMediaPlayer
         public TOASocket(MainPlayer pl)
         {
             this.pl = pl;
-
         }
 
         public void detect_file()
@@ -293,11 +293,11 @@ namespace TOAMediaPlayer
             {
                 RegistryKey configsocket = this.HKLMSoftwareTOAConfig.OpenSubKey("trackname", true);
                 var prc = new ProcManager();
-                prc.KillByPort(Convert.ToInt32(configsocket.GetValue("port")));
+                //prc.KillByPort(Convert.ToInt32(configsocket.GetValue("port")));
                 _socket = new Socket(SocketType.Stream, ProtocolType.Tcp);
-                //_socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+                _socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
                 _thread = new Thread(new ThreadStart(ConnectionThreadMethod));
-                _thread1 = new Thread(new ThreadStart(detect_file));
+                //_thread1 = new Thread(new ThreadStart(detect_file));
                 _thread.Start();
                 //_socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
                 //_thread1.Start();
@@ -331,7 +331,8 @@ namespace TOAMediaPlayer
             try
             {
                 RegistryKey configsocket = this.HKLMSoftwareTOAConfig.OpenSubKey("trackname", true);
-                IPEndPoint iPEndPoint = new IPEndPoint(IPAddress.Any, Convert.ToInt32(configsocket.GetValue("port")));
+                // IPAddress.Any
+                IPEndPoint iPEndPoint = new IPEndPoint(IPAddress.Parse(configsocket.GetValue("ip1").ToString()), Convert.ToInt32(configsocket.GetValue("port")));
                 _socket.Bind(iPEndPoint);
                 _socket.Listen(BACKLOG_QTY);
                 StartListening();
@@ -2189,10 +2190,12 @@ namespace TOAMediaPlayer
             }
             else if (controlType.ToLower().Trim() == "set_timer")
             {
+                var sepConfig = configs.Split(',').Length;
+
                 if (PlayerID == "1")
                 {
                     Settimers ggg = new Settimers(pl, "timers1",null);
-
+                    // Check if date is invalid format
                     json = JsonConvert.SerializeObject(ggg.updatereg(configs, "timers1"), Formatting.Indented);
                 }
                 else if (PlayerID == "2")
@@ -2680,6 +2683,7 @@ namespace TOAMediaPlayer
     {
         public void KillByPort(int port)
         {
+            var currentPid = Process.GetCurrentProcess().Id;
             var processes = GetAllProcesses();
             if (processes.Any(p => p.Port == port))
                 try
