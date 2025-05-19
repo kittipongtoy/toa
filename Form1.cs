@@ -49,7 +49,6 @@ namespace TOAMediaPlayer
         }
         public void looplog()
         {
-
             listBox1.Items.Clear();
             var reads = files.Read();
             string[] stringSeparators = new string[] { "\r\n" };
@@ -61,7 +60,6 @@ namespace TOAMediaPlayer
                     add_items(msg);
                 }
             }
-            
         }
 
         public void add_items(string msg)

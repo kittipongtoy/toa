@@ -1686,26 +1686,6 @@ namespace TOAMediaPlayer
             return true;
         }
 
-        //static void ScanDirectory(string path, List<string> result) {
-        //    try {
-        //        foreach (var dir in Directory.GetDirectories(path)) {
-        //            // เงื่อนไขที่คุณต้องการ เช่น มีคำว่า "music" และอยู่ใน path "debug"
-        //            if (dir.ToLower().Contains(Path.Combine("debug", "music").ToLower())) {
-        //                result.Add(dir);
-        //            }
-
-        //            // เรียกใช้แบบ recursive เพื่อไล่เข้า subfolders
-        //            ScanDirectory(dir, result);
-        //        }
-        //    } catch (UnauthorizedAccessException) {
-        //        // ข้ามโฟลเดอร์ที่เข้าไม่ได้
-        //    } catch (PathTooLongException) {
-        //        // ข้ามโฟลเดอร์ที่ path ยาวเกินไป
-        //    } catch (Exception ex) {
-        //        Console.WriteLine($"Unexpected error at {path}: {ex.Message}");
-        //    }
-        //}
-
         public bool upload_file(string playlistId, string base64Array) {
             var isSuccess = true;
             try {
@@ -3324,6 +3304,7 @@ namespace TOAMediaPlayer
             return Tuple.Create(false, false);
         }
         #endregion
+
         private void iconLogo_Click(object sender, EventArgs e)
         {
             if (bServerStart == false)
@@ -3340,23 +3321,6 @@ namespace TOAMediaPlayer
                 bServerStart = false;
             }
         }
-
-        #region Socket
-
-        #endregion
-
-        #region Player #3 --TEST-- 
-        //private void Player3_PlayButton_Click(object sender, EventArgs e)
-        //{
-        //    //Play|Pause
-        //    if (output3 != null)
-        //    {
-        //        if (output3.PlaybackState == NAudio.Wave.PlaybackState.Playing) output3.Pause();
-        //        else if (output3.PlaybackState == NAudio.Wave.PlaybackState.Paused) output3.Play();
-        //    }
-        //}
-
-        #endregion
 
         #region Dispose
         private void DisposeWave()
@@ -3437,7 +3401,6 @@ namespace TOAMediaPlayer
                 }
             }
         }
-
         #endregion
 
         private void iconPictureBox1_Click(object sender, EventArgs e)
@@ -3779,6 +3742,7 @@ namespace TOAMediaPlayer
 
             }
         }
+
         private void btnPlaylistAddFolder_MouseHover(object sender, EventArgs e)
         {
 
@@ -3912,17 +3876,6 @@ namespace TOAMediaPlayer
                 }
             }
         }
-
-        //private void iconButton2_Click(object sender, EventArgs e, PaintEventArgs a)
-        //{
-        //    if (showtimeset == false)
-        //    {
-        //        showtimeset = true;
-        //        var form = new Settimers(this, this.timername,a);
-        //        form.Show();
-        //    }
-
-        //}
 
         private void iconButton2_Click_1(object sender, EventArgs e)
         {
