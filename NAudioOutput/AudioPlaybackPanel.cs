@@ -28,7 +28,6 @@ namespace TOAMediaPlayer.NAudioOutput
         private Action<float> setVolumeDelegate;
         private RegistryKey HKLMSoftwareTOAPlayer = Registry.CurrentUser.OpenSubKey(@"Software\TOA\Player", true);
 
-
         private RegistryKey HKLMSoftwareTOAPlayer11 = Registry.CurrentUser.OpenSubKey(@"Software\TOA\Player\nPlayer1", true);
         private RegistryKey HKLMSoftwareTOAPlayer12 = Registry.CurrentUser.OpenSubKey(@"Software\TOA\Player\nPlayer2", true);
         private RegistryKey HKLMSoftwareTOAPlayer13 = Registry.CurrentUser.OpenSubKey(@"Software\TOA\Player\nPlayer3", true);
@@ -37,8 +36,6 @@ namespace TOAMediaPlayer.NAudioOutput
         private RegistryKey HKLMSoftwareTOAPlayer16 = Registry.CurrentUser.OpenSubKey(@"Software\TOA\Player\nPlayer6", true);
         private RegistryKey HKLMSoftwareTOAPlayer17 = Registry.CurrentUser.OpenSubKey(@"Software\TOA\Player\nPlayer7", true);
         private RegistryKey HKLMSoftwareTOAPlayer18 = Registry.CurrentUser.OpenSubKey(@"Software\TOA\Player\nPlayer8", true);
-
-
 
         private RegistryKey HKLMSoftwareTOAPlayer1 = Registry.CurrentUser.OpenSubKey(@"Software\TOA\Config", true);
 
@@ -63,7 +60,6 @@ namespace TOAMediaPlayer.NAudioOutput
             ListViewItem item7 = new ListViewItem("Player7");
             ListViewItem item8 = new ListViewItem("Player8");
 
-
             item1.SubItems.Add(HKLMSoftwareTOAPlayer11.GetValue("DeviceName") == null ? "รอตั้งค่า" : HKLMSoftwareTOAPlayer11.GetValue("DeviceName").ToString());
             item2.SubItems.Add(HKLMSoftwareTOAPlayer12.GetValue("DeviceName") == null ? "รอตั้งค่า" : HKLMSoftwareTOAPlayer12.GetValue("DeviceName").ToString());
             item3.SubItems.Add(HKLMSoftwareTOAPlayer13.GetValue("DeviceName") == null ? "รอตั้งค่า" : HKLMSoftwareTOAPlayer13.GetValue("DeviceName").ToString());
@@ -72,8 +68,6 @@ namespace TOAMediaPlayer.NAudioOutput
             item6.SubItems.Add(HKLMSoftwareTOAPlayer16.GetValue("DeviceName") == null ? "รอตั้งค่า" : HKLMSoftwareTOAPlayer16.GetValue("DeviceName").ToString());
             item7.SubItems.Add(HKLMSoftwareTOAPlayer17.GetValue("DeviceName") == null ? "รอตั้งค่า" : HKLMSoftwareTOAPlayer17.GetValue("DeviceName").ToString());
             item8.SubItems.Add(HKLMSoftwareTOAPlayer18.GetValue("DeviceName") == null ? "รอตั้งค่า" : HKLMSoftwareTOAPlayer18.GetValue("DeviceName").ToString());
-
-
 
             listView1.Items.Add(item1);
             listView1.Items.Add(item2);
@@ -379,7 +373,9 @@ namespace TOAMediaPlayer.NAudioOutput
                 var latency = (int)comboBoxLatency.SelectedItem;
                 var settupVolume = volumeSlider1.Volume;
                 DeleteSubKeyTree((string)cboMediaPlayer.SelectedItem, (string)SelectedOutputDevicePlugin.Name);
+
                 RegistryKey cHKLMPlayer = HKLMSoftwareTOAPlayer.CreateSubKey((string)cboMediaPlayer.SelectedItem);
+
                 //IsShuffle = (bool)regKeyTOASubKey.GetValue("Shuffle");
                 //Drivers
 
@@ -448,7 +444,6 @@ namespace TOAMediaPlayer.NAudioOutput
 
         private void DeleteSubKeyTree(string SubKey, string deletKey)
         {
-
             RegistryKey cHKLMPlayer = HKLMSoftwareTOAPlayer.OpenSubKey(SubKey, true);
             if (cHKLMPlayer != null)
             {
@@ -465,7 +460,6 @@ namespace TOAMediaPlayer.NAudioOutput
                 {
                     RegistryKey Configs = HKLMSoftwareTOAPlayer1.CreateSubKey("StatusProgram");
                     Configs.SetValue("Sockets", true, RegistryValueKind.String);
-
                 }
             }
             else
@@ -479,7 +473,6 @@ namespace TOAMediaPlayer.NAudioOutput
 
                 }
             }
-
         }
 
         private async void checkBox2_CheckedChanged(object sender, EventArgs e)

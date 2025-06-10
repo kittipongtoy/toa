@@ -25,7 +25,6 @@ namespace TOAMediaPlayer.NAudioOutput
         //NAudio
         private float _volume = 0f;
         public IWavePlayer wavePlayer;
-
         public EventArgs es;
         public string nametrack = "";
         public string nametrackC = "";
@@ -34,10 +33,8 @@ namespace TOAMediaPlayer.NAudioOutput
         public string textfont = "";
         public string fgcolor = "";
         public string bgcolor = "";
-
         public string dB = "";
         public string adB = "";
-
         public static bool selectmusic = false;
         public int runmusicindex = 0;
         public int runmusicindexOld = 0;
@@ -50,30 +47,19 @@ namespace TOAMediaPlayer.NAudioOutput
         public bool selectmusic1 = false;
         public bool playing = false;
         public Loggers log = new Loggers("debugs.txt");
-
         public List<int> playbefore = new List<int>();
-
         public NPlayer pp;
-
-        //private string fileName;
         public AudioFileReader audioFileReader;
         private Action<float> setVolumeDelegate;
         private RegistryKey HKLMSoftwareTOAPlayer = Registry.CurrentUser.OpenSubKey(@"Software\TOA\Player", true);
         private RegistryKey HKLMSoftwareTOAPlayer1 = Registry.CurrentUser.OpenSubKey(@"Software\TOA\Config\trackname", true);
-        RegistryKey HKLMSoftwareTOAConfig = Registry.CurrentUser.OpenSubKey(@"Software\TOA\Config", true);
-
+        RegistryKey HKLMSoftwareTOAConfig = Registry.CurrentUser.OpenSubKey(@"Software\TOA\Config", false);
         private PlaybackState mediaPlaybackState = PlaybackState.Stopped;
-
-        //private Queue<TOATrackName> QTracks = new Queue<TOATrackName>();
-        //private Queue<OTSPlaylist> QTracks = new Queue<OTSPlaylist>();
         private Queue<OTSMedia> QueueOTSMedia = new Queue<OTSMedia>();
         public List<OTSMedia> ListOTSMedia = new List<OTSMedia>();
         public List<string> playlist = new List<string>();
-        //private List<OTSPlaylist> playlist = new List<OTSPlaylist>();
         private Color NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(62)))));
-
         private Color InactiveBGColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
-
         private Color ActiveBGColorWithoutAlpha = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(255)))), ((int)(((byte)(130)))), ((int)(((byte)(0)))));
         private Color ActiveBGColorWithAlpha = System.Drawing.Color.FromArgb(20, 255, 130, 0);
 
@@ -94,7 +80,6 @@ namespace TOAMediaPlayer.NAudioOutput
                     var days = SPD[1].Split('-');
                     var start = SPD[2].Split(':');
                     var end = SPD[3].Split(':');
-
 
                     if (SPD[0] == "active")
                     {
@@ -117,19 +102,16 @@ namespace TOAMediaPlayer.NAudioOutput
                             {
                                 foreach (var s in days)
                                 {
-
                                     if (DDSR.ToLower() == s.ToLower())
                                     {
                                         if (wavePlayer == null || wavePlayer.PlaybackState != PlaybackState.Playing)
                                         {
                                             this.PlayButton_Click(p, p.es);
-
                                         }
                                         break;
                                     }
                                 }
                             }
-
                         }
                         if (SPD[5] == "active")
                         {
@@ -150,7 +132,6 @@ namespace TOAMediaPlayer.NAudioOutput
                             {
                                 foreach (var s in days)
                                 {
-
                                     if (DDSR.ToLower() == s.ToLower())
                                     {
                                         if (wavePlayer != null)
@@ -170,15 +151,12 @@ namespace TOAMediaPlayer.NAudioOutput
                 if (runfi == false)
                 {
                     var kuys1 = DateTime.Now;
-
                     Thread.Sleep(((60 - kuys1.Second) * 1000));
                     runfi = true;
-
                 }
                 else
                 {
                     Thread.Sleep(60000);
-
                 }
             }
         }
@@ -187,6 +165,7 @@ namespace TOAMediaPlayer.NAudioOutput
         {
             this.prevnext = t;
         }
+
         public void set_selectmusic(bool t)
         {
             this.selectmusic1 = t;
@@ -211,14 +190,17 @@ namespace TOAMediaPlayer.NAudioOutput
         {
             runplaylist = t;
         }
+
         public void setPeek(NPlayer p)
         {
             pp = p;
         }
+
         public bool get_runplaylist()
         {
             return runplaylist;
         }
+
         public void setnametrack(string nametrack, string nametrackC, string nametrackCF, string dB, string adB)
         {
             RegistryKey configsocket = this.HKLMSoftwareTOAConfig.OpenSubKey("trackname", true);
@@ -237,9 +219,7 @@ namespace TOAMediaPlayer.NAudioOutput
                 configsocket.SetValue("dB6", "0");
                 configsocket.SetValue("dB7", "0");
                 configsocket.SetValue("dB8", "0");
-
             }
-
 
             if (configsocket.GetValue("adB1") == null)
             {
@@ -251,7 +231,6 @@ namespace TOAMediaPlayer.NAudioOutput
                 configsocket.SetValue("adB6", "unactive");
                 configsocket.SetValue("adB7", "unactive");
                 configsocket.SetValue("adB8", "unactive");
-
             }
         }
 
@@ -265,24 +244,28 @@ namespace TOAMediaPlayer.NAudioOutput
         {
             this.pl = pps;
         }
+
         //===================================
         public delegate void updateTextBoxDelegate(String tetBoxString);
         public delegate void updateTextBoxDelegate1(Color tetBoxString);
         public updateTextBoxDelegate updateTextBox;
         public updateTextBoxDelegate updateTextBox11;
         public updateTextBoxDelegate updateTextBox22;
-
         public updateTextBoxDelegate1 updateTextBox33;
 
         void updateTextBox1(string str) { lblVolumeLevel.Text = str; }
 
         void updateTextBox2(string str) { labelTotalTime.Text = str; }
+
         void updateTextBox3(string str) { lblPlaySongName.Text = str; }
+
         void updateTextBox4(Color str) { trackBarPosition.BackColor = str; }
+
         //===================================
         public NPlayer()
         {
             InitializeComponent();
+            EnsureRegistryDefaults();
             QueueOTSMedia.Clear();
             ListOTSMedia.Clear();
             updateTextBox = new updateTextBoxDelegate(updateTextBox1);
@@ -310,6 +293,7 @@ namespace TOAMediaPlayer.NAudioOutput
             this.textfont = name;
             this.settingplayertrack = playertrack;
         }
+
         public void setting_color(MainPlayer pls, string name)
         {
             bool flag = name != "" && name != " ";
@@ -323,14 +307,12 @@ namespace TOAMediaPlayer.NAudioOutput
                 }
                 else
                 {
-                    string[] subtext = name.Split(new char[]
-                    {
-                        ','
-                    });
+                    string[] subtext = name.Split(new char[] { ',' });
                     this.panel1.BackColor = Color.FromArgb(Convert.ToInt32(subtext[3]), Convert.ToInt32(subtext[0]), Convert.ToInt32(subtext[1]), Convert.ToInt32(subtext[2]));
                 }
             }
         }
+
         public void setting_font_color(MainPlayer pls, string name)
         {
             bool flag = name != "" && name != " ";
@@ -344,24 +326,24 @@ namespace TOAMediaPlayer.NAudioOutput
                 }
                 else
                 {
-                    string[] subtext = name.Split(new char[]
-                    {
-                        ','
-                    });
+                    string[] subtext = name.Split(new char[] { ',' });
                     this.label2.ForeColor = Color.FromArgb(Convert.ToInt32(subtext[3]), Convert.ToInt32(subtext[0]), Convert.ToInt32(subtext[1]), Convert.ToInt32(subtext[2]));
                 }
             }
         }
+
         public void set_color_back(string color)
         {
             var colors = color.Split(',');
             this.panel1.BackColor = Color.FromArgb(Convert.ToInt32(colors[0]), Convert.ToInt32(colors[1]), Convert.ToInt32(colors[2]), Convert.ToInt32(colors[3]));
         }
+
         public void set_color_text(string color)
         {
             var colors = color.Split(',');
             this.label2.ForeColor = Color.FromArgb(Convert.ToInt32(colors[0]), Convert.ToInt32(colors[1]), Convert.ToInt32(colors[2]), Convert.ToInt32(colors[3]));
         }
+
         public void set_text(string text)
         {
             this.label2.Text = text;
@@ -378,7 +360,6 @@ namespace TOAMediaPlayer.NAudioOutput
                 if (this.playerName != value)
                 {
                     this.playerName = value;
-                    //LoadOutputDevicePlugins(ReflectionHelper.CreateAllInstancesOf<IOutputDevicePlugin>());
                     OnPlayerNameChanged(EventArgs.Empty);
                 }
             }
@@ -400,6 +381,7 @@ namespace TOAMediaPlayer.NAudioOutput
             get => this.mediaPlaybackState;
             set => mediaPlaybackState = value;
         }
+
         public float Volume
         {
             get => _volume;
@@ -413,6 +395,7 @@ namespace TOAMediaPlayer.NAudioOutput
             set => _playedFileName = value;
         }
         #region CurrentMedia
+
         private OTSMedia currentMedia;
         public event EventHandler CurrentMediaChanged;
         public OTSMedia CurrentMedia
@@ -437,33 +420,12 @@ namespace TOAMediaPlayer.NAudioOutput
             }
         }
         #endregion 
-        //private TOATrackName track = new TOATrackName();
-        //public event EventHandler TrackChanged;
-        //public TOATrackName SongTrack
-        //{
-        //    get
-        //    {
-        //        return track;
-        //    }
-        //    set
-        //    {
-        //        track = value;
-        //        OnTrackChanged(EventArgs.Empty);
-        //    }
-        //}
-        //protected virtual void OnTrackChanged(EventArgs e)
-        //{
-        //    if (TrackChanged != null)
-        //    {
-        //        this.QTracks.Enqueue(track);
-        //        PlayButton_Click(null, e);
-        //        TrackChanged(this, e);
-        //    }
-        //}
+
         public void set_stop(int id)
         {
             stopindexmusic = id;
         }
+
         public void stop_music_name(int id)
         {
             if (wavePlayer != null)
@@ -516,13 +478,11 @@ namespace TOAMediaPlayer.NAudioOutput
                 }
             }
         }
+
         protected virtual void OnCurrentPlaylistChanged(EventArgs e)
         {
-
             if (CurrentPlaylistChanged != null)
             {
-                //this.QTracks.Enqueue(_CurrentPlaylist);
-                //PlayButton_Click(null, e);
                 if (_CurrentPlaylist.count > 0)
                 {
                     ListOTSMedia.Clear();
@@ -534,7 +494,6 @@ namespace TOAMediaPlayer.NAudioOutput
                 }
                 if (ListOTSMedia.Count() > 0)
                 {
-
                     foreach (var xc in ListOTSMedia)
                     {
                         playlist.Add(xc.fileLocation);
@@ -561,7 +520,6 @@ namespace TOAMediaPlayer.NAudioOutput
                         }
                     }
                 }
-
             }
             else
             {
@@ -584,23 +542,6 @@ namespace TOAMediaPlayer.NAudioOutput
             }
         }
 
-        //List<IOutputDevicePlugin> OutputDeviceList =new List<IOutputDevicePlugin>();
-        #region NAudio Call Funcation
-        //private IOutputDevicePlugin SelectedOutputDevicePlugin
-        //{
-        //    get { 
-
-        //        return (IOutputDevicePlugin)comboBoxOutputDevice.SelectedItem; 
-        //    }
-        //}
-        #endregion
-
-
-        //private IOutputDevicePlugin SelectedOutputDevicePlugin
-        //{
-        //    get { return (IOutputDevicePlugin)comboBoxOutputDevice.SelectedItem; }
-        //}
-
         void OnPlaybackStopped(object sender, StoppedEventArgs e)
         {
 
@@ -608,8 +549,6 @@ namespace TOAMediaPlayer.NAudioOutput
 
         private void BackwardButton_Click(object sender, EventArgs e)
         {
-            //bool bOK = false;
-            //if (playlist.Count > 0) bOK = true;
             if (this.playing == true) return;
             if (playlist.Count() != null && playlist.Count() != 0)
             {
@@ -642,8 +581,6 @@ namespace TOAMediaPlayer.NAudioOutput
 
         private void ForwardButton_Click(object sender, EventArgs e)
         {
-            //bool bOK = false;
-            //if (playlist.Count > 0) bOK = true;
             if (this.playing == true) return;
             if (playlist.Count() != null && playlist.Count() != 0)
             {
@@ -658,7 +595,6 @@ namespace TOAMediaPlayer.NAudioOutput
                     {
                         runmusicindex++;
                     }
-                    //prevnext = true;
                     this.playing = true;
                     wavePlayer.Stop();
                 }
@@ -672,15 +608,12 @@ namespace TOAMediaPlayer.NAudioOutput
             this.trigger_url();
         }
 
-        //HashSet<int> uniqueNumbers = new HashSet<int>();
         string ran = "";
         int stop_ran = 0;
         int next_ran = 0;
         private int GenerateRandomString(int length)
         {
-            System.Random rand = new System.Random();       //Creates seed value from system clock if no seed supplied
-            //int iTemp = rand.Next(0, (length));				//Min possible value, max possible value+1
-            //return (iTemp);
+            System.Random rand = new System.Random();  //Creates seed value from system clock if no seed supplied
 
             int num = rand.Next(1, length);
             if (stop_ran == 0)
@@ -854,7 +787,7 @@ namespace TOAMediaPlayer.NAudioOutput
 
         public string get_status_music()
         {
-            
+
             if (wavePlayer != null)
             {
                 if (wavePlayer.PlaybackState == PlaybackState.Playing)
@@ -925,7 +858,6 @@ namespace TOAMediaPlayer.NAudioOutput
             }
             else
             {
-                //var ggg1 = pl.LoadShuffleLoopState1(ids);
                 if (typec.ToLower().Trim() == "2".ToLower().Trim())
                 {
                     var shuffle = this.get_isRamdom(ids);
@@ -956,7 +888,6 @@ namespace TOAMediaPlayer.NAudioOutput
             {
                 return ex.InnerException.ToString();
             }
-
         }
 
         public void select_music(string id)
@@ -1039,49 +970,20 @@ namespace TOAMediaPlayer.NAudioOutput
 
             }
             #endregion
-            //if (QueueOTSMedia.Count > 0)
-            //{
-            //    PlayMedia(QueueOTSMedia.Dequeue());
-            //    return;
-            //}
+
             //Shuffle, Loop
             //$EDIT : 2022-12-01 
             else
             {
                 if (ListOTSMedia.Count > 0)
                 {
-                    // (QueueOTSMedia.Peek()).Loop
                     var check = get_runplaylist();
                     foreach (var track in ListOTSMedia)
                     {
-
-
-                        //if (wavePlayer != null)
-                        //{
-                        //    if (wavePlayer.PlaybackState == PlaybackState.Playing)
-                        //    {
-                        //        //Stop Cuurent Player to be play next Song in player list
-                        //        playlist.Add(track.fileLocation);
-                        //    }
-                        //}
-                        //else
-                        //{
-
-                        //    if ((QueueOTSMedia.Peek()).fileName == track.fileName)
-                        //    {
-                        //        PlayMedia(QueueOTSMedia.Peek()); //QueueOTSMedia.Dequeue()
-
-                        //        return;
-                        //    }
-                        //}
-
                         playlist.Add(track.fileLocation);
-
-
                     }
                     if (check == false)
                     {
-
                         PlaySongOnPlayList(this, e);
                     }
                     else
@@ -1102,19 +1004,8 @@ namespace TOAMediaPlayer.NAudioOutput
                     var messagebox = new Helper.MessageBox();
                     messagebox.ShowCenter_DialogError("กรุณาเพิ่มเพลงก่อน !", "แจ้งเตือน");
                 }
-
-
-
-                //    /// OR ||
-                //    //int i = 0;
-                //    //while (i< playlist.Count)
-                //    //{
-                //    //    PlaySongOnPlayList();
-                //    //    i++;
-                //    //}
             }
             this.trigger_url();
-
         }
 
         private void NPlayer1_CurrentMediaChanged(object sender, EventArgs e)
@@ -1169,8 +1060,6 @@ namespace TOAMediaPlayer.NAudioOutput
                 MediaPlaybackState = PlaybackState.Playing;
                 PlayButton.IconChar = FontAwesome.Sharp.IconChar.PlayCircle;
                 PlayButton.IconColor = System.Drawing.Color.LightGray;
-                //PlayButton.BackColor= System.Drawing.Color.Orange;
-                //PlayButton.ForeColor= System.Drawing.Color.White;
                 this.BackColor = NormalColor;
                 if (lblPlaySongName.InvokeRequired)
                 {
@@ -1191,8 +1080,6 @@ namespace TOAMediaPlayer.NAudioOutput
 
                 }
                 wavePlayer = null;
-                //labelTotalTime.Text = string.Empty;
-                //this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(62)))));
             }
         }
 
@@ -1200,27 +1087,44 @@ namespace TOAMediaPlayer.NAudioOutput
         {
             if (mediaToPlay == null) return;
             if (mediaToPlay.Id == 0) return;
+
             if (wavePlayer == null)
             {
                 #region Init Output Device
                 LoadOutputDevicePlugins(ReflectionHelper.CreateAllInstancesOf<IOutputDevicePlugin>());
                 #endregion
+
+                wavePlayer = new WaveOutEvent(); // ✅ แก้ตรงนี้ สำคัญ!
+
                 #region Create Input Stream
                 ISampleProvider sampleProvider;
                 try
                 {
                     sampleProvider = CreateInputStream(mediaToPlay.fileLocation);
-                    lblPlaySongName.Text = mediaToPlay.fileName.Replace(".wav", "").Replace("mp3", ""); ;
+                    lblPlaySongName.Text = mediaToPlay.fileName
+                        .Replace(".wav", "")
+                        .Replace(".mp3", ""); // แก้จาก "mp3" เป็น ".mp3"
                 }
                 catch (Exception createException)
                 {
                     var messagebox = new Helper.MessageBox();
-                    messagebox.ShowCenter_DialogError("PlayMedia Error : " + String.Format("{0}", createException.Message), "แจ้งเตือน");
+                    messagebox.ShowCenter_DialogError("PlayMedia Error : " + createException.Message, "แจ้งเตือน");
                     return;
                 }
                 #endregion
 
-                labelTotalTime.Text = String.Format("{0:00}:{1:00}", (int)audioFileReader.TotalTime.TotalMinutes, audioFileReader.TotalTime.Seconds);
+                if (audioFileReader != null)
+                {
+                    labelTotalTime.Text = String.Format("{0:00}:{1:00}",
+                        (int)audioFileReader.TotalTime.TotalMinutes,
+                        audioFileReader.TotalTime.Seconds);
+                }
+                else
+                {
+                    labelTotalTime.Text = "00:00";
+                    MessageBox.Show("audioFileReader is null ❌");
+                }
+
                 try
                 {
                     wavePlayer.Init(sampleProvider);
@@ -1228,15 +1132,15 @@ namespace TOAMediaPlayer.NAudioOutput
                 catch (Exception initException)
                 {
                     var messagebox = new Helper.MessageBox();
-                    messagebox.ShowCenter_DialogError("PlayMedia WavePlayer Error  : " + String.Format("{0}", initException.Message), "Error Initializing Output");
+                    messagebox.ShowCenter_DialogError("PlayMedia WavePlayer Error  : " + initException.Message, "Error Initializing Output");
                     return;
                 }
 
                 wavePlayer.PlaybackStopped += (sender, evn) =>
                 {
                     SetPlayerBackGround();
-                    //timer1.Stop();
                 };
+
                 if (wavePlayer.PlaybackState == PlaybackState.Stopped)
                 {
                     wavePlayer.Play();
@@ -1248,7 +1152,6 @@ namespace TOAMediaPlayer.NAudioOutput
 
         public void PlaySongOnPlayList(object sender, EventArgs e)
         {
-
             try
             {
                 if (this.InvokeRequired)
@@ -1282,7 +1185,6 @@ namespace TOAMediaPlayer.NAudioOutput
                                 runmusicindex = playbefore.LastOrDefault();
                                 var gg = playbefore.Where(xx => xx == runmusicindex).FirstOrDefault();
                                 playbefore.Remove(gg);
-
                             }
                             else
                             {
@@ -1297,7 +1199,6 @@ namespace TOAMediaPlayer.NAudioOutput
                                 this.Invoke(new Action(() =>
                                 {
                                     LoadOutputDevicePlugins(ReflectionHelper.CreateAllInstancesOf<IOutputDevicePlugin>());
-
                                 }));
                             }
                             else
@@ -1363,10 +1264,6 @@ namespace TOAMediaPlayer.NAudioOutput
                         else
                         {
                             playbefore.Clear();
-                            //if(runmusicindexOld != 0)
-                            //{
-                            //    if (prevnext != true) playbefore.Add(runmusicindexOld);
-                            //}
                             runmusicindexOld = runmusicindex;
 
                             fileNames.Add(playlist[runmusicindex - 1]);
@@ -1471,6 +1368,7 @@ namespace TOAMediaPlayer.NAudioOutput
                             messagebox.ShowCenter_DialogError("CreateInputStream Error : " + String.Format("{0}", createException.Message), "แจ้งเตือน");
                             return;
                         }
+
                         //Key currentPlay Media
                         PlayedFileName = fileName;
 
@@ -1499,17 +1397,13 @@ namespace TOAMediaPlayer.NAudioOutput
                         }
                         if (wavePlayer.PlaybackState == PlaybackState.Stopped)
                         {
-                            //pl.change_namemedia(pl.Index_item(namemusic[namemusic.Length - 1]));
                             pl.change_namemedia(runmusicindex, settingplayertrack);
                         }
                         wavePlayer.PlaybackStopped += (senders, evn) =>
                         {
 
                             PlaySongOnPlayList(senders, evn);
-                            //timer1.Stop();
                             SetPlayerBackGround();
-
-
                         };
                         wavePlayer.Play();
 
@@ -1518,120 +1412,108 @@ namespace TOAMediaPlayer.NAudioOutput
                             PlayButton.IconChar = FontAwesome.Sharp.IconChar.PauseCircle;
                             PlayButton.IconColor = System.Drawing.Color.Orange;
                             this.BackColor = Color.FromArgb(20, 255, 130, 0);
-                            //PlayButton.IconChar = FontAwesome.Sharp.IconChar.PlayCircle;
                             //SAVE INFO TO IsoStorage
                             MediaPlaybackState = PlaybackState.Playing;
-                            //PlayButton.IconColor = System.Drawing.Color.Orange;
-                            //PlayButton.IconColor = Color.LightGray;
                             this.playing = false;
                             this.trigger_url();
                             return;
                         }
                         this.trigger_url();
                     }));
-                 } else
+                }
+                else
                 {
                     if (playlist.Count == 0)
-                {
-                    return;
-                }
-                int x = 0;
-                if (pl.bShuffle == true && prevnext == false && selectmusic1 == false)
-                {
-
-
-                    x = GenerateRandomString(playlist.Count);
-                    if (x == 0) x = 1;
-                    runmusicindex = x;
-                    //if (playbefore.Where(xx => xx == runmusicindex).FirstOrDefault() == 0) break;
-
-                }
-                else if (pl.bLoop == true)
-                {
-                    if (runmusicindex == 0)
                     {
-
-
-
-                        runmusicindex = 1;
+                        return;
                     }
-                }
-                this.selectmusic1 = false;
-
-                if (prevnext == true)
-                {
-                    if (playbefore.Count > 0)
+                    int x = 0;
+                    if (pl.bShuffle == true && prevnext == false && selectmusic1 == false)
                     {
-                        runmusicindex = playbefore.LastOrDefault();
-                        var gg = playbefore.Where(xx => xx == runmusicindex).FirstOrDefault();
-                        playbefore.Remove(gg);
-
+                        x = GenerateRandomString(playlist.Count);
+                        if (x == 0) x = 1;
+                        runmusicindex = x;
                     }
-                    else
+                    else if (pl.bLoop == true)
                     {
-                        runmusicindex = runmusicindexOld;
+                        if (runmusicindex == 0)
+                        {
+                            runmusicindex = 1;
+                        }
                     }
-                }
+                    this.selectmusic1 = false;
 
-                //Check on Playing meaning to IconChar was PauseCircle
-                //if (PlayButton.IconChar == FontAwesome.Sharp.IconChar.PauseCircle)
-                //{
-                //    wavePlayer.Play();
-                //    PlayButton.IconChar = FontAwesome.Sharp.IconChar.PlayCircle;
-                //    PlayButton.IconColor = System.Drawing.Color.Orange;
-                //    this.BackColor = Color.FromArgb(20, 255, 130, 0);
-                //    return;
-                //}
-                try
-                {
-                    if (this.InvokeRequired)
+                    if (prevnext == true)
                     {
-                        this.Invoke(new Action(() =>
+                        if (playbefore.Count > 0)
+                        {
+                            runmusicindex = playbefore.LastOrDefault();
+                            var gg = playbefore.Where(xx => xx == runmusicindex).FirstOrDefault();
+                            playbefore.Remove(gg);
+                        }
+                        else
+                        {
+                            runmusicindex = runmusicindexOld;
+                        }
+                    }
+
+                    try
+                    {
+                        if (this.InvokeRequired)
+                        {
+                            this.Invoke(new Action(() =>
+                            {
+                                LoadOutputDevicePlugins(ReflectionHelper.CreateAllInstancesOf<IOutputDevicePlugin>());
+                            }));
+                        }
+                        else
                         {
                             LoadOutputDevicePlugins(ReflectionHelper.CreateAllInstancesOf<IOutputDevicePlugin>());
-
-                        }));
+                        }
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        LoadOutputDevicePlugins(ReflectionHelper.CreateAllInstancesOf<IOutputDevicePlugin>());
-
-                    }
-                }
-                catch (Exception ex)
-                {
                         //throw;
                         var messagebox = new Helper.MessageBox();
                         messagebox.ShowCenter_DialogError("LoadOutputDevicePlugins Error : " + ex.Message + "inner " + ex.InnerException, "แจ้งเตือน");
-
                     }
                     List<string> fileNames = new List<string>();
-                if (selectmusic == false)
-                {
-                    if (pl.bShuffle != true)
+                    if (selectmusic == false)
                     {
-                        if (pl.bShuffle == false && pl.bLoop == false && runmusicindexOld == playlist.Count())
+                        if (pl.bShuffle != true)
                         {
-                            PlayerControlStop();
-                            return;
-                        }
-                        else if (runmusicindex == runmusicindexOld)
-                        {
-                            if ((runmusicindex + 1) > playlist.Count())
+                            if (pl.bShuffle == false && pl.bLoop == false && runmusicindexOld == playlist.Count())
                             {
-                                runmusicindex = 1;
+                                PlayerControlStop();
+                                return;
+                            }
+                            else if (runmusicindex == runmusicindexOld)
+                            {
+                                if ((runmusicindex + 1) > playlist.Count())
+                                {
+                                    runmusicindex = 1;
+                                }
+                                else
+                                {
+                                    runmusicindex += 1;
+                                }
+                                if (runmusicindexOld != 0)
+                                {
+                                    if (prevnext != true) playbefore.Add(runmusicindexOld);
+                                }
+                                runmusicindexOld = runmusicindex;
+                                fileNames.Add(playlist[runmusicindex - 1]);
                             }
                             else
                             {
-                                runmusicindex += 1;
+                                if (runmusicindexOld != 0)
+                                {
+                                    if (prevnext != true) playbefore.Add(runmusicindexOld);
+                                }
+                                runmusicindexOld = runmusicindex;
+                                fileNames.Add(playlist[runmusicindex - 1]);
+                                playbefore.Add(runmusicindex);
                             }
-                            if (runmusicindexOld != 0)
-                            {
-                                if (prevnext != true) playbefore.Add(runmusicindexOld);
-                            }
-                            runmusicindexOld = runmusicindex;
-
-                            fileNames.Add(playlist[runmusicindex - 1]);
                         }
                         else
                         {
@@ -1641,301 +1523,208 @@ namespace TOAMediaPlayer.NAudioOutput
                             }
                             runmusicindexOld = runmusicindex;
                             fileNames.Add(playlist[runmusicindex - 1]);
-                            playbefore.Add(runmusicindex);
                         }
                     }
                     else
                     {
-                        if (runmusicindexOld != 0)
-                        {
-                            if (prevnext != true) playbefore.Add(runmusicindexOld);
-                        }
+                        playbefore.Clear();
                         runmusicindexOld = runmusicindex;
                         fileNames.Add(playlist[runmusicindex - 1]);
+                        selectmusic = false;
                     }
-                }
-                else
-                {
-                    playbefore.Clear();
-                    //if(runmusicindexOld != 0)
-                    //{
-                    //    if (prevnext != true) playbefore.Add(runmusicindexOld);
-                    //}
-                    runmusicindexOld = runmusicindex;
+                    set_filename(playlist[runmusicindex - 1]);
+                    prevnext = false;
+                    Queue<string> queuePlay = new Queue<string>(fileNames);
+                    string fileName = queuePlay.Peek();
 
-                    fileNames.Add(playlist[runmusicindex - 1]);
-                    selectmusic = false;
-                }
-                set_filename(playlist[runmusicindex - 1]);
-                prevnext = false;
-                Queue<string> queuePlay = new Queue<string>(fileNames);
-                string fileName = queuePlay.Peek();
-
-                ISampleProvider sampleProvider;
-                if (!File.Exists(fileName))
-                {
-                    //return;
-                    if (pl.bLoop == true)
+                    ISampleProvider sampleProvider;
+                    if (!File.Exists(fileName))
                     {
-                        var gggg = 1;
-                        do
+                        if (pl.bLoop == true)
                         {
-                            log.Error(String.Format("{0} ที่อยู่เพลง: {1}", "ไม่พบไฟล์เพลง", fileName));
-                            pl.change_file_kag(fileName);
+                            var gggg = 1;
+                            do
+                            {
+                                log.Error(String.Format("{0} ที่อยู่เพลง: {1}", "ไม่พบไฟล์เพลง", fileName));
+                                pl.change_file_kag(fileName);
+                                if (playlist.Count == runmusicindexOld)
+                                {
+                                    runmusicindexOld = 1;
+                                    runmusicindex = 1;
+                                    fileNames.Clear();
+                                    fileNames.Add(playlist[runmusicindex - 1]);
+                                    queuePlay.Clear();
+                                    queuePlay = new Queue<string>(fileNames);
+                                    fileName = queuePlay.Peek();
+                                }
+                                else
+                                {
+                                    runmusicindexOld += 1;
+                                    runmusicindex += 1;
+                                    fileNames.Clear();
+                                    fileNames.Add(playlist[runmusicindex - 1]);
+                                    queuePlay.Clear();
+                                    queuePlay = new Queue<string>(fileNames);
+                                    fileName = queuePlay.Peek();
+                                }
+                                if (gggg == playlist.Count)
+                                {
+                                    this.PlayerControlStop();
+                                    return;
+                                }
+                                gggg++;
+
+                            } while (!File.Exists(fileName));
+                        }
+                        else
+                        {
                             if (playlist.Count == runmusicindexOld)
                             {
-                                runmusicindexOld = 1;
-                                runmusicindex = 1;
-                                fileNames.Clear();
-                                fileNames.Add(playlist[runmusicindex - 1]);
-                                queuePlay.Clear();
-                                queuePlay = new Queue<string>(fileNames);
-                                fileName = queuePlay.Peek();
-                            }
-                            else
-                            {
-                                runmusicindexOld += 1;
-                                runmusicindex += 1;
-                                fileNames.Clear();
-                                fileNames.Add(playlist[runmusicindex - 1]);
-                                queuePlay.Clear();
-                                queuePlay = new Queue<string>(fileNames);
-                                fileName = queuePlay.Peek();
-                            }
-                            if (gggg == playlist.Count)
-                            {
+                                log.Error(String.Format("{0} ที่อยู่เพลง: {1}", "ไม่พบไฟล์เพลง", fileName));
+                                pl.change_file_kag(fileName);
                                 this.PlayerControlStop();
                                 return;
                             }
-                            gggg++;
+                            var gggg = 1;
+                            do
+                            {
+                                log.Error(String.Format("{0} ที่อยู่เพลง: {1}", "ไม่พบไฟล์เพลง", fileName));
+                                pl.change_file_kag(fileName);
+                                if (playlist.Count == runmusicindexOld)
+                                {
+                                    runmusicindexOld = 1;
+                                    runmusicindex = 1;
+                                    fileNames.Clear();
+                                    fileNames.Add(playlist[runmusicindex - 1]);
+                                    queuePlay.Clear();
+                                    queuePlay = new Queue<string>(fileNames);
+                                    fileName = queuePlay.Peek();
+                                }
+                                else
+                                {
+                                    runmusicindexOld += 1;
+                                    runmusicindex += 1;
+                                    fileNames.Clear();
+                                    fileNames.Add(playlist[runmusicindex - 1]);
+                                    queuePlay.Clear();
+                                    queuePlay = new Queue<string>(fileNames);
+                                    fileName = queuePlay.Peek();
+                                }
+                                if (gggg == playlist.Count)
+                                {
+                                    this.PlayerControlStop();
+                                    return;
+                                }
+                                gggg++;
+                            } while (!File.Exists(fileName));
+                        }
+                    }
+                    try
+                    {
+                        sampleProvider = CreateInputStream(fileName);
+                    }
+                    catch (Exception createException)
+                    {
+                        var messagebox = new Helper.MessageBox();
+                        messagebox.ShowCenter_DialogError("CreateInputStream Error : " + String.Format("{0}", createException.Message), "Error Loading File");
+                        return;
+                    }
+                    //Key currentPlay Media
+                    PlayedFileName = fileName;
 
-                        } while (!File.Exists(fileName));
-
+                    //Make sure before remove
+                    //playlist.Remove(fileName);
+                    if (labelTotalTime.InvokeRequired)
+                    {
+                        this.labelTotalTime.Invoke(this.updateTextBox11, String.Format("{0:00}:{1:00}", (int)audioFileReader.TotalTime.TotalMinutes, audioFileReader.TotalTime.Seconds));
                     }
                     else
                     {
-                        if (playlist.Count == runmusicindexOld)
-                        {
-                            log.Error(String.Format("{0} ที่อยู่เพลง: {1}", "ไม่พบไฟล์เพลง", fileName));
-                            pl.change_file_kag(fileName);
-                            this.PlayerControlStop();
-                            return;
-                        }
-                        var gggg = 1;
-                        do
-                        {
-                            log.Error(String.Format("{0} ที่อยู่เพลง: {1}", "ไม่พบไฟล์เพลง", fileName));
-                            pl.change_file_kag(fileName);
-                            if (playlist.Count == runmusicindexOld)
-                            {
-                                runmusicindexOld = 1;
-                                runmusicindex = 1;
-                                fileNames.Clear();
-                                fileNames.Add(playlist[runmusicindex - 1]);
-                                queuePlay.Clear();
-                                queuePlay = new Queue<string>(fileNames);
-                                fileName = queuePlay.Peek();
-                            }
-                            else
-                            {
-                                runmusicindexOld += 1;
-                                runmusicindex += 1;
-                                fileNames.Clear();
-                                fileNames.Add(playlist[runmusicindex - 1]);
-                                queuePlay.Clear();
-                                queuePlay = new Queue<string>(fileNames);
-                                fileName = queuePlay.Peek();
-                            }
-                            if (gggg == playlist.Count)
-                            {
-                                this.PlayerControlStop();
-                                return;
-                            }
-                            gggg++;
-                        } while (!File.Exists(fileName));
+                        this.labelTotalTime.Text = String.Format("{0:00}:{1:00}", (int)audioFileReader.TotalTime.TotalMinutes, audioFileReader.TotalTime.Seconds);
                     }
-                }
-                try
-                {
-                    sampleProvider = CreateInputStream(fileName);
-                }
-                catch (Exception createException)
-                {
-                    var messagebox = new Helper.MessageBox();
-                    messagebox.ShowCenter_DialogError("CreateInputStream Error : " + String.Format("{0}", createException.Message), "Error Loading File");
-                    return;
-                }
-                //Key currentPlay Media
-                PlayedFileName = fileName;
 
-                //Make sure before remove
-                //playlist.Remove(fileName);
-                if (labelTotalTime.InvokeRequired)
-                {
-                    this.labelTotalTime.Invoke(this.updateTextBox11, String.Format("{0:00}:{1:00}", (int)audioFileReader.TotalTime.TotalMinutes, audioFileReader.TotalTime.Seconds));
-                }
-                else
-                {
-                    this.labelTotalTime.Text = String.Format("{0:00}:{1:00}", (int)audioFileReader.TotalTime.TotalMinutes, audioFileReader.TotalTime.Seconds);
-                }
+                    wavePlayer.Init(sampleProvider);
 
-                wavePlayer.Init(sampleProvider);
+                    var namemusic = fileName.Split('\\');
+                    if (lblPlaySongName.InvokeRequired)
+                    {
+                        this.lblVolumeLevel.Invoke(this.updateTextBox22, namemusic[namemusic.Length - 1].Replace(".wav", "").Replace("mp3", ""));
+                    }
+                    else
+                    {
+                        this.lblPlaySongName.Text = namemusic[namemusic.Length - 1].Replace(".wav", "").Replace("mp3", "");
 
-                var namemusic = fileName.Split('\\');
-                if (lblPlaySongName.InvokeRequired)
-                {
-                    this.lblVolumeLevel.Invoke(this.updateTextBox22, namemusic[namemusic.Length - 1].Replace(".wav", "").Replace("mp3", ""));
-                }
-                else
-                {
-                    this.lblPlaySongName.Text = namemusic[namemusic.Length - 1].Replace(".wav", "").Replace("mp3", "");
+                    }
+                    if (wavePlayer.PlaybackState == PlaybackState.Stopped)
+                    {
+                        pl.change_namemedia(runmusicindex, settingplayertrack);
+                    }
+                    wavePlayer.PlaybackStopped += (senders, evn) =>
+                    {
+                        PlaySongOnPlayList(senders, evn);
+                        SetPlayerBackGround();
+                    };
+                    wavePlayer.Play();
 
-                }
-                if (wavePlayer.PlaybackState == PlaybackState.Stopped)
-                {
-                    //pl.change_namemedia(pl.Index_item(namemusic[namemusic.Length - 1]));
-                    pl.change_namemedia(runmusicindex, settingplayertrack);
-                }
-                wavePlayer.PlaybackStopped += (senders, evn) =>
-                {
-
-                    PlaySongOnPlayList(senders, evn);
-                    //timer1.Stop();
-                    SetPlayerBackGround();
-
-
-                };
-                wavePlayer.Play();
-
-                if (wavePlayer.PlaybackState == PlaybackState.Playing)
-                {
-                    PlayButton.IconChar = FontAwesome.Sharp.IconChar.PauseCircle;
-                    PlayButton.IconColor = System.Drawing.Color.Orange;
-                    this.BackColor = Color.FromArgb(20, 255, 130, 0);
-                    //PlayButton.IconChar = FontAwesome.Sharp.IconChar.PlayCircle;
-                    //SAVE INFO TO IsoStorage
-                    MediaPlaybackState = PlaybackState.Playing;
-                    //PlayButton.IconColor = System.Drawing.Color.Orange;
-                    //PlayButton.IconColor = Color.LightGray;
-                    this.playing = false;
+                    if (wavePlayer.PlaybackState == PlaybackState.Playing)
+                    {
+                        PlayButton.IconChar = FontAwesome.Sharp.IconChar.PauseCircle;
+                        PlayButton.IconColor = System.Drawing.Color.Orange;
+                        this.BackColor = Color.FromArgb(20, 255, 130, 0);
+                        //SAVE INFO TO IsoStorage
+                        MediaPlaybackState = PlaybackState.Playing;
+                        this.playing = false;
+                        this.trigger_url();
+                        return;
+                    }
                     this.trigger_url();
-                    return;
                 }
-                this.trigger_url();
-                }
-                
+
             }
             catch (Exception ex)
             {
                 System.Console.WriteLine(ex);
-                //MessageBox.Show("Output Device เปลื่ยนไป กรุณาตั้งค่าใหม่ \n (ติดต่อเจ้าหน้าที่ดูแลระบบ)");
                 log.Error(String.Format("PlayMusicError, " + ex.Message));
             }
         }
 
-        //public void PlaySong()
-        //{
-        //    WaveStream fileWaveStream = null;
-        //    if (playlist.Count < 1)
-        //    {
-        //        return;
-        //    }
-        //    Queue<string> queuePlay = new Queue<string>(playlist);
-        //    if (wavePlayer != null && wavePlayer.PlaybackState != PlaybackState.Stopped)
-        //    {
-        //        wavePlayer.Stop();
-        //    }
-        //    if (fileWaveStream != null)
-        //    {
-        //        fileWaveStream.Dispose();
-        //    }
-        //    if (wavePlayer != null)
-        //    {
-        //        wavePlayer.Dispose();
-        //        wavePlayer = null;
-        //    }
-        //    wavePlayer = new WaveOutEvent();
-        //    fileWaveStream = new AudioFileReader(queuePlay.Dequeue());
-        //    wavePlayer.Init(fileWaveStream);
-        //    wavePlayer.PlaybackStopped += (sender, evn) => { PlaySong(); };
-        //    wavePlayer.Play();
-        //}
-
         private ISampleProvider CreateInputStream(string fileName)
         {
-            RegistryKey HKLMSoftwareTOAConfig = Registry.CurrentUser.OpenSubKey(@"Software\TOA\Config", true);
-            RegistryKey configsocket = HKLMSoftwareTOAConfig.OpenSubKey("trackname", true);
-            var get_adB = configsocket.GetValue(adB);
-            var get_dB = Convert.ToDouble(configsocket.GetValue(dB)) == 0.0 ? 1.0 : Convert.ToDouble(configsocket.GetValue(dB));
-            try
+            if (!File.Exists(fileName))
             {
+                MessageBox.Show("❌ ไม่พบไฟล์เสียง: " + fileName);
+                return null;
+            }
 
-                //ProcessStartInfo processStartInfo = new ProcessStartInfo()
-                //{
-                //    FileName = "cmd.exe", // หรือ "powershell.exe" ขึ้นอยู่กับว่าคุณใช้ Command Line แบบไหน
-                //    Arguments = "python gainmp3.py " + fileName + " --dbm " + get_dB, // /C ใช้เพื่อให้ cmd.exe รันคำสั่งแล้วปิด
-                //    RedirectStandardOutput = true, // รับข้อมูลจาก Standard Output
-                //    UseShellExecute = false, // ห้ามใช้ shell execute
-                //    CreateNoWindow = true // ไม่แสดงหน้าต่าง cmd
-                //};
+            // อ่าน registry
+            var configKey = Registry.CurrentUser.CreateSubKey(@"Software\TOA\Config\trackname");
+            var adB = configKey.GetValue("adB")?.ToString() ?? "unactive";
+            var dB = Convert.ToDouble(configKey.GetValue("dB") ?? "1.0");
 
-                //// สร้าง Process และเริ่มต้นการรัน
-                //Process process = Process.Start(processStartInfo);
-                //process.WaitForExit();
-                //// อ่านผลลัพธ์จาก Standard Output
-                //string output = process.StandardOutput.ReadToEnd();
-                if (get_adB.ToString() == "active")
+            // ถ้ามี active ก็รัน python script
+            if (adB == "active")
+            {
+                string command = $"python gainmp3.py \"{fileName}\" --dbm {dB} --play \"{nametrack}\"";
+                var psi = new ProcessStartInfo("cmd.exe", "/C " + command)
                 {
-                    string command = "python gainmp3.py \"" + fileName + "\" --dbm " + get_dB + " --play " + nametrack; // ตัวอย่างคำสั่งที่ต้องการรัน
-                    ProcessStartInfo processStartInfo = new ProcessStartInfo()
-                    {
-                        FileName = "cmd.exe", // หรือ "powershell.exe" ขึ้นอยู่กับคำสั่งที่ใช้
-                        Arguments = "/C " + command, // /C คือให้ cmd.exe รันคำสั่งแล้วปิด
-                        RedirectStandardOutput = true, // สำหรับดึงข้อมูลจาก Standard Output
-                        UseShellExecute = false, // ไม่ใช้ Shell Execute
-                        CreateNoWindow = true // ไม่แสดงหน้าต่าง cmd
-                    };
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true
+                };
 
-                    Process process = Process.Start(processStartInfo);
-                    string output = process.StandardOutput.ReadToEnd(); // รับข้อมูลจาก output
-                    process.WaitForExit(); // รอให้โปรเซสเสร็จสิ้น
+                using (var proc = Process.Start(psi))
+                {
+                    string output = proc.StandardOutput.ReadToEnd();
+                    proc.WaitForExit();
                     Console.WriteLine(output);
-
                 }
-                //else
-                //{
-                //    string command = "python gainmp3.py \"" + fileName + "\" --dbm 89 --play " + nametrack; // ตัวอย่างคำสั่งที่ต้องการรัน
-                //    ProcessStartInfo processStartInfo = new ProcessStartInfo()
-                //    {
-                //        FileName = "cmd.exe", // หรือ "powershell.exe" ขึ้นอยู่กับคำสั่งที่ใช้
-                //        Arguments = "/C " + command, // /C คือให้ cmd.exe รันคำสั่งแล้วปิด
-                //        RedirectStandardOutput = true, // สำหรับดึงข้อมูลจาก Standard Output
-                //        UseShellExecute = false, // ไม่ใช้ Shell Execute
-                //        CreateNoWindow = true // ไม่แสดงหน้าต่าง cmd
-                //    };
-
-                //    Process process = Process.Start(processStartInfo);
-                //    string output = process.StandardOutput.ReadToEnd(); // รับข้อมูลจาก output
-                //    process.WaitForExit(); // รอให้โปรเซสเสร็จสิ้น
-                //    Console.WriteLine(output);
-                //}
-                // แสดงผลลัพธ์
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine(ex.Message);
             }
 
+            // ✅ ต้องเซ็ตตัวนี้ให้ไม่ null
+            this.audioFileReader = new AudioFileReader(fileName);
 
-            audioFileReader = new AudioFileReader(fileName);
             var sampleChannel = new SampleChannel(audioFileReader, true);
-
-            double targetDecibel = get_adB.ToString() != "active" ? 1.0f : get_dB;
-            float volumeFactor = (float)Math.Pow(10, targetDecibel / 20);
-            //sampleChannel.Volume = volumeFactor;
-            //setVolumeDelegate = vol => sampleChannel.Volume = vol;
             var postVolumeMeter = new MeteringSampleProvider(sampleChannel);
-            //postVolumeMeter.StreamVolume += OnStreamVolume;
             return postVolumeMeter;
         }
 
@@ -1950,53 +1739,26 @@ namespace TOAMediaPlayer.NAudioOutput
             }
         }
 
-        //private void AddFileName()
-        //{
-        //    if (QueueOTSMedia.Count > 0)
-        //    {
-        //        OTSMedia _track = QueueOTSMedia.Peek();
-        //        if (_track.Id == 0) return;
-        //        fileName = _track.fileLocation;
-        //        lblPlaySongName.Text = _track.fileName;
-        //        QueueOTSMedia.Dequeue();
-        //    }
-        //    else
-        //    {
-        //        if (CurrentPlaylist.count > 0)
-        //        {
-        //            //Select Media In PlayList
-        //            for (int i = 0; i < CurrentPlaylist.count; i++)
-        //            {
-        //                songList.Add(CurrentPlaylist[i].fileLocation);
-        //            }
-
-        //            PlayControl play = new PlayControl(songList);
-        //            play.PlaySong();
-        //        }
-        //    }
-        //    //lblPlaySongName.Text = this.playerName;
-        //}
-
-        private void CreateWaveOut()
+        private void EnsureRegistryDefaults()
         {
-            //CloseWaveOut();
-            //NAudio.Wave.WaveStream pcm = NAudio.Wave.WaveFormatConversionStream.CreatePcmStream(new NAudio.Wave.Mp3FileReader(fileName));
-            //NAudio.Wave.BlockAlignReductionStream stream = new NAudio.Wave.BlockAlignReductionStream(pcm);
+            try
+            {
+                var configKey = Registry.CurrentUser.CreateSubKey(@"Software\TOA\Config\trackname");
 
-            //Play|Pause
-            //var latency = (int)comboBoxLatency.SelectedItem;
-            //wavePlayer = SelectedOutputDevicePlugin.CreateDevice(latency);
-            //wavePlayer = SelectedOutputDevicePlugin.CreateDevice(latency);
-            //textBoxPlaybackFormat.Text = $"{wavePlayer.OutputWaveFormat}";
+                // ตรวจสอบแล้วใส่ค่าเริ่มต้นถ้าไม่มี
+                if (configKey.GetValue("dB") == null)
+                    configKey.SetValue("dB", 1.0); // ตั้งค่า dB เริ่มต้น
 
-            //lblPlaySongName.Text = this.playerName;
+                if (configKey.GetValue("adB") == null)
+                    configKey.SetValue("adB", "active"); // ตั้งค่าการเปิดใช้ gain
+
+                configKey.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("ไม่สามารถสร้างค่าลง Registry ได้: " + ex.Message, "Registry Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
-
-        //private AudioFileReader CreateInputStream(string fileName)
-        //{
-        //    audioFileReader = new AudioFileReader(fileName);
-        //    return audioFileReader;
-        //}
 
         private void LoadOutputDevicePlugins(IEnumerable<IOutputDevicePlugin> outputDevicePlugins)
         {
@@ -2009,10 +1771,7 @@ namespace TOAMediaPlayer.NAudioOutput
             int Priority = 1;
             bool UseEventCallback = false;
             AudioClientShareMode ExclusiveMode = AudioClientShareMode.Shared;
-            //RegistryKey key = HKLMSoftwareTOAPlayer.OpenSubKey("nPlayer1", RegistryKeyPermissionCheck.ReadWriteSubTree);
-            //if (key != null)
-            //{
-            //using (RegistryKey playerKey = key.OpenSubKey(this.playerName, false)
+
             using (RegistryKey playerId = HKLMSoftwareTOAPlayer.OpenSubKey(this.playerName, false))
             {
                 if (playerId != null)
@@ -2035,7 +1794,6 @@ namespace TOAMediaPlayer.NAudioOutput
                                 if (bExclusiveMode) ExclusiveMode = AudioClientShareMode.Exclusive;
                                 UseEventCallback = Boolean.Parse((string)playerId.GetValue("UseEventCallback"));
                                 MMDevice device = GetAudioEndpoint(OutputID);
-                                //IWavePlayer waveOut = new WasapiOut(device, AudioClientShareMode.Shared, false, latency);
                                 wavePlayer = new WasapiOut(device, ExclusiveMode, UseEventCallback, Latency);
                                 wavePlayer.Volume = startupVolume;
                                 _volume = startupVolume;
@@ -2068,13 +1826,6 @@ namespace TOAMediaPlayer.NAudioOutput
             }
         }
 
-        //private void btnDeviceList_Click(object sender, EventArgs e)
-        //{
-        //    int latency = 300;
-        //    MMDevice device = GetAudioEndpoint("{0.0.0.00000000}.{354976d5-33d6-46de-a472-a123e6ad2051}");
-        //    IWavePlayer waveOut = new WasapiOut(device, AudioClientShareMode.Shared, false, latency);
-        //}
-
         static MMDevice GetAudioEndpoint(string Id)
         {
             if (Environment.OSVersion.Version.Major < 6)
@@ -2082,12 +1833,6 @@ namespace TOAMediaPlayer.NAudioOutput
                 throw new NotSupportedException("WASAPI supported only on Windows Vista and above");
             }
             var enumerator = new MMDeviceEnumerator();
-            //for (int i = 0; i < WaveOut.DeviceCount; i++)
-            //{
-            //    var cap = WaveOut.GetCapabilities(i);
-            //    Console.WriteLine("{0}: {1}", i, cap.ProductName);
-            //    var device = enumerator.GetDevice(Id);
-            //}
             return enumerator.GetDevice(Id);
         }
 
@@ -2119,7 +1864,6 @@ namespace TOAMediaPlayer.NAudioOutput
                         runmusicindexOld = 0;
                         set_runplaylist(false);
                         this.trigger_url();
-
                     }));
                 }
                 else
@@ -2136,7 +1880,6 @@ namespace TOAMediaPlayer.NAudioOutput
                     runmusicindexOld = 0;
                     set_runplaylist(false);
                     this.trigger_url();
-
                 }
             }
             catch (Exception ex)
@@ -2144,11 +1887,6 @@ namespace TOAMediaPlayer.NAudioOutput
                 var messagebox = new Helper.MessageBox();
                 messagebox.ShowCenter_DialogError("PlayerControlStop Error : " + ex.Message + "inner : " + ex.InnerException, "แจ้งเตือน");
             }
-        }
-
-        private void VolumeLevel(float level)
-        {
-
         }
 
         private void OnTimerTick(object sender, EventArgs e)
@@ -2190,7 +1928,6 @@ namespace TOAMediaPlayer.NAudioOutput
                     this.trigger_url();
 
                 }));
-
             }
             else
             {
@@ -2205,7 +1942,6 @@ namespace TOAMediaPlayer.NAudioOutput
                 }
                 DisplayVolumeLabel(wavePlayer.Volume);
                 this.trigger_url();
-
             }
         }
 
@@ -2233,7 +1969,6 @@ namespace TOAMediaPlayer.NAudioOutput
                     this.trigger_url();
 
                 }));
-
             }
             else
             {
@@ -2248,7 +1983,6 @@ namespace TOAMediaPlayer.NAudioOutput
                 }
                 DisplayVolumeLabel(wavePlayer.Volume);
                 this.trigger_url();
-
             }
         }
 
@@ -2276,8 +2010,6 @@ namespace TOAMediaPlayer.NAudioOutput
         {
             Volume = volumn;
 
-            //var sd = 
-            //var x = this.label1;
             if (this.lblVolumeLevel.InvokeRequired)
             {
                 this.lblVolumeLevel.Invoke(this.updateTextBox, String.Format("{0:F0}%", volumn * 100f));
@@ -2470,7 +2202,6 @@ namespace TOAMediaPlayer.NAudioOutput
                         this.bgcolor = substring[1];
                     }
                 }
-
             }
             this.trigger_url();
         }
@@ -2479,21 +2210,6 @@ namespace TOAMediaPlayer.NAudioOutput
         {
             RegistryKey configsocket = HKLMSoftwareTOAConfig.OpenSubKey("trackname", true);
             var stringurl = "http://" + configsocket.GetValue("ip").ToString() + "/api/updateData?ip_address=" + configsocket.GetValue("ip1") + "&port=" + configsocket.GetValue("port");
-            //HttpClient client = new HttpClient();
-            //try
-            //{
-            //    HttpResponseMessage response = await client.GetAsync(stringurl);
-
-            //    // ตรวจสอบสถานะ HTTP
-            //    response.EnsureSuccessStatusCode();
-
-            //    string responseBody = await response.Content.ReadAsStringAsync();
-            //    Console.WriteLine(responseBody);
-            //}
-            //catch (HttpRequestException e)
-            //{
-            //    Console.WriteLine($"Request error: {e.Message}");
-            //}
             try
             {
                 var client = new HttpClient();
@@ -2510,16 +2226,20 @@ namespace TOAMediaPlayer.NAudioOutput
             }
         }
 
-        public async void trigger_warning_url(string message) {
+        public async void trigger_warning_url(string message)
+        {
             RegistryKey configsocket = HKLMSoftwareTOAConfig.OpenSubKey("trackname", true);
             string ipAddress = configsocket.GetValue("ip1")?.ToString();
             string port = configsocket.GetValue("port")?.ToString();
             string apiUrl = "http://" + configsocket.GetValue("ip").ToString() + "/api/messageWarning";
 
-            try {
-                using (HttpClient client = new HttpClient()) {
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
                     // สร้าง Body JSON
-                    var requestData = new {
+                    var requestData = new
+                    {
                         ip_address = ipAddress,
                         port = port,
                         message = message
@@ -2530,7 +2250,8 @@ namespace TOAMediaPlayer.NAudioOutput
                     var content = new StringContent(json, Encoding.UTF8, "application/json");
 
                     // สร้าง HttpRequestMessage แบบ POST
-                    var request = new HttpRequestMessage(HttpMethod.Post, apiUrl) {
+                    var request = new HttpRequestMessage(HttpMethod.Post, apiUrl)
+                    {
                         Content = content
                     };
 
@@ -2540,7 +2261,9 @@ namespace TOAMediaPlayer.NAudioOutput
                     Console.WriteLine(await response.Content.ReadAsStringAsync());
                     log.Info("Success Trigger");
                 }
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 log.Error("Error: " + ex.Message + " , Inner: " + ex.InnerException);
             }
         }
@@ -2571,10 +2294,7 @@ namespace TOAMediaPlayer.NAudioOutput
                             }
                             else
                             {
-                                string[] subtext = fg.Split(new char[]
-                                {
-                        ','
-                                });
+                                string[] subtext = fg.Split(new char[] { ',' });
                                 this.label2.ForeColor = Color.FromArgb(Convert.ToInt32(subtext[3]), Convert.ToInt32(subtext[0]), Convert.ToInt32(subtext[1]), Convert.ToInt32(subtext[2]));
                             }
                             this.fgcolor = fg;
@@ -2593,10 +2313,7 @@ namespace TOAMediaPlayer.NAudioOutput
                             }
                             else
                             {
-                                string[] subtext = bg.Split(new char[]
-                                {
-                        ','
-                                });
+                                string[] subtext = bg.Split(new char[] { ',' });
                                 this.panel1.BackColor = Color.FromArgb(Convert.ToInt32(subtext[3]), Convert.ToInt32(subtext[0]), Convert.ToInt32(subtext[1]), Convert.ToInt32(subtext[2]));
                             }
                             this.bgcolor = bg;
@@ -2627,10 +2344,7 @@ namespace TOAMediaPlayer.NAudioOutput
                         }
                         else
                         {
-                            string[] subtext = fg.Split(new char[]
-                            {
-                        ','
-                            });
+                            string[] subtext = fg.Split(new char[] { ',' });
                             this.label2.ForeColor = Color.FromArgb(Convert.ToInt32(subtext[3]), Convert.ToInt32(subtext[0]), Convert.ToInt32(subtext[1]), Convert.ToInt32(subtext[2]));
                         }
                         this.fgcolor = fg;
@@ -2649,10 +2363,7 @@ namespace TOAMediaPlayer.NAudioOutput
                         }
                         else
                         {
-                            string[] subtext = bg.Split(new char[]
-                            {
-                        ','
-                            });
+                            string[] subtext = bg.Split(new char[] { ',' });
                             this.panel1.BackColor = Color.FromArgb(Convert.ToInt32(subtext[3]), Convert.ToInt32(subtext[0]), Convert.ToInt32(subtext[1]), Convert.ToInt32(subtext[2]));
                         }
                         this.bgcolor = bg;
@@ -2661,9 +2372,7 @@ namespace TOAMediaPlayer.NAudioOutput
                 log.Info("Trigger To URL");
                 this.trigger_url();
             }
-
         }
-
     }
 
     public static class Prompt
@@ -2693,12 +2402,10 @@ namespace TOAMediaPlayer.NAudioOutput
             Label trackColorLabel = new Label() { Left = 20, Top = 50, Width = 80, Text = "Track Color" };
             Panel trackColorPreview = new Panel() { Left = 110, Top = 47, Width = 30, Height = 25, BorderStyle = BorderStyle.FixedSingle };
             TextBox trackColorBox = new TextBox() { Left = 150, Top = 47, Width = 120, Text = text3 + " ", ReadOnly = true };
-            //Button trackColorButton = new Button() { Text = "Pick Color", Left = 280, Top = 47, Width = 80, Height = 25 };
 
             Label fontColorLabel = new Label() { Left = 290, Top = 50, Width = 70, Text = "Font Color" };
             Panel fontColorPreview = new Panel() { Left = 370, Top = 47, Width = 30, Height = 25, BorderStyle = BorderStyle.FixedSingle };
             TextBox fontColorBox = new TextBox() { Left = 420, Top = 47, Width = 120, Text = text2 + " ", ReadOnly = true };
-            //Button fontColorButton = new Button() { Text = "Pick Color", Left = 620, Top = 47, Width = 80, Height = 25 };
 
             Button confirmation = new Button() { Text = "OK", Left = 550, Width = 80, Height = 30, Top = 45, DialogResult = DialogResult.OK };
             confirmation.BackColor = ColorTranslator.FromHtml("#FFA500");
@@ -2735,26 +2442,19 @@ namespace TOAMediaPlayer.NAudioOutput
             }
 
             trackColorPreview.Click += (sender, e) => SelectColor(trackColorBox, trackColorPreview);
-            //trackColorButton.Click += (sender, e) => SelectColor(trackColorBox, trackColorPreview);
             fontColorPreview.Click += (sender, e) => SelectColor(fontColorBox, fontColorPreview);
-            //fontColorButton.Click += (sender, e) => SelectColor(fontColorBox, fontColorPreview);
 
             prompt.Controls.Add(textLabel);
             prompt.Controls.Add(textBox);
             prompt.Controls.Add(trackColorLabel);
             prompt.Controls.Add(trackColorPreview);
             prompt.Controls.Add(trackColorBox);
-            //prompt.Controls.Add(trackColorButton);
             prompt.Controls.Add(fontColorLabel);
             prompt.Controls.Add(fontColorPreview);
             prompt.Controls.Add(fontColorBox);
-            //prompt.Controls.Add(fontColorButton);
             prompt.Controls.Add(confirmation);
 
             return prompt.ShowDialog() == DialogResult.OK ? textBox.Text + "+" + trackColorBox.Text.Replace(" Color", "") + "+" + fontColorBox.Text.Replace(" Color", "") : "";
         }
-
     }
-
 }
-
