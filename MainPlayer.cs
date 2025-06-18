@@ -263,6 +263,9 @@ namespace TOAMediaPlayer
                 this.nPlayer8.setting_font_color(this, "White");
             }
 
+            //this.nPlayer1.Width = 900; //922
+
+
             this.myListView.AllowDrop = true;
             this.ts = new TOASocket(this);
             //iconButtonPlayer1_Click(null, new EventArgs());

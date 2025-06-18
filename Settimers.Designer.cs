@@ -48,11 +48,11 @@ namespace TOAMediaPlayer
             this.checkBox11 = new System.Windows.Forms.CheckBox();
             this.checkBox12 = new System.Windows.Forms.CheckBox();
             this.metroPanel1 = new MetroFramework.Controls.MetroPanel();
-            this.metroPanel2 = new MetroFramework.Controls.MetroPanel();
             this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
+            this.metroPanel2 = new MetroFramework.Controls.MetroPanel();
             this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.timeEdit2.SuspendLayout();
             this.metroPanel1.SuspendLayout();
             this.metroPanel2.SuspendLayout();
@@ -165,9 +165,9 @@ namespace TOAMediaPlayer
             // 
             this.timeEdit1.CustomFormat = "HH:mm";
             this.timeEdit1.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.timeEdit1.Location = new System.Drawing.Point(203, 13);
+            this.timeEdit1.Location = new System.Drawing.Point(189, 11);
             this.timeEdit1.Name = "timeEdit1";
-            this.timeEdit1.Size = new System.Drawing.Size(53, 20);
+            this.timeEdit1.Size = new System.Drawing.Size(68, 20);
             this.timeEdit1.TabIndex = 9;
             this.timeEdit1.Value = new System.DateTime(2024, 8, 27, 0, 0, 0, 0);
             this.timeEdit1.ValueChanged += new System.EventHandler(this.updatedate);
@@ -190,9 +190,9 @@ namespace TOAMediaPlayer
             this.timeEdit2.Controls.Add(this.timeComboBox);
             this.timeEdit2.CustomFormat = "HH:mm";
             this.timeEdit2.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.timeEdit2.Location = new System.Drawing.Point(372, 13);
+            this.timeEdit2.Location = new System.Drawing.Point(365, 10);
             this.timeEdit2.Name = "timeEdit2";
-            this.timeEdit2.Size = new System.Drawing.Size(53, 20);
+            this.timeEdit2.Size = new System.Drawing.Size(68, 20);
             this.timeEdit2.TabIndex = 10;
             this.timeEdit2.Value = new System.DateTime(2024, 8, 27, 0, 0, 0, 0);
             this.timeEdit2.ValueChanged += new System.EventHandler(this.updatedate);
@@ -214,7 +214,7 @@ namespace TOAMediaPlayer
             // checkBox10
             // 
             this.checkBox10.AutoSize = true;
-            this.checkBox10.Location = new System.Drawing.Point(123, 13);
+            this.checkBox10.Location = new System.Drawing.Point(113, 13);
             this.checkBox10.Name = "checkBox10";
             this.checkBox10.Size = new System.Drawing.Size(74, 17);
             this.checkBox10.TabIndex = 14;
@@ -225,7 +225,7 @@ namespace TOAMediaPlayer
             // checkBox11
             // 
             this.checkBox11.AutoSize = true;
-            this.checkBox11.Location = new System.Drawing.Point(299, 12);
+            this.checkBox11.Location = new System.Drawing.Point(294, 12);
             this.checkBox11.Name = "checkBox11";
             this.checkBox11.Size = new System.Drawing.Size(71, 17);
             this.checkBox11.TabIndex = 15;
@@ -236,7 +236,7 @@ namespace TOAMediaPlayer
             // checkBox12
             // 
             this.checkBox12.AutoSize = true;
-            this.checkBox12.Location = new System.Drawing.Point(56, 13);
+            this.checkBox12.Location = new System.Drawing.Point(46, 13);
             this.checkBox12.Name = "checkBox12";
             this.checkBox12.Size = new System.Drawing.Size(62, 17);
             this.checkBox12.TabIndex = 16;
@@ -268,14 +268,23 @@ namespace TOAMediaPlayer
             this.metroPanel1.VerticalScrollbarHighlightOnWheel = false;
             this.metroPanel1.VerticalScrollbarSize = 10;
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(17, 15);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(30, 13);
+            this.label1.TabIndex = 21;
+            this.label1.Text = "Date";
+            // 
             // metroPanel2
             // 
             this.metroPanel2.BorderStyle = MetroFramework.Drawing.MetroBorderStyle.FixedSingle;
             this.metroPanel2.Controls.Add(this.label4);
             this.metroPanel2.Controls.Add(this.label3);
-            this.metroPanel2.Controls.Add(this.label2);
             this.metroPanel2.Controls.Add(this.timeEdit1);
             this.metroPanel2.Controls.Add(this.timeEdit2);
+            this.metroPanel2.Controls.Add(this.label2);
             this.metroPanel2.Controls.Add(this.checkBox11);
             this.metroPanel2.Controls.Add(this.checkBox12);
             this.metroPanel2.Controls.Add(this.checkBox10);
@@ -291,41 +300,32 @@ namespace TOAMediaPlayer
             this.metroPanel2.VerticalScrollbarHighlightOnWheel = false;
             this.metroPanel2.VerticalScrollbarSize = 10;
             // 
-            // label1
+            // label4
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(17, 15);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(30, 13);
-            this.label1.TabIndex = 21;
-            this.label1.Text = "Date";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(17, 14);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(30, 13);
-            this.label2.TabIndex = 21;
-            this.label2.Text = "Time";
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(439, 15);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(23, 13);
+            this.label4.TabIndex = 22;
+            this.label4.Text = "AM";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(264, 14);
+            this.label3.Location = new System.Drawing.Point(267, 14);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(23, 13);
             this.label3.TabIndex = 21;
             this.label3.Text = "AM";
             // 
-            // label4
+            // label2
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(433, 15);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(23, 13);
-            this.label4.TabIndex = 22;
-            this.label4.Text = "AM";
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(7, 14);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(30, 13);
+            this.label2.TabIndex = 21;
+            this.label2.Text = "Time";
             // 
             // Settimers
             // 

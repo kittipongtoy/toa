@@ -1,16 +1,13 @@
 ﻿using Microsoft.Win32;
 using NAudio.CoreAudioApi;
-using NAudio.Gui;
 using NAudio.Wave;
+using NAudio.Wave.Compression;
 using NAudio.Wave.SampleProviders;
-using NLog.Fluent;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Security.Cryptography;
 using System.Windows.Forms;
-using TOAMediaPlayer.NAudioOutput;
 
 namespace TOAMediaPlayer
 {
@@ -74,10 +71,13 @@ namespace TOAMediaPlayer
         private Queue<float> waveformQueue = new Queue<float>();
         private int maxWaveformPoints = 350; // เท่าความกว้าง panel
 
+        private ComboBox cbOutputDriver;
+        private ComboBox cbOutputDeviceName;
+        private ComboBox cbOutputRequestedLatency;
+        private TrackBar tbVolume;
+        private ComboBox cbPlayer;
         public void ShowSetting()
         {
-            //var listView1 = new System.Windows.Forms.ListView();
-
             Form prompt = new Form
             {
                 Width = 850,
@@ -101,25 +101,25 @@ namespace TOAMediaPlayer
             Label lblTotalTime = new Label { Text = "Total Time: 00:00", Left = 300, Top = 15, AutoSize = true };
 
             Label lblOutputDriver = new Label { Text = "Output Driver", Left = 20, Top = 50, Width = 100 };
-            ComboBox cbOutputDriver = new ComboBox { Left = 130, Top = 45, Width = 150 };
+            cbOutputDriver = new ComboBox { Left = 130, Top = 45, Width = 150 };
             cbOutputDriver.Items.AddRange(new[] { "WasapiOut" });
             cbOutputDriver.SelectedIndex = 0;
 
             Label lblDriver = new Label { Text = "Driver", Left = 20, Top = 90, Width = 100 };
-            ComboBox cbDriver = new ComboBox { Left = 130, Top = 85, Width = 200 };
+            cbOutputDeviceName = new ComboBox { Left = 130, Top = 85, Width = 200 };
             for (int i = 0; i < WaveOut.DeviceCount; i++)
             {
                 var deviceInfo = WaveOut.GetCapabilities(i);
-                cbDriver.Items.Add(deviceInfo.ProductName);
+                cbOutputDeviceName.Items.Add(deviceInfo.ProductName);
             }
-            if (cbDriver.Items.Count > 0)
-                cbDriver.SelectedIndex = 0;
+            if (cbOutputDeviceName.Items.Count > 0)
+                cbOutputDeviceName.SelectedIndex = 0;
 
             CheckBox chkEventCallback = new CheckBox { Text = "Event Callback", Left = 20, Top = 130 };
             CheckBox chkExclusive = new CheckBox { Text = "Exclusive Mode", Left = 150, Top = 130 };
 
             Label lblPlayer = new Label { Text = "Player", Left = 20, Top = 170 };
-            ComboBox cbPlayer = new ComboBox { Left = 130, Top = 165, Width = 200 };
+            cbPlayer = new ComboBox { Left = 130, Top = 165, Width = 200 };
             cbPlayer.Items.AddRange(new[] { "nPlayer1", "nPlayer2", "nPlayer3", "nPlayer4", "nPlayer5", "nPlayer6", "nPlayer7", "nPlayer8" });
             cbPlayer.SelectedItem = "nPlayer1";
 
@@ -131,14 +131,14 @@ namespace TOAMediaPlayer
 
             #region ขวา
             Label lblOutputRequestedLatency = new Label { Text = "Requested Latency", Left = 450, Top = 50, Width = 100 };
-            ComboBox cbOutputRequestedLatency = new ComboBox { Left = 620, Top = 45, Width = 150 };
+            cbOutputRequestedLatency = new ComboBox { Left = 620, Top = 45, Width = 150 };
             cbOutputRequestedLatency.Items.AddRange(new[] { "25", "50", "100", "150", "200", "300", "400", "500" });
             cbOutputRequestedLatency.SelectedIndex = 7;
 
             Label lblVolume = new Label { Text = "Volume", Left = 450, Top = 85 };
-            TrackBar tbVolume = new TrackBar
+            tbVolume = new TrackBar
             {
-                Left = 650,
+                Left = 615,
                 Top = 80,
                 Width = 150,
                 Minimum = 0,
@@ -156,21 +156,20 @@ namespace TOAMediaPlayer
                 device.AudioEndpointVolume.MasterVolumeLevelScalar = tbVolume.Value / 100f;
             };
 
-            Label lblCurrentFile = new Label { Text = "Current File:", Left = 450, Top = 85 };
-            TextBox txtCurrentFile = new TextBox { Left = 650, Top = 80, Width = 150 };
+            Label lblCurrentFile = new Label { Text = "Current File:", Left = 450, Top = 120 };
 
-            Label lblPlaybackFormat = new Label { Text = "Playback Format:", Left = 450, Top = 120 };
+            Label lblPlaybackFormat = new Label { Text = "Playback Format:", Left = 450, Top = 150 };
 
             Panel pnlWaveformGraph = new Panel
             {
-                Left = 540,
+                Left = 600,
                 Top = 140,
-                Width = 350,
+                Width = 180,
                 Height = 60,
                 BackColor = Color.Black,
                 BorderStyle = BorderStyle.FixedSingle
             };
-        
+
             pnlWaveformGraph.Paint += (sender, pe) =>
             {
                 pe.Graphics.Clear(Color.Black);
@@ -198,7 +197,7 @@ namespace TOAMediaPlayer
                 Left = 800,
                 Top = 115,
                 Width = 10,
-                Height = 80, // สูงขึ้นกว่าเดิม
+                Height = 80,
                 BackColor = Color.Black
             };
 
@@ -206,20 +205,43 @@ namespace TOAMediaPlayer
             pnlWaveform.Paint += (sender, pe) =>
             {
                 pe.Graphics.Clear(Color.Black);
-
                 int barHeight = (int)(pnlWaveform.Height * level);
-                int y = pnlWaveform.Height - barHeight; // ยิ่งเสียงดัง ยิ่งสูงขึ้นจากด้านล่าง
-
+                int y = pnlWaveform.Height - barHeight;
                 pe.Graphics.FillRectangle(Brushes.Lime, 0, y, pnlWaveform.Width, barHeight);
             };
 
             Timer timer = new Timer { Interval = 50 };
             timer.Tick += (s, e) =>
             {
-                level = device.AudioMeterInformation.MasterPeakValue;
                 pnlWaveform.Invalidate();
             };
             timer.Start();
+
+            Panel pnlWaveform2 = new Panel
+            {
+                Left = 780,
+                Top = 115,
+                Width = 10,
+                Height = 80,
+                BackColor = Color.Black
+            };
+
+            float level2 = 0;
+            pnlWaveform2.Paint += (sender, pe) =>
+            {
+                pe.Graphics.Clear(Color.Black);
+                int barHeight = (int)(pnlWaveform2.Height * level2);
+                int y = pnlWaveform2.Height - barHeight;
+                pe.Graphics.FillRectangle(Brushes.Lime, 0, y, pnlWaveform2.Width, barHeight);
+            };
+
+            Timer timer2 = new Timer { Interval = 50 };
+            timer2.Tick += (s, e) =>
+            {
+                pnlWaveform2.Invalidate();
+            };
+            timer2.Start();
+
             #endregion
 
             var registryKeys = new[]
@@ -261,18 +283,24 @@ namespace TOAMediaPlayer
             #region btnIPGain
             Panel panelIPGain = new Panel { Left = 20, Top = 220, Width = 790, Height = 250, BorderStyle = BorderStyle.FixedSingle, BackColor = Color.LightGray, Visible = false };
 
-            // IP
-            Label lblIP = new Label { Text = "Server IP", Left = 40, Top = 20, Width = 50 };
-            TextBox txtIP = new TextBox { Left = 120, Top = 15, Width = 150 };
-            Button btnSetIP = new Button { Text = "SET", Left = 280, Top = 15 };
+            // Web IP
+            Label lblWebIP = new Label { Text = "Web IP", Left = 20, Top = 20, Width = 40 };
+            TextBox txtWebIP = new TextBox { Left = 60, Top = 15, Width = 120 };
+            Button btnWebSetIP = new Button { Text = "SET", Left = 190, Top = 15 };
+
+            //// IP
+            Label lblIP = new Label { Text = "Server IP", Left = 280, Top = 20, Width = 60 };
+            TextBox txtIP = new TextBox { Left = 350, Top = 15, Width = 120 };
+            Button btnSetIP = new Button { Text = "SET", Left = 480, Top = 15 };
 
             // Port
-            Label lblPort = new Label { Text = "Port", Left = 380, Top = 20, Width = 50 };
-            TextBox cbPort = new TextBox { Left = 440, Top = 15, Width = 80 };
-            Button btnSetPort = new Button { Text = "SET", Left = 540, Top = 15 };
+            Label lblPort = new Label { Text = "Port", Left = 570, Top = 20, Width = 40 };
+            TextBox cbPort = new TextBox { Left = 620, Top = 15, Width = 50 };
+            Button btnSetPort = new Button { Text = "SET", Left = 690, Top = 15 };
 
             // Label Title
             panelIPGain.Controls.AddRange(new Control[] {
+                 lblWebIP, txtWebIP, btnWebSetIP, 
                  lblIP, txtIP, btnSetIP,
                  lblPort, cbPort, btnSetPort,
             });
@@ -331,7 +359,7 @@ namespace TOAMediaPlayer
             btnLogs.Click += (s, e) => { dgvPlayers.Visible = false; panelIPGain.Visible = false; panelLogs.Visible = true; };
             #endregion
 
-            Button btnClose = new Button { Text = "Close", Left = 700, Top = 500 };
+            Button btnClose = new Button { Text = "Close", Left = 700, Top = 495, Width = 90, Height = 30 };
             btnClose.Click += (sender, e) => { prompt.Close(); };
 
             // Playback engine
@@ -358,13 +386,13 @@ namespace TOAMediaPlayer
                     {
                         level = maxLevel;
                         pnlWaveform.Invalidate();
+                        pnlWaveform2.Invalidate();
 
-                        // ✅ ส่วนที่คุณ "ลืม" ใส่:
                         waveformQueue.Enqueue(maxLevel);
                         while (waveformQueue.Count > maxWaveformPoints)
                             waveformQueue.Dequeue();
 
-                        pnlWaveformGraph.Invalidate();
+                        //pnlWaveformGraph.Invalidate();
                     }));
                 };
 
@@ -372,33 +400,6 @@ namespace TOAMediaPlayer
                 wavePlayer.Init(metering);
                 // ยังไม่ Play ทันที
             }
-
-
-            //void LoadAudio(string path)
-            //{
-            //    wavePlayer?.Stop();
-            //    wavePlayer?.Dispose();
-            //    reader?.Dispose();
-
-            //    if (!File.Exists(path)) return;
-
-            //    reader = new AudioFileReader(path);
-            //    var sampleChannel = new SampleChannel(reader, true);
-            //    var metering = new MeteringSampleProvider(sampleChannel);
-            //    metering.StreamVolume += (s, e) =>
-            //    {
-            //        prompt.BeginInvoke(new Action(() =>
-            //        {
-            //            level = Math.Max(e.MaxSampleValues[0], e.MaxSampleValues[1]);
-            //            pnlWaveform.Invalidate();
-            //        }));
-            //    };
-
-            //    wavePlayer = new WaveOutEvent();
-            //    wavePlayer.Init(metering);
-            //    // ยังไม่ Play ทันที
-            //}
-
 
             btnOpen.Click += (s, e) =>
             {
@@ -412,9 +413,30 @@ namespace TOAMediaPlayer
                     Registry.SetValue("HKEY_CURRENT_USER\\Software\\AudioPlayback", "LastAudioPath", ofd.FileName);
                     LoadAudio(ofd.FileName);
 
-                    //GenerateWaveformBitmap(ofd.FileName);
-                    pnlWaveformGraph.Invalidate();
+                    GenerateWaveformBitmap(ofd.FileName);
+                    //pnlWaveformGraph.Invalidate();
+
+                    // ✅ เพิ่มบรรทัดนี้ให้เสียงเล่นทันที
+                    wavePlayer?.Play();
                 }
+            };
+
+            btnPlay.Click += (s, e) =>
+            {
+                // ✅ เพิ่มบรรทัดนี้ให้เสียงเล่นทันที
+                wavePlayer?.Play();
+            };
+
+            btnPause.Click += (s, e) =>
+            {
+                // ✅ เพิ่มบรรทัดนี้ให้เสียงเล่นทันที
+                wavePlayer?.Pause();
+            };
+
+            btnStop.Click += (s, e) =>
+            {
+                // ✅ เพิ่มบรรทัดนี้ให้เสียงเล่นทันที
+                wavePlayer?.Stop();
             };
 
             string lastPath = (string)Registry.GetValue("HKEY_CURRENT_USER\\Software\\AudioPlayback", "LastAudioPath", null);
@@ -427,13 +449,13 @@ namespace TOAMediaPlayer
                 btnOpen, btnPlay, btnPause, btnStop,
                 lblCurrentTime, lblTotalTime,
                 lblOutputDriver, cbOutputDriver,
-                lblDriver, cbDriver,
+                lblDriver, cbOutputDeviceName,
                 chkEventCallback, chkExclusive,
                 lblPlayer, cbPlayer, btnApply, chkOnline,
                 lblOutputRequestedLatency, cbOutputRequestedLatency,
                 lblVolume, tbVolume,
-                lblCurrentFile, txtCurrentFile,
-                lblPlaybackFormat, pnlWaveform, //pnlWaveformGraph,
+                lblCurrentFile,
+                lblPlaybackFormat, pnlWaveform, pnlWaveform2,// pnlWaveformGraph,
                 dgvPlayers, panelIPGain, panelLogs,
                 btnRoute, btnIPGain, btnLogs,
                 btnClose
@@ -442,56 +464,98 @@ namespace TOAMediaPlayer
             prompt.ShowDialog();
         }
 
-        
+        private Bitmap waveformBitmap;
+        private Panel pnlWaveformGraph;
 
+        void GenerateWaveformBitmap(string filePath)
+        {
+            //if (pnlWaveformGraph == null)
+            //{
+            //    MessageBox.Show("pnlWaveformGraph ยังไม่ถูกสร้าง");
+            //    return;
+            //}
 
+            using (var reader = new AudioFileReader(filePath))
+            {
+                int samplesToRead = (int)(reader.Length / 4);
+                var samples = new float[samplesToRead];
+                int read = reader.Read(samples, 0, samplesToRead);
 
-        //private Bitmap waveformBitmap;
-        //private Panel pnlWaveformGraph;
+                //int width = pnlWaveformGraph.Width;
+                //int height = pnlWaveformGraph.Height;
+                //waveformBitmap = new Bitmap(width, height);
 
-        //void GenerateWaveformBitmap(string filePath)
-        //{
-        //    using (var reader = new AudioFileReader(filePath)) // แก้ตรงนี้
-        //    {
-        //        int samplesToRead = (int)(reader.Length / 4);
-        //        var samples = new float[samplesToRead];
-        //        int read = reader.Read(samples, 0, samplesToRead);
+                //using (var g = Graphics.FromImage(waveformBitmap))
+                //{
+                //    g.Clear(Color.Black);
+                //    Pen pen = Pens.Lime;
 
-        //        int width = pnlWaveformGraph.Width;
-        //        int height = pnlWaveformGraph.Height;
-        //        waveformBitmap = new Bitmap(width, height);
+                //    float midY = height / 2f;
+                //    int step = Math.Max(read / width, 1);
 
-        //        using (var g = Graphics.FromImage(waveformBitmap))
-        //        {
-        //            g.Clear(Color.Black);
-        //            Pen pen = Pens.Lime;
+                //    PointF[] points = new PointF[width];
+                //    for (int x = 0; x < width; x++)
+                //    {
+                //        int start = x * step;
+                //        int end = Math.Min(start + step, read);
 
-        //            float midY = height / 2f;
-        //            int step = Math.Max(read / width, 1);
+                //        float avg = 0;
+                //        for (int i = start; i < end; i++) avg += samples[i];
+                //        avg /= (end - start);
 
-        //            PointF[] points = new PointF[width];
-        //            for (int x = 0; x < width; x++)
-        //            {
-        //                int start = x * step;
-        //                int end = Math.Min(start + step, read);
+                //        float y = midY - (avg * midY);
+                //        points[x] = new PointF(x, y);
+                //    }
 
-        //                float avg = 0;
-        //                for (int i = start; i < end; i++) avg += samples[i];
-        //                avg /= (end - start);
-
-        //                float y = midY - (avg * midY);
-        //                points[x] = new PointF(x, y);
-        //            }
-
-        //            g.DrawLines(pen, points);
-        //        }
-        //    }
-        //}
-
+                //    g.DrawLines(pen, points);
+                //}
+            }
+        }
 
         public void SubmitApply(object sender, EventArgs e)
-        { 
-        
+        {
+            Guid directSoundOutputGuid = Guid.NewGuid();
+
+            // ดึงค่า Driver จากตัวเลือก
+            string selectedPluginName = cbOutputDriver.SelectedItem?.ToString() ?? "WASAPI";
+
+            // ดึงค่า latency
+            int latency = int.TryParse(cbOutputRequestedLatency.SelectedItem?.ToString(), out int lat) ? lat : 100;
+
+            // ดึงค่าระดับเสียง (volume)
+            float volume = tbVolume.Value / 100f;
+
+            // ดึง Player เช่น Player1, Player2...
+            string playerName = cbPlayer.SelectedItem?.ToString();
+
+            // ดึง Output Device จาก Panel
+            string DeviceName = cbOutputDeviceName.SelectedItem?.ToString();
+
+            if (!string.IsNullOrEmpty(playerName) && HKLMSoftwareTOAPlayer != null)
+            {
+                DeleteSubKeyTree(playerName, selectedPluginName);
+
+                RegistryKey cHKLMPlayer = HKLMSoftwareTOAPlayer.CreateSubKey(playerName);
+                cHKLMPlayer.SetValue("DriverName", selectedPluginName, RegistryValueKind.String);
+                cHKLMPlayer.SetValue("Latency", latency, RegistryValueKind.DWord);
+                cHKLMPlayer.SetValue("Volume", volume.ToString("0.00"), RegistryValueKind.String);
+                cHKLMPlayer.SetValue("DeviceName", DeviceName, RegistryValueKind.String);
+                cHKLMPlayer.SetValue("OutputID", directSoundOutputGuid.ToString(), RegistryValueKind.String);
+                cHKLMPlayer.SetValue("Priority", 1, RegistryValueKind.DWord);
+                cHKLMPlayer.SetValue("IsAvailable", true.ToString(), RegistryValueKind.String);
+                cHKLMPlayer.Close();
+            }
+        }
+
+        // สร้างฟังก์ชัน DeleteSubKeyTree
+        private void DeleteSubKeyTree(string player, string plugin)
+        {
+            string path = $@"Software\TOAPlayer\{player}";
+            try
+            {
+                Registry.LocalMachine.DeleteSubKeyTree(path, false); // false = ไม่ throw error ถ้าไม่มี key
+            }
+            catch { }
         }
     }
 }

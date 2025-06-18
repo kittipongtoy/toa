@@ -51,9 +51,14 @@ namespace TOAMediaPlayer
 
             this.timeEdit1.CustomFormat = "hh:mm tt";
             this.timeEdit1.ShowUpDown = true;
+            this.timeEdit1.Width = 70;
+            this.timeEdit1.Height = 120;
             //this.timeEdit1.Properties.Mask.EditMask = "hh:mm tt";
+
             this.timeEdit2.CustomFormat = "hh:mm tt";
             this.timeEdit2.ShowUpDown = true;
+            this.timeEdit2.Width = 70;
+            this.timeEdit2.Height = 120;
             //this.timeEdit2.Properties.Mask.EditMask = "hh:mm tt";
 
             label3.AutoSize = true;

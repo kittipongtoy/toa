@@ -1784,6 +1784,8 @@ namespace TOAMediaPlayer.NAudioOutput
                     string _volString = (string)playerId.GetValue("Volume", startupVolume.ToString(), RegistryValueOptions.DoNotExpandEnvironmentNames);
                     startupVolume = (float.Parse(_volString));
 
+                    bool check_ty = true;
+
                     foreach (var outputDevicePlugin in outputDevicePlugins.OrderBy(p => p.Priority))
                     {
                         try
@@ -1818,8 +1820,12 @@ namespace TOAMediaPlayer.NAudioOutput
                         }
                         catch (Exception ex)
                         {
-                            var messagebox = new Helper.MessageBox();
-                            messagebox.ShowCenter_DialogError("Output Device เปลื่ยนไป กรุณาตั้งค่าใหม่ \n (ติดต่อเจ้าหน้าที่ดูแลระบบ)", "แจ้งเตือน");
+                            if(check_ty)
+                            { 
+                                var messagebox = new Helper.MessageBox();
+                                messagebox.ShowCenter_DialogError("Output Device เปลื่ยนไป กรุณาตั้งค่าใหม่ \n (ติดต่อเจ้าหน้าที่ดูแลระบบ)", "แจ้งเตือน");
+                                check_ty = false;
+                            }
                         }
                     }
                 }

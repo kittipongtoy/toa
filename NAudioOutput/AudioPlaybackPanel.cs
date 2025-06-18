@@ -419,7 +419,6 @@ namespace TOAMediaPlayer.NAudioOutput
                 ListViewItem item7 = new ListViewItem("Player7");
                 ListViewItem item8 = new ListViewItem("Player8");
 
-
                 item1.SubItems.Add(HKLMSoftwareTOAPlayer11.GetValue("DeviceName") == null ? "รอตั้งค่า" : HKLMSoftwareTOAPlayer11.GetValue("DeviceName").ToString());
                 item2.SubItems.Add(HKLMSoftwareTOAPlayer12.GetValue("DeviceName") == null ? "รอตั้งค่า" : HKLMSoftwareTOAPlayer12.GetValue("DeviceName").ToString());
                 item3.SubItems.Add(HKLMSoftwareTOAPlayer13.GetValue("DeviceName") == null ? "รอตั้งค่า" : HKLMSoftwareTOAPlayer13.GetValue("DeviceName").ToString());
@@ -428,8 +427,6 @@ namespace TOAMediaPlayer.NAudioOutput
                 item6.SubItems.Add(HKLMSoftwareTOAPlayer16.GetValue("DeviceName") == null ? "รอตั้งค่า" : HKLMSoftwareTOAPlayer16.GetValue("DeviceName").ToString());
                 item7.SubItems.Add(HKLMSoftwareTOAPlayer17.GetValue("DeviceName") == null ? "รอตั้งค่า" : HKLMSoftwareTOAPlayer17.GetValue("DeviceName").ToString());
                 item8.SubItems.Add(HKLMSoftwareTOAPlayer18.GetValue("DeviceName") == null ? "รอตั้งค่า" : HKLMSoftwareTOAPlayer18.GetValue("DeviceName").ToString());
-
-
 
                 listView1.Items.Add(item1);
                 listView1.Items.Add(item2);
