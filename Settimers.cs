@@ -51,18 +51,19 @@ namespace TOAMediaPlayer
 
             this.timeEdit1.CustomFormat = "hh:mm tt";
             this.timeEdit1.ShowUpDown = true;
-            this.timeEdit1.Width = 70;
-            this.timeEdit1.Height = 120;
-            //this.timeEdit1.Properties.Mask.EditMask = "hh:mm tt";
+            this.timeEdit1.Font = new Font("Tahoma", 10F);
+            //this.timeEdit1.Width = 150;
+            this.timeEdit1.Width = 90;
+            this.timeEdit1.Height = 180;
 
             this.timeEdit2.CustomFormat = "hh:mm tt";
+            this.timeEdit2.Font = new Font("Tahoma", 10F);
             this.timeEdit2.ShowUpDown = true;
-            this.timeEdit2.Width = 70;
-            this.timeEdit2.Height = 120;
-            //this.timeEdit2.Properties.Mask.EditMask = "hh:mm tt";
+            this.timeEdit2.Width = 90;
+            this.timeEdit2.Height = 180;
 
-            label3.AutoSize = true;
-            label4.AutoSize = true;
+            //label3.AutoSize = true;
+            //label4.AutoSize = true;
 
             #region Active Checkbox
 
@@ -95,7 +96,7 @@ namespace TOAMediaPlayer
                 if (substring[2].IndexOf("AM") != -1 || substring[2].IndexOf("PM") != -1)
                 {
                     timeEdit1.Value = DateTime.ParseExact("27/08/2024 " + substring[2], "dd/MM/yyyy hh:mm tt", CultureInfo.InvariantCulture);
-                    label3.Text = "PM";
+                    //label3.Text = "PM";
                 }
                 else
                 {
@@ -110,12 +111,12 @@ namespace TOAMediaPlayer
                     DateTime tempDate = DateTime.ParseExact("27/08/2024 " + substring[2], "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
                     string formattedTime = tempDate.ToString("hh:mm tt", CultureInfo.InvariantCulture);
                     timeEdit1.Value = DateTime.ParseExact("27/08/2024 " + formattedTime, "dd/MM/yyyy hh:mm tt", CultureInfo.InvariantCulture);
-                    label3.Text = "";
+                    //label3.Text = "";
                 }
                 if (substring[3].IndexOf("AM") != -1 || substring[3].IndexOf("PM") != -1)
                 {
                     timeEdit2.Value = DateTime.ParseExact("27/08/2024 " + substring[3], "dd/MM/yyyy hh:mm tt", CultureInfo.InvariantCulture);
-                    label4.Text = "PM";
+                    //label4.Text = "PM";
                 }
                 else
                 {
@@ -130,7 +131,7 @@ namespace TOAMediaPlayer
                     DateTime tempDate = DateTime.ParseExact("27/08/2024 " + substring[3], "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
                     string formattedTime = tempDate.ToString("hh:mm tt", CultureInfo.InvariantCulture);
                     timeEdit2.Value = DateTime.ParseExact("27/08/2024 " + formattedTime, "dd/MM/yyyy hh:mm tt", CultureInfo.InvariantCulture);
-                    label4.Text = "";
+                    //label4.Text = "";
                 }
                 checkBox12.Checked = true;
             }
@@ -140,9 +141,9 @@ namespace TOAMediaPlayer
                 {
                     timeEdit1.Value = DateTime.ParseExact("27/08/2024 " + substring[2], "dd/MM/yyyy hh:mm tt", CultureInfo.InvariantCulture);
                     if (substring[2].Substring(6, 2) == "AM") {
-                        label3.Text = "AM";
+                        //label3.Text = "AM";
                     } else if (substring[2].Substring(6, 2) == "PM") {
-                        label3.Text = "PM";
+                        //label3.Text = "PM";
                     }
                 }
                 else
@@ -160,15 +161,15 @@ namespace TOAMediaPlayer
                     DateTime tempDate = DateTime.ParseExact("27/08/2024 " + substring[2], "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
                     string formattedTime = tempDate.ToString("hh:mm tt", CultureInfo.InvariantCulture);
                     timeEdit1.Value = DateTime.ParseExact("27/08/2024 " + formattedTime, "dd/MM/yyyy hh:mm tt", CultureInfo.InvariantCulture);
-                    label3.Text = "";
+                    //label3.Text = "";
                 }
                 if (substring[3].IndexOf("AM") != -1 || substring[3].IndexOf("PM") != -1)
                 {
                     timeEdit2.Value = DateTime.ParseExact("27/08/2024 " + substring[3], "dd/MM/yyyy hh:mm tt", CultureInfo.InvariantCulture);
                     if (substring[3].Substring(6,2) == "AM") {
-                        label4.Text = "AM";
+                        //label4.Text = "AM";
                     } else if (substring[3].Substring(6, 2) == "PM") {
-                        label4.Text = "PM";
+                        //label4.Text = "PM";
                     }
                 }
                 else
@@ -186,7 +187,7 @@ namespace TOAMediaPlayer
                     DateTime tempDate = DateTime.ParseExact("27/08/2024 " + substring[3], "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
                     string formattedTime = tempDate.ToString("hh:mm tt", CultureInfo.InvariantCulture);
                     timeEdit2.Value = DateTime.ParseExact("27/08/2024 " + formattedTime, "dd/MM/yyyy hh:mm tt", CultureInfo.InvariantCulture);
-                    label4.Text = "";
+                    //label4.Text = "";
                 }
                 checkBox12.Checked = false;
             }
@@ -656,14 +657,14 @@ namespace TOAMediaPlayer
                 var timehr1 = this.timeEdit1.Text.Split(' ')[1];
                 var timehr2 = this.timeEdit2.Text.Split(' ')[1];
                 if (timehr1 == "AM") {
-                    this.label3.Text = "AM";
+                    //this.label3.Text = "AM";
                 } else if (timehr2 == "PM") {
-                    this.label3.Text = "PM";
+                    //this.label3.Text = "PM";
                 }
                 if (timehr2 == "AM") {
-                    this.label4.Text = "AM";
+                    //this.label4.Text = "AM";
                 } else if (timehr2 == "PM") {
-                    this.label4.Text = "PM";
+                    //this.label4.Text = "PM";
                 }
 
 
@@ -674,8 +675,8 @@ namespace TOAMediaPlayer
                 //this.timeEdit1.Properties.Mask.EditMask = "HH:mm";
                 this.timeEdit2.CustomFormat = "HH:mm";
                 //this.timeEdit2.Properties.Mask.EditMask = "HH:mm";
-                this.label3.Text = "";
-                this.label4.Text = "";
+                //this.label3.Text = "";
+                //this.label4.Text = "";
             }
         }
 

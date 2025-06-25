@@ -50,8 +50,6 @@ namespace TOAMediaPlayer
             this.metroPanel1 = new MetroFramework.Controls.MetroPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.metroPanel2 = new MetroFramework.Controls.MetroPanel();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.timeEdit2.SuspendLayout();
             this.metroPanel1.SuspendLayout();
@@ -165,7 +163,7 @@ namespace TOAMediaPlayer
             // 
             this.timeEdit1.CustomFormat = "HH:mm";
             this.timeEdit1.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.timeEdit1.Location = new System.Drawing.Point(189, 11);
+            this.timeEdit1.Location = new System.Drawing.Point(187, 11);
             this.timeEdit1.Name = "timeEdit1";
             this.timeEdit1.Size = new System.Drawing.Size(68, 20);
             this.timeEdit1.TabIndex = 9;
@@ -280,8 +278,6 @@ namespace TOAMediaPlayer
             // metroPanel2
             // 
             this.metroPanel2.BorderStyle = MetroFramework.Drawing.MetroBorderStyle.FixedSingle;
-            this.metroPanel2.Controls.Add(this.label4);
-            this.metroPanel2.Controls.Add(this.label3);
             this.metroPanel2.Controls.Add(this.timeEdit1);
             this.metroPanel2.Controls.Add(this.timeEdit2);
             this.metroPanel2.Controls.Add(this.label2);
@@ -299,24 +295,6 @@ namespace TOAMediaPlayer
             this.metroPanel2.VerticalScrollbarBarColor = true;
             this.metroPanel2.VerticalScrollbarHighlightOnWheel = false;
             this.metroPanel2.VerticalScrollbarSize = 10;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(439, 15);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(23, 13);
-            this.label4.TabIndex = 22;
-            this.label4.Text = "AM";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(267, 14);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(23, 13);
-            this.label3.TabIndex = 21;
-            this.label3.Text = "AM";
             // 
             // label2
             // 
@@ -375,7 +353,5 @@ namespace TOAMediaPlayer
         private MetroFramework.Controls.MetroPanel metroPanel2;
         private Label label1;
         private Label label2;
-        private Label label4;
-        private Label label3;
     }
 }

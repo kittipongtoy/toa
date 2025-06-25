@@ -43,11 +43,11 @@ namespace TOAMediaPlayer
                 if (user.ToLower() == "admin" && pass.ToLower() == "toa12345")
                 {
                     this.Close();
-                    //SetupOutput xForm = new SetupOutput(player);
-                    //xForm.StartPosition = FormStartPosition.CenterParent;
-                    //xForm.ShowDialog();
+                    SetupOutput xForm = new SetupOutput(player);
+                    xForm.StartPosition = FormStartPosition.CenterParent;
+                    xForm.ShowDialog();
 
-                    ShowSetting();
+                    //ShowSetting();
                 }
                 else
                 {
@@ -76,6 +76,22 @@ namespace TOAMediaPlayer
         private ComboBox cbOutputRequestedLatency;
         private TrackBar tbVolume;
         private ComboBox cbPlayer;
+
+
+        DataGridView dgvPlayers2 = new DataGridView
+        {
+            Left = 20,
+            Top = 220,
+            Width = 790,
+            Height = 250,
+            ReadOnly = true,
+            ColumnCount = 2,
+            AllowUserToAddRows = false,
+            RowHeadersVisible = false,
+            Visible = true,
+            AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
+        };
+
         public void ShowSetting()
         {
             Form prompt = new Form
@@ -257,27 +273,28 @@ namespace TOAMediaPlayer
             };
 
             #region ปุ่ม Route/IP/Logs
-            DataGridView dgvPlayers = new DataGridView
-            {
-                Left = 20,
-                Top = 220,
-                Width = 790,
-                Height = 250,
-                ReadOnly = true,
-                ColumnCount = 2,
-                AllowUserToAddRows = false,
-                RowHeadersVisible = false,
-                Visible = true,
-                AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
-            };
-            dgvPlayers.Columns[0].Name = "Player";
-            dgvPlayers.Columns[1].Name = "Driver";
+            //DataGridView dgvPlayers = new DataGridView
+            //{
+            //    Left = 20,
+            //    Top = 220,
+            //    Width = 790,
+            //    Height = 250,
+            //    ReadOnly = true,
+            //    ColumnCount = 2,
+            //    AllowUserToAddRows = false,
+            //    RowHeadersVisible = false,
+            //    Visible = true,
+            //    AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
+            //};
+
+            dgvPlayers2.Columns[0].Name = "Player";
+            dgvPlayers2.Columns[1].Name = "Driver";
 
             // วนลูปเพิ่มข้อมูลลง DataGridView
             for (int i = 0; i < registryKeys.Length; i++)
             {
                 string deviceName = registryKeys[i].GetValue("DeviceName")?.ToString() ?? "รอตั้งค่า";
-                dgvPlayers.Rows.Add($"Player {i + 1}", deviceName);
+                dgvPlayers2.Rows.Add($"Player {i + 1}", deviceName);
             }
 
             #region btnIPGain
@@ -354,9 +371,9 @@ namespace TOAMediaPlayer
             Button btnIPGain = new Button { Text = "IP and Gain", Left = 120, Top = 490, Width = 110, Height = 30 };
             Button btnLogs = new Button { Text = "Logs", Left = 250, Top = 490, Width = 90, Height = 30 };
 
-            btnRoute.Click += (s, e) => { dgvPlayers.Visible = true; panelIPGain.Visible = false; panelLogs.Visible = false; };
-            btnIPGain.Click += (s, e) => { dgvPlayers.Visible = false; panelIPGain.Visible = true; panelLogs.Visible = false; };
-            btnLogs.Click += (s, e) => { dgvPlayers.Visible = false; panelIPGain.Visible = false; panelLogs.Visible = true; };
+            btnRoute.Click += (s, e) => { dgvPlayers2.Visible = true; panelIPGain.Visible = false; panelLogs.Visible = false; };
+            btnIPGain.Click += (s, e) => { dgvPlayers2.Visible = false; panelIPGain.Visible = true; panelLogs.Visible = false; };
+            btnLogs.Click += (s, e) => { dgvPlayers2.Visible = false; panelIPGain.Visible = false; panelLogs.Visible = true; };
             #endregion
 
             Button btnClose = new Button { Text = "Close", Left = 700, Top = 495, Width = 90, Height = 30 };
@@ -456,7 +473,7 @@ namespace TOAMediaPlayer
                 lblVolume, tbVolume,
                 lblCurrentFile,
                 lblPlaybackFormat, pnlWaveform, pnlWaveform2,// pnlWaveformGraph,
-                dgvPlayers, panelIPGain, panelLogs,
+                dgvPlayers2, panelIPGain, panelLogs,
                 btnRoute, btnIPGain, btnLogs,
                 btnClose
             });

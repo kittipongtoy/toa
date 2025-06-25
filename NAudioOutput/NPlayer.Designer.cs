@@ -64,7 +64,7 @@
             this.panel1.Controls.Add(this.label2);
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(923, 18);
+            this.panel1.Size = new System.Drawing.Size(957, 18);
             this.panel1.TabIndex = 140;
             // 
             // label2
@@ -94,7 +94,7 @@
             this.gbPlayer3.Controls.Add(this.lblPlaySongName);
             this.gbPlayer3.Location = new System.Drawing.Point(3, 19);
             this.gbPlayer3.Name = "gbPlayer3";
-            this.gbPlayer3.Size = new System.Drawing.Size(486, 32);
+            this.gbPlayer3.Size = new System.Drawing.Size(531, 32);
             this.gbPlayer3.TabIndex = 128;
             this.gbPlayer3.TabStop = false;
             // 
@@ -106,7 +106,7 @@
             this.trackBarPosition.Margin = new System.Windows.Forms.Padding(2);
             this.trackBarPosition.Maximum = 100;
             this.trackBarPosition.Name = "trackBarPosition";
-            this.trackBarPosition.Size = new System.Drawing.Size(486, 45);
+            this.trackBarPosition.Size = new System.Drawing.Size(531, 45);
             this.trackBarPosition.TabIndex = 129;
             this.trackBarPosition.TickStyle = System.Windows.Forms.TickStyle.TopLeft;
             this.trackBarPosition.Scroll += new System.EventHandler(this.trackBarPosition_Scroll);
@@ -120,7 +120,7 @@
             this.BackwardButton.IconColor = System.Drawing.Color.LightGray;
             this.BackwardButton.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.BackwardButton.IconSize = 27;
-            this.BackwardButton.Location = new System.Drawing.Point(495, 24);
+            this.BackwardButton.Location = new System.Drawing.Point(540, 24);
             this.BackwardButton.Name = "BackwardButton";
             this.BackwardButton.Size = new System.Drawing.Size(30, 30);
             this.BackwardButton.TabIndex = 130;
@@ -136,7 +136,7 @@
             this.PlayButton.IconColor = System.Drawing.Color.LightGray;
             this.PlayButton.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.PlayButton.IconSize = 27;
-            this.PlayButton.Location = new System.Drawing.Point(531, 24);
+            this.PlayButton.Location = new System.Drawing.Point(576, 24);
             this.PlayButton.Name = "PlayButton";
             this.PlayButton.Size = new System.Drawing.Size(30, 30);
             this.PlayButton.TabIndex = 131;
@@ -152,7 +152,7 @@
             this.StopButton.IconColor = System.Drawing.Color.LightGray;
             this.StopButton.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.StopButton.IconSize = 27;
-            this.StopButton.Location = new System.Drawing.Point(567, 24);
+            this.StopButton.Location = new System.Drawing.Point(612, 24);
             this.StopButton.Name = "StopButton";
             this.StopButton.Size = new System.Drawing.Size(30, 30);
             this.StopButton.TabIndex = 132;
@@ -168,7 +168,7 @@
             this.ForwardButton.IconColor = System.Drawing.Color.LightGray;
             this.ForwardButton.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.ForwardButton.IconSize = 27;
-            this.ForwardButton.Location = new System.Drawing.Point(603, 24);
+            this.ForwardButton.Location = new System.Drawing.Point(648, 24);
             this.ForwardButton.Name = "ForwardButton";
             this.ForwardButton.Size = new System.Drawing.Size(30, 30);
             this.ForwardButton.TabIndex = 133;
@@ -237,7 +237,7 @@
             this.panel4.Controls.Add(this.DecreaseVolumeButton);
             this.panel4.Controls.Add(this.lblVolumeLevel);
             this.panel4.Controls.Add(this.IncreaseVolumeButton);
-            this.panel4.Location = new System.Drawing.Point(639, 33);
+            this.panel4.Location = new System.Drawing.Point(687, 33);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(270, 66);
             this.panel4.TabIndex = 138;
@@ -247,7 +247,7 @@
             this.labelTotalTime.AutoSize = true;
             this.labelTotalTime.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelTotalTime.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.labelTotalTime.Location = new System.Drawing.Point(499, 77);
+            this.labelTotalTime.Location = new System.Drawing.Point(561, 77);
             this.labelTotalTime.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelTotalTime.Name = "labelTotalTime";
             this.labelTotalTime.Size = new System.Drawing.Size(81, 13);
@@ -271,7 +271,7 @@
             this.Controls.Add(this.trackBarPosition);
             this.Controls.Add(this.gbPlayer3);
             this.Name = "NPlayer";
-            this.Size = new System.Drawing.Size(926, 106);
+            this.Size = new System.Drawing.Size(962, 106);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.gbPlayer3.ResumeLayout(false);
