@@ -94,7 +94,7 @@
             this.gbPlayer3.Controls.Add(this.lblPlaySongName);
             this.gbPlayer3.Location = new System.Drawing.Point(3, 19);
             this.gbPlayer3.Name = "gbPlayer3";
-            this.gbPlayer3.Size = new System.Drawing.Size(531, 32);
+            this.gbPlayer3.Size = new System.Drawing.Size(531, 41);
             this.gbPlayer3.TabIndex = 128;
             this.gbPlayer3.TabStop = false;
             // 
@@ -102,7 +102,7 @@
             // 
             this.trackBarPosition.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
             this.trackBarPosition.LargeChange = 1;
-            this.trackBarPosition.Location = new System.Drawing.Point(3, 54);
+            this.trackBarPosition.Location = new System.Drawing.Point(3, 65);
             this.trackBarPosition.Margin = new System.Windows.Forms.Padding(2);
             this.trackBarPosition.Maximum = 100;
             this.trackBarPosition.Name = "trackBarPosition";
@@ -194,7 +194,7 @@
             this.IncreaseVolumeButton.IconChar = FontAwesome.Sharp.IconChar.CirclePlus;
             this.IncreaseVolumeButton.IconColor = System.Drawing.Color.White;
             this.IncreaseVolumeButton.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.IncreaseVolumeButton.IconSize = 30;
+            this.IncreaseVolumeButton.IconSize = 45;
             this.IncreaseVolumeButton.Location = new System.Drawing.Point(127, 11);
             this.IncreaseVolumeButton.Name = "IncreaseVolumeButton";
             this.IncreaseVolumeButton.Size = new System.Drawing.Size(46, 44);
@@ -210,7 +210,7 @@
             this.DecreaseVolumeButton.IconChar = FontAwesome.Sharp.IconChar.CircleMinus;
             this.DecreaseVolumeButton.IconColor = System.Drawing.Color.White;
             this.DecreaseVolumeButton.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.DecreaseVolumeButton.IconSize = 30;
+            this.DecreaseVolumeButton.IconSize = 45;
             this.DecreaseVolumeButton.Location = new System.Drawing.Point(77, 11);
             this.DecreaseVolumeButton.Name = "DecreaseVolumeButton";
             this.DecreaseVolumeButton.Size = new System.Drawing.Size(44, 46);
@@ -271,7 +271,7 @@
             this.Controls.Add(this.trackBarPosition);
             this.Controls.Add(this.gbPlayer3);
             this.Name = "NPlayer";
-            this.Size = new System.Drawing.Size(962, 106);
+            this.Size = new System.Drawing.Size(972, 118);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.gbPlayer3.ResumeLayout(false);

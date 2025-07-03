@@ -73,7 +73,7 @@ namespace TOAMediaPlayer.Helper
                 Text = message,
                 Font = new Font("Arial", 10),
                 Location = new Point(20, 60),
-                MaximumSize = new Size(650, 0),  // ✅ บังคับให้ข้อความตัดบรรทัด
+                MaximumSize = new Size(350, 0),  // ✅ บังคับให้ข้อความตัดบรรทัด
                 AutoSize = true
             };
             scrollPanel.Controls.Add(messageLabel);

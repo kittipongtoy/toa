@@ -33,7 +33,7 @@ namespace TOAMediaPlayer
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainPlayer));
-            TOAMediaPlayer.TOAPlaylist.OTSMedia otsMedia2 = new TOAMediaPlayer.TOAPlaylist.OTSMedia();
+            TOAMediaPlayer.TOAPlaylist.OTSMedia otsMedia1 = new TOAMediaPlayer.TOAPlaylist.OTSMedia();
             this.panel1 = new System.Windows.Forms.Panel();
             this.iconButton2 = new FontAwesome.Sharp.IconButton();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
@@ -290,8 +290,8 @@ namespace TOAMediaPlayer
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
-            this.splitContainer1.Size = new System.Drawing.Size(1904, 855);
-            this.splitContainer1.SplitterDistance = 1260;
+            this.splitContainer1.Size = new System.Drawing.Size(1904, 924);
+            this.splitContainer1.SplitterDistance = 1259;
             this.splitContainer1.TabIndex = 9;
             // 
             // iconButtonPlayer8
@@ -440,8 +440,8 @@ namespace TOAMediaPlayer
             this.splitContainer2.Panel2.Controls.Add(this.myListView);
             this.splitContainer2.Panel2.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.splitContainer2.Panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer2_Panel2_Paint);
-            this.splitContainer2.Size = new System.Drawing.Size(640, 855);
-            this.splitContainer2.SplitterDistance = 27;
+            this.splitContainer2.Size = new System.Drawing.Size(641, 924);
+            this.splitContainer2.SplitterDistance = 28;
             this.splitContainer2.TabIndex = 0;
             // 
             // panel2
@@ -458,7 +458,7 @@ namespace TOAMediaPlayer
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(640, 27);
+            this.panel2.Size = new System.Drawing.Size(641, 28);
             this.panel2.TabIndex = 2;
             // 
             // lblPlayerId
@@ -607,7 +607,8 @@ namespace TOAMediaPlayer
             this.nPlayer8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(62)))));
             this.nPlayer8.CurrentMedia = null;
             this.nPlayer8.CurrentPlaylist = null;
-            this.nPlayer8.Location = new System.Drawing.Point(4, 887);
+            this.nPlayer8.Location = new System.Drawing.Point(4, 873);
+            this.nPlayer8.Margin = new System.Windows.Forms.Padding(4);
             this.nPlayer8.MediaPlaybackState = NAudio.Wave.PlaybackState.Stopped;
             this.nPlayer8.Name = "nPlayer8";
             this.nPlayer8.PlayedFileName = null;
@@ -621,7 +622,8 @@ namespace TOAMediaPlayer
             this.nPlayer7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(62)))));
             this.nPlayer7.CurrentMedia = null;
             this.nPlayer7.CurrentPlaylist = null;
-            this.nPlayer7.Location = new System.Drawing.Point(4, 764);
+            this.nPlayer7.Location = new System.Drawing.Point(4, 748);
+            this.nPlayer7.Margin = new System.Windows.Forms.Padding(4);
             this.nPlayer7.MediaPlaybackState = NAudio.Wave.PlaybackState.Stopped;
             this.nPlayer7.Name = "nPlayer7";
             this.nPlayer7.PlayedFileName = null;
@@ -635,7 +637,8 @@ namespace TOAMediaPlayer
             this.nPlayer6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(62)))));
             this.nPlayer6.CurrentMedia = null;
             this.nPlayer6.CurrentPlaylist = null;
-            this.nPlayer6.Location = new System.Drawing.Point(4, 636);
+            this.nPlayer6.Location = new System.Drawing.Point(4, 624);
+            this.nPlayer6.Margin = new System.Windows.Forms.Padding(4);
             this.nPlayer6.MediaPlaybackState = NAudio.Wave.PlaybackState.Stopped;
             this.nPlayer6.Name = "nPlayer6";
             this.nPlayer6.PlayedFileName = null;
@@ -649,7 +652,8 @@ namespace TOAMediaPlayer
             this.nPlayer5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(62)))));
             this.nPlayer5.CurrentMedia = null;
             this.nPlayer5.CurrentPlaylist = null;
-            this.nPlayer5.Location = new System.Drawing.Point(4, 508);
+            this.nPlayer5.Location = new System.Drawing.Point(4, 500);
+            this.nPlayer5.Margin = new System.Windows.Forms.Padding(4);
             this.nPlayer5.MediaPlaybackState = NAudio.Wave.PlaybackState.Stopped;
             this.nPlayer5.Name = "nPlayer5";
             this.nPlayer5.PlayedFileName = null;
@@ -663,7 +667,8 @@ namespace TOAMediaPlayer
             this.nPlayer4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(62)))));
             this.nPlayer4.CurrentMedia = null;
             this.nPlayer4.CurrentPlaylist = null;
-            this.nPlayer4.Location = new System.Drawing.Point(3, 380);
+            this.nPlayer4.Location = new System.Drawing.Point(3, 376);
+            this.nPlayer4.Margin = new System.Windows.Forms.Padding(4);
             this.nPlayer4.MediaPlaybackState = NAudio.Wave.PlaybackState.Stopped;
             this.nPlayer4.Name = "nPlayer4";
             this.nPlayer4.PlayedFileName = null;
@@ -677,7 +682,8 @@ namespace TOAMediaPlayer
             this.nPlayer3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(62)))));
             this.nPlayer3.CurrentMedia = null;
             this.nPlayer3.CurrentPlaylist = null;
-            this.nPlayer3.Location = new System.Drawing.Point(2, 253);
+            this.nPlayer3.Location = new System.Drawing.Point(2, 251);
+            this.nPlayer3.Margin = new System.Windows.Forms.Padding(4);
             this.nPlayer3.MediaPlaybackState = NAudio.Wave.PlaybackState.Stopped;
             this.nPlayer3.Name = "nPlayer3";
             this.nPlayer3.PlayedFileName = null;
@@ -691,7 +697,8 @@ namespace TOAMediaPlayer
             this.nPlayer2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(62)))));
             this.nPlayer2.CurrentMedia = null;
             this.nPlayer2.CurrentPlaylist = null;
-            this.nPlayer2.Location = new System.Drawing.Point(2, 128);
+            this.nPlayer2.Location = new System.Drawing.Point(2, 129);
+            this.nPlayer2.Margin = new System.Windows.Forms.Padding(4);
             this.nPlayer2.MediaPlaybackState = NAudio.Wave.PlaybackState.Stopped;
             this.nPlayer2.Name = "nPlayer2";
             this.nPlayer2.PlayedFileName = null;
@@ -703,14 +710,14 @@ namespace TOAMediaPlayer
             // nPlayer1
             // 
             this.nPlayer1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(62)))));
-            otsMedia2.CurrentPlaybackState = NAudio.Wave.PlaybackState.Stopped;
-            otsMedia2.duration = System.TimeSpan.Parse("-10675199.02:48:05.4775808");
-            otsMedia2.fileLocation = null;
-            otsMedia2.fileName = null;
-            otsMedia2.Id = 0;
-            otsMedia2.Loop = false;
-            otsMedia2.Shuffle = false;
-            this.nPlayer1.CurrentMedia = otsMedia2;
+            otsMedia1.CurrentPlaybackState = NAudio.Wave.PlaybackState.Stopped;
+            otsMedia1.duration = System.TimeSpan.Parse("-10675199.02:48:05.4775808");
+            otsMedia1.fileLocation = null;
+            otsMedia1.fileName = null;
+            otsMedia1.Id = 0;
+            otsMedia1.Loop = false;
+            otsMedia1.Shuffle = false;
+            this.nPlayer1.CurrentMedia = otsMedia1;
             this.nPlayer1.CurrentPlaylist = null;
             this.nPlayer1.Location = new System.Drawing.Point(2, 4);
             this.nPlayer1.Margin = new System.Windows.Forms.Padding(4);
@@ -741,7 +748,7 @@ namespace TOAMediaPlayer
             this.myListView.Location = new System.Drawing.Point(0, 0);
             this.myListView.Margin = new System.Windows.Forms.Padding(4);
             this.myListView.Name = "myListView";
-            //this.myListView.Size = new System.Drawing.Size(840, 1080);
+            this.myListView.Size = new System.Drawing.Size(641, 892);
             this.myListView.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.myListView.TabIndex = 2;
             this.myListView.UseCompatibleStateImageBehavior = false;
@@ -781,7 +788,7 @@ namespace TOAMediaPlayer
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Gray;
-            this.ClientSize = new System.Drawing.Size(1904, 881);
+            this.ClientSize = new System.Drawing.Size(1904, 950);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.panel1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
