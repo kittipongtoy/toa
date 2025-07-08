@@ -492,6 +492,7 @@ namespace TOAMediaPlayer.NAudioOutput
                         ListOTSMedia.Add((OTSMedia)_CurrentPlaylist[i]);
                     }
                 }
+
                 if (ListOTSMedia.Count() > 0)
                 {
                     foreach (var xc in ListOTSMedia)
@@ -499,6 +500,7 @@ namespace TOAMediaPlayer.NAudioOutput
                         playlist.Add(xc.fileLocation);
                     }
                 }
+
                 if (_CurrentPlaylist.count == 0)
                 {
                     ListOTSMedia.Clear();
@@ -506,6 +508,17 @@ namespace TOAMediaPlayer.NAudioOutput
                 }
                 CurrentPlaylistChanged(this, e);
             }
+            else //แก้ปัญหา เปลื่ยน Player แล้ว ต้องเพิ่มเพลง ในเมื่อมี play list เพลงอยู่แล้ว
+            {
+                ListOTSMedia.Clear();
+                //Select Media In PlayList
+                for (int i = 0; i < _CurrentPlaylist.count; i++)
+                {
+                    ListOTSMedia.Add((OTSMedia)_CurrentPlaylist[i]);
+                }
+                //CurrentPlaylistChanged(this, e);
+            }
+
             if (get_runplaylist() == false)
             {
                 playlist.Clear();

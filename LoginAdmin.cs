@@ -1,9 +1,7 @@
 ﻿using Microsoft.Win32;
 using NAudio.CoreAudioApi;
 using NAudio.Wave;
-using NAudio.Wave.Compression;
 using NAudio.Wave.SampleProviders;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -12,7 +10,6 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 namespace TOAMediaPlayer
 {
@@ -374,7 +371,7 @@ namespace TOAMediaPlayer
             int colOffset = 0 < 4 ? 0 : 400;
 
             chk = new CheckBox { Text = $"Player1", Left = 10 + colOffset, Top = startY + rowOffset, Width = 62 };
-            txtbox = new TextBox { Text = "3 dB", Left = 90 + colOffset, Top = startY + rowOffset, Width = 80 };
+            txtbox = new TextBox { Text = "", Left = 90 + colOffset, Top = startY + rowOffset, Width = 80 };
             Label lblDb = new Label { Text = "dB", Left = 175 + colOffset, Top = startY + rowOffset + 5, Width = 20 };
             Button btn = new Button { Text = "SET", Left = 240 + colOffset, Top = startY + rowOffset };
             btn.Click += Submitbtnplayer;
@@ -382,7 +379,7 @@ namespace TOAMediaPlayer
             int rowOffset2 = (1 % 4) * 30;
             int colOffset2 = 1 < 4 ? 0 : 400;
             chk2 = new CheckBox { Text = $"Player2", Left = 10 + colOffset2, Top = startY + rowOffset2, Width = 62 };
-            txtbox2 = new TextBox { Text = "3 dB", Left = 90 + colOffset2, Top = startY + rowOffset2, Width = 80 };
+            txtbox2 = new TextBox { Text = "", Left = 90 + colOffset2, Top = startY + rowOffset2, Width = 80 };
             Label lblDb2 = new Label { Text = "dB", Left = 175 + colOffset2, Top = startY + rowOffset2 + 5, Width = 20 };
             Button btn2 = new Button { Text = "SET", Left = 240 + colOffset2, Top = startY + rowOffset2 };
             btn2.Click += Submitbtnplayer2;
@@ -390,7 +387,7 @@ namespace TOAMediaPlayer
             int rowOffset3 = (2 % 4) * 30;
             int colOffset3 = 2 < 4 ? 0 : 400;
             chk3 = new CheckBox { Text = $"Player3", Left = 10 + colOffset3, Top = startY + rowOffset3, Width = 62 };
-            txtbox3 = new TextBox { Text = "3 dB", Left = 90 + colOffset3, Top = startY + rowOffset3, Width = 80 };
+            txtbox3 = new TextBox { Text = "", Left = 90 + colOffset3, Top = startY + rowOffset3, Width = 80 };
             Label lblDb3 = new Label { Text = "dB", Left = 175 + colOffset3, Top = startY + rowOffset3 + 5, Width = 20 };
             Button btn3 = new Button { Text = "SET", Left = 240 + colOffset3, Top = startY + rowOffset3 };
             btn3.Click += Submitbtnplayer3;
@@ -398,7 +395,7 @@ namespace TOAMediaPlayer
             int rowOffset4 = (3 % 4) * 30;
             int colOffset4 = 3 < 4 ? 0 : 400;
             chk4 = new CheckBox { Text = $"Player4", Left = 10 + colOffset4, Top = startY + rowOffset4, Width = 62 };
-            txtbox4 = new TextBox { Text = "3 dB", Left = 90 + colOffset4, Top = startY + rowOffset4, Width = 80 };
+            txtbox4 = new TextBox { Text = "", Left = 90 + colOffset4, Top = startY + rowOffset4, Width = 80 };
             Label lblDb4 = new Label { Text = "dB", Left = 175 + colOffset4, Top = startY + rowOffset4 + 5, Width = 20 };
             Button btn4 = new Button { Text = "SET", Left = 240 + colOffset4, Top = startY + rowOffset4 };
             btn4.Click += Submitbtnplayer4;
@@ -406,7 +403,7 @@ namespace TOAMediaPlayer
             int rowOffset5 = (4 % 4) * 30;
             int colOffset5 = 4 < 4 ? 0 : 400;
             chk5 = new CheckBox { Text = $"Player5", Left = 10 + colOffset5, Top = startY + rowOffset5, Width = 62 };
-            txtbox5 = new TextBox { Text = "3 dB", Left = 90 + colOffset5, Top = startY + rowOffset5, Width = 80 };
+            txtbox5 = new TextBox { Text = "", Left = 90 + colOffset5, Top = startY + rowOffset5, Width = 80 };
             Label lblDb5 = new Label { Text = "dB", Left = 175 + colOffset5, Top = startY + rowOffset5 + 5, Width = 20 };
             Button btn5 = new Button { Text = "SET", Left = 240 + colOffset5, Top = startY + rowOffset5 };
             btn5.Click += Submitbtnplayer5;
@@ -414,7 +411,7 @@ namespace TOAMediaPlayer
             int rowOffset6 = (5 % 4) * 30;
             int colOffset6 = 5 < 4 ? 0 : 400;
             chk6 = new CheckBox { Text = $"Player6", Left = 10 + colOffset6, Top = startY + rowOffset6, Width = 62 };
-            txtbox6 = new TextBox { Text = "3 dB", Left = 90 + colOffset6, Top = startY + rowOffset6, Width = 80 };
+            txtbox6 = new TextBox { Text = "", Left = 90 + colOffset6, Top = startY + rowOffset6, Width = 80 };
             Label lblDb6 = new Label { Text = "dB", Left = 175 + colOffset6, Top = startY + rowOffset6 + 5, Width = 20 };
             Button btn6 = new Button { Text = "SET", Left = 240 + colOffset6, Top = startY + rowOffset6 };
             btn6.Click += Submitbtnplayer6;
@@ -422,7 +419,7 @@ namespace TOAMediaPlayer
             int rowOffset7 = (6 % 4) * 30;
             int colOffset7 = 6 < 4 ? 0 : 400;
             chk7 = new CheckBox { Text = $"Player7", Left = 10 + colOffset7, Top = startY + rowOffset7, Width = 62 };
-            txtbox7 = new TextBox { Text = "3 dB", Left = 90 + colOffset7, Top = startY + rowOffset7, Width = 80 };
+            txtbox7 = new TextBox { Text = "", Left = 90 + colOffset7, Top = startY + rowOffset7, Width = 80 };
             Label lblDb7 = new Label { Text = "dB", Left = 175 + colOffset7, Top = startY + rowOffset7 + 5, Width = 20 };
             Button btn7 = new Button { Text = "SET", Left = 240 + colOffset7, Top = startY + rowOffset7 };
             btn7.Click += Submitbtnplayer7;
@@ -430,7 +427,7 @@ namespace TOAMediaPlayer
             int rowOffset8 = (7 % 4) * 30;
             int colOffset8 = 7 < 4 ? 0 : 400;
             chk8 = new CheckBox { Text = $"Player8", Left = 10 + colOffset8, Top = startY + rowOffset8, Width = 62 };
-            txtbox8 = new TextBox { Text = "3 dB", Left = 90 + colOffset8, Top = startY + rowOffset8, Width = 80 };
+            txtbox8 = new TextBox { Text = "", Left = 90 + colOffset8, Top = startY + rowOffset8, Width = 80 };
             Label lblDb8 = new Label { Text = "dB", Left = 175 + colOffset8, Top = startY + rowOffset8 + 5, Width = 20 };
             Button btn8 = new Button { Text = "SET", Left = 240 + colOffset8, Top = startY + rowOffset8 };
             btn8.Click += Submitbtnplayer8;
@@ -608,6 +605,24 @@ namespace TOAMediaPlayer
                 cbPort.Text = configsocket.GetValue("port").ToString();
             }
 
+            txtbox.Text = configsocket.GetValue("dB").ToString();
+            txtbox2.Text = configsocket.GetValue("dB2").ToString();
+            txtbox3.Text = configsocket.GetValue("dB3").ToString();
+            txtbox4.Text = configsocket.GetValue("dB4").ToString();
+            txtbox5.Text = configsocket.GetValue("dB5").ToString();
+            txtbox6.Text = configsocket.GetValue("dB6").ToString();
+            txtbox7.Text = configsocket.GetValue("dB7").ToString();
+            txtbox8.Text = configsocket.GetValue("dB8").ToString();
+            var chks = configsocket.GetValue("adB").ToString() == "active";
+            if (chks)
+            {
+                chk.Checked = true;
+            }
+            else
+            {
+                chk.Checked = false;
+            }
+
             prompt.ShowDialog();
         }
 
@@ -740,7 +755,7 @@ namespace TOAMediaPlayer
                 }
                 else
                 {
-                    if (configsocket.GetValue("adB1").ToString() == "active")
+                    if (configsocket.GetValue("adB").ToString() == "active")
                     {
                         chk.Checked = true;
                     }
@@ -748,9 +763,12 @@ namespace TOAMediaPlayer
                     {
                         chk.Checked = false;
                     }
-                    configsocket.SetValue("dB1", txtbox.Text == "" ? "50" : txtbox.Text);
-                    configsocket.SetValue("adB1", chk.Checked == true ? "active" : "unactive");
+                    configsocket.SetValue("dB", txtbox.Text == "" ? "50" : txtbox.Text);
+                    configsocket.SetValue("adB", chk.Checked == true ? "active" : "unactive");
                 }
+
+                var message = new Helper.MessageBox();
+                message.ShowCenter_DialogError("บันทึก player1 เรียบร้อยแล้ว", "แจ้งเตือน");
             }
             else
             {
@@ -779,7 +797,7 @@ namespace TOAMediaPlayer
                 }
                 else
                 {
-                    if (configsocket.GetValue("adB1").ToString() == "active")
+                    if (configsocket.GetValue("adB2").ToString() == "active")
                     {
                         chk2.Checked = true;
                     }
@@ -787,9 +805,12 @@ namespace TOAMediaPlayer
                     {
                         chk2.Checked = false;
                     }
-                    configsocket.SetValue("dB1", txtbox2.Text == "" ? "50" : txtbox.Text);
-                    configsocket.SetValue("adB1", chk2.Checked == true ? "active" : "unactive");
+                    configsocket.SetValue("dB2", txtbox2.Text == "" ? "50" : txtbox.Text);
+                    configsocket.SetValue("adB2", chk2.Checked == true ? "active" : "unactive");
                 }
+
+                var message = new Helper.MessageBox();
+                message.ShowCenter_DialogError("บันทึก player2 เรียบร้อยแล้ว", "แจ้งเตือน");
             }
             else
             {
@@ -818,7 +839,7 @@ namespace TOAMediaPlayer
                 }
                 else
                 {
-                    if (configsocket.GetValue("adB1").ToString() == "active")
+                    if (configsocket.GetValue("adB3").ToString() == "active")
                     {
                         chk3.Checked = true;
                     }
@@ -826,9 +847,12 @@ namespace TOAMediaPlayer
                     {
                         chk3.Checked = false;
                     }
-                    configsocket.SetValue("dB1", txtbox3.Text == "" ? "50" : txtbox.Text);
-                    configsocket.SetValue("adB1", chk3.Checked == true ? "active" : "unactive");
+                    configsocket.SetValue("dB3", txtbox3.Text == "" ? "50" : txtbox.Text);
+                    configsocket.SetValue("adB3", chk3.Checked == true ? "active" : "unactive");
                 }
+
+                var message = new Helper.MessageBox();
+                message.ShowCenter_DialogError("บันทึก player3 เรียบร้อยแล้ว", "แจ้งเตือน");
             }
             else
             {
@@ -857,7 +881,7 @@ namespace TOAMediaPlayer
                 }
                 else
                 {
-                    if (configsocket.GetValue("adB1").ToString() == "active")
+                    if (configsocket.GetValue("adB4").ToString() == "active")
                     {
                         chk4.Checked = true;
                     }
@@ -865,9 +889,12 @@ namespace TOAMediaPlayer
                     {
                         chk4.Checked = false;
                     }
-                    configsocket.SetValue("dB1", txtbox4.Text == "" ? "50" : txtbox.Text);
-                    configsocket.SetValue("adB1", chk4.Checked == true ? "active" : "unactive");
+                    configsocket.SetValue("dB4", txtbox4.Text == "" ? "50" : txtbox.Text);
+                    configsocket.SetValue("adB4", chk4.Checked == true ? "active" : "unactive");
                 }
+
+                var message = new Helper.MessageBox();
+                message.ShowCenter_DialogError("บันทึก player4 เรียบร้อยแล้ว", "แจ้งเตือน");
             }
             else
             {
@@ -896,7 +923,7 @@ namespace TOAMediaPlayer
                 }
                 else
                 {
-                    if (configsocket.GetValue("adB1").ToString() == "active")
+                    if (configsocket.GetValue("adB5").ToString() == "active")
                     {
                         chk5.Checked = true;
                     }
@@ -904,9 +931,12 @@ namespace TOAMediaPlayer
                     {
                         chk5.Checked = false;
                     }
-                    configsocket.SetValue("dB1", txtbox5.Text == "" ? "50" : txtbox.Text);
-                    configsocket.SetValue("adB1", chk5.Checked == true ? "active" : "unactive");
+                    configsocket.SetValue("dB5", txtbox5.Text == "" ? "50" : txtbox.Text);
+                    configsocket.SetValue("adB5", chk5.Checked == true ? "active" : "unactive");
                 }
+
+                var message = new Helper.MessageBox();
+                message.ShowCenter_DialogError("บันทึก player5 เรียบร้อยแล้ว", "แจ้งเตือน");
             }
             else
             {
@@ -935,7 +965,7 @@ namespace TOAMediaPlayer
                 }
                 else
                 {
-                    if (configsocket.GetValue("adB1").ToString() == "active")
+                    if (configsocket.GetValue("adB6").ToString() == "active")
                     {
                         chk6.Checked = true;
                     }
@@ -943,9 +973,12 @@ namespace TOAMediaPlayer
                     {
                         chk6.Checked = false;
                     }
-                    configsocket.SetValue("dB1", txtbox6.Text == "" ? "50" : txtbox.Text);
-                    configsocket.SetValue("adB1", chk6.Checked == true ? "active" : "unactive");
+                    configsocket.SetValue("dB6", txtbox6.Text == "" ? "50" : txtbox.Text);
+                    configsocket.SetValue("adB6", chk6.Checked == true ? "active" : "unactive");
                 }
+
+                var message = new Helper.MessageBox();
+                message.ShowCenter_DialogError("บันทึก player6 เรียบร้อยแล้ว", "แจ้งเตือน");
             }
             else
             {
@@ -974,7 +1007,7 @@ namespace TOAMediaPlayer
                 }
                 else
                 {
-                    if (configsocket.GetValue("adB1").ToString() == "active")
+                    if (configsocket.GetValue("adB7").ToString() == "active")
                     {
                         chk7.Checked = true;
                     }
@@ -982,9 +1015,12 @@ namespace TOAMediaPlayer
                     {
                         chk7.Checked = false;
                     }
-                    configsocket.SetValue("dB1", txtbox7.Text == "" ? "50" : txtbox.Text);
-                    configsocket.SetValue("adB1", chk7.Checked == true ? "active" : "unactive");
+                    configsocket.SetValue("dB7", txtbox7.Text == "" ? "50" : txtbox.Text);
+                    configsocket.SetValue("adB7", chk7.Checked == true ? "active" : "unactive");
                 }
+
+                var message = new Helper.MessageBox();
+                message.ShowCenter_DialogError("บันทึก player7 เรียบร้อยแล้ว", "แจ้งเตือน");
             }
             else
             {
@@ -1013,7 +1049,7 @@ namespace TOAMediaPlayer
                 }
                 else
                 {
-                    if (configsocket.GetValue("adB1").ToString() == "active")
+                    if (configsocket.GetValue("adB8").ToString() == "active")
                     {
                         chk8.Checked = true;
                     }
@@ -1021,9 +1057,12 @@ namespace TOAMediaPlayer
                     {
                         chk8.Checked = false;
                     }
-                    configsocket.SetValue("dB1", txtbox8.Text == "" ? "50" : txtbox.Text);
-                    configsocket.SetValue("adB1", chk8.Checked == true ? "active" : "unactive");
+                    configsocket.SetValue("dB8", txtbox8.Text == "" ? "50" : txtbox.Text);
+                    configsocket.SetValue("adB8", chk8.Checked == true ? "active" : "unactive");
                 }
+
+                var message = new Helper.MessageBox();
+                message.ShowCenter_DialogError("บันทึก player8 เรียบร้อยแล้ว", "แจ้งเตือน");
             }
             else
             {
