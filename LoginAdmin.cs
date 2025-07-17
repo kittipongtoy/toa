@@ -47,11 +47,11 @@ namespace TOAMediaPlayer
                 if (user.ToLower() == "admin" && pass.ToLower() == "toa12345")
                 {
                     this.Close();
-                    SetupOutput xForm = new SetupOutput(player);
-                    xForm.StartPosition = FormStartPosition.CenterParent;
-                    xForm.ShowDialog();
+                    //SetupOutput xForm = new SetupOutput(player);
+                    //xForm.StartPosition = FormStartPosition.CenterParent;
+                    //xForm.ShowDialog();
 
-                    //ShowSetting();
+                    ShowSetting();
                 }
                 else
                 {
