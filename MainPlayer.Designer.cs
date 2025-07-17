@@ -117,7 +117,7 @@ namespace TOAMediaPlayer
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Margin = new System.Windows.Forms.Padding(2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1904, 26);
+            this.panel1.Size = new System.Drawing.Size(1542, 26);
             this.panel1.TabIndex = 8;
             this.panel1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseDown);
             // 
@@ -127,7 +127,7 @@ namespace TOAMediaPlayer
             this.iconButton2.IconChar = FontAwesome.Sharp.IconChar.None;
             this.iconButton2.IconColor = System.Drawing.Color.Black;
             this.iconButton2.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.iconButton2.Location = new System.Drawing.Point(1737, 4);
+            this.iconButton2.Location = new System.Drawing.Point(1375, 4);
             this.iconButton2.Name = "iconButton2";
             this.iconButton2.Size = new System.Drawing.Size(75, 21);
             this.iconButton2.TabIndex = 8;
@@ -153,7 +153,7 @@ namespace TOAMediaPlayer
             this.iconButton1.IconChar = FontAwesome.Sharp.IconChar.None;
             this.iconButton1.IconColor = System.Drawing.Color.Black;
             this.iconButton1.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.iconButton1.Location = new System.Drawing.Point(1599, 4);
+            this.iconButton1.Location = new System.Drawing.Point(1237, 4);
             this.iconButton1.Name = "iconButton1";
             this.iconButton1.Size = new System.Drawing.Size(75, 19);
             this.iconButton1.TabIndex = 6;
@@ -171,7 +171,7 @@ namespace TOAMediaPlayer
             this.iconPictureBox1.IconColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
             this.iconPictureBox1.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.iconPictureBox1.IconSize = 21;
-            this.iconPictureBox1.Location = new System.Drawing.Point(1708, 4);
+            this.iconPictureBox1.Location = new System.Drawing.Point(1346, 4);
             this.iconPictureBox1.Name = "iconPictureBox1";
             this.iconPictureBox1.Size = new System.Drawing.Size(25, 21);
             this.iconPictureBox1.TabIndex = 5;
@@ -201,7 +201,7 @@ namespace TOAMediaPlayer
             this.iconWindowClose.IconColor = System.Drawing.SystemColors.Window;
             this.iconWindowClose.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.iconWindowClose.IconSize = 21;
-            this.iconWindowClose.Location = new System.Drawing.Point(1876, 2);
+            this.iconWindowClose.Location = new System.Drawing.Point(1514, 2);
             this.iconWindowClose.Margin = new System.Windows.Forms.Padding(2);
             this.iconWindowClose.Name = "iconWindowClose";
             this.iconWindowClose.Size = new System.Drawing.Size(25, 21);
@@ -218,7 +218,7 @@ namespace TOAMediaPlayer
             this.iconWindowMinimize.IconColor = System.Drawing.SystemColors.Window;
             this.iconWindowMinimize.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.iconWindowMinimize.IconSize = 20;
-            this.iconWindowMinimize.Location = new System.Drawing.Point(1817, 5);
+            this.iconWindowMinimize.Location = new System.Drawing.Point(1455, 5);
             this.iconWindowMinimize.Margin = new System.Windows.Forms.Padding(2);
             this.iconWindowMinimize.Name = "iconWindowMinimize";
             this.iconWindowMinimize.Size = new System.Drawing.Size(25, 20);
@@ -235,7 +235,7 @@ namespace TOAMediaPlayer
             this.iconWindowMaximize.IconColor = System.Drawing.SystemColors.Window;
             this.iconWindowMaximize.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.iconWindowMaximize.IconSize = 21;
-            this.iconWindowMaximize.Location = new System.Drawing.Point(1847, 2);
+            this.iconWindowMaximize.Location = new System.Drawing.Point(1485, 2);
             this.iconWindowMaximize.Margin = new System.Windows.Forms.Padding(2);
             this.iconWindowMaximize.Name = "iconWindowMaximize";
             this.iconWindowMaximize.Size = new System.Drawing.Size(25, 21);
@@ -252,7 +252,7 @@ namespace TOAMediaPlayer
             this.iconLogo.IconColor = System.Drawing.Color.LawnGreen;
             this.iconLogo.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.iconLogo.IconSize = 20;
-            this.iconLogo.Location = new System.Drawing.Point(1678, 3);
+            this.iconLogo.Location = new System.Drawing.Point(1316, 3);
             this.iconLogo.Margin = new System.Windows.Forms.Padding(2);
             this.iconLogo.Name = "iconLogo";
             this.iconLogo.Size = new System.Drawing.Size(25, 20);
@@ -290,8 +290,8 @@ namespace TOAMediaPlayer
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
-            this.splitContainer1.Size = new System.Drawing.Size(1904, 924);
-            this.splitContainer1.SplitterDistance = 1259;
+            this.splitContainer1.Size = new System.Drawing.Size(1542, 1035);
+            this.splitContainer1.SplitterDistance = 1019;
             this.splitContainer1.TabIndex = 9;
             // 
             // iconButtonPlayer8
@@ -302,9 +302,9 @@ namespace TOAMediaPlayer
             this.iconButtonPlayer8.IconChar = FontAwesome.Sharp.IconChar.None;
             this.iconButtonPlayer8.IconColor = System.Drawing.Color.Black;
             this.iconButtonPlayer8.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.iconButtonPlayer8.Location = new System.Drawing.Point(963, 879);
+            this.iconButtonPlayer8.Location = new System.Drawing.Point(963, 880);
             this.iconButtonPlayer8.Name = "iconButtonPlayer8";
-            this.iconButtonPlayer8.Size = new System.Drawing.Size(35, 124);
+            this.iconButtonPlayer8.Size = new System.Drawing.Size(35, 128);
             this.iconButtonPlayer8.TabIndex = 153;
             this.iconButtonPlayer8.Text = "8";
             this.iconButtonPlayer8.UseVisualStyleBackColor = false;
@@ -318,9 +318,9 @@ namespace TOAMediaPlayer
             this.iconButtonPlayer7.IconChar = FontAwesome.Sharp.IconChar.None;
             this.iconButtonPlayer7.IconColor = System.Drawing.Color.Black;
             this.iconButtonPlayer7.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.iconButtonPlayer7.Location = new System.Drawing.Point(963, 754);
+            this.iconButtonPlayer7.Location = new System.Drawing.Point(964, 751);
             this.iconButtonPlayer7.Name = "iconButtonPlayer7";
-            this.iconButtonPlayer7.Size = new System.Drawing.Size(35, 124);
+            this.iconButtonPlayer7.Size = new System.Drawing.Size(35, 131);
             this.iconButtonPlayer7.TabIndex = 152;
             this.iconButtonPlayer7.Text = "7";
             this.iconButtonPlayer7.UseVisualStyleBackColor = false;
@@ -334,7 +334,7 @@ namespace TOAMediaPlayer
             this.iconButtonPlayer6.IconChar = FontAwesome.Sharp.IconChar.None;
             this.iconButtonPlayer6.IconColor = System.Drawing.Color.Black;
             this.iconButtonPlayer6.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.iconButtonPlayer6.Location = new System.Drawing.Point(963, 626);
+            this.iconButtonPlayer6.Location = new System.Drawing.Point(963, 625);
             this.iconButtonPlayer6.Name = "iconButtonPlayer6";
             this.iconButtonPlayer6.Size = new System.Drawing.Size(35, 126);
             this.iconButtonPlayer6.TabIndex = 151;
@@ -350,7 +350,7 @@ namespace TOAMediaPlayer
             this.iconButtonPlayer5.IconChar = FontAwesome.Sharp.IconChar.None;
             this.iconButtonPlayer5.IconColor = System.Drawing.Color.Black;
             this.iconButtonPlayer5.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.iconButtonPlayer5.Location = new System.Drawing.Point(963, 501);
+            this.iconButtonPlayer5.Location = new System.Drawing.Point(964, 501);
             this.iconButtonPlayer5.Name = "iconButtonPlayer5";
             this.iconButtonPlayer5.Size = new System.Drawing.Size(35, 124);
             this.iconButtonPlayer5.TabIndex = 150;
@@ -366,9 +366,9 @@ namespace TOAMediaPlayer
             this.iconButtonPlayer4.IconChar = FontAwesome.Sharp.IconChar.None;
             this.iconButtonPlayer4.IconColor = System.Drawing.Color.Black;
             this.iconButtonPlayer4.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.iconButtonPlayer4.Location = new System.Drawing.Point(963, 378);
+            this.iconButtonPlayer4.Location = new System.Drawing.Point(964, 376);
             this.iconButtonPlayer4.Name = "iconButtonPlayer4";
-            this.iconButtonPlayer4.Size = new System.Drawing.Size(35, 122);
+            this.iconButtonPlayer4.Size = new System.Drawing.Size(35, 130);
             this.iconButtonPlayer4.TabIndex = 145;
             this.iconButtonPlayer4.Text = "4";
             this.iconButtonPlayer4.UseVisualStyleBackColor = false;
@@ -382,7 +382,7 @@ namespace TOAMediaPlayer
             this.iconButtonPlayer3.IconChar = FontAwesome.Sharp.IconChar.None;
             this.iconButtonPlayer3.IconColor = System.Drawing.Color.Black;
             this.iconButtonPlayer3.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.iconButtonPlayer3.Location = new System.Drawing.Point(963, 253);
+            this.iconButtonPlayer3.Location = new System.Drawing.Point(962, 253);
             this.iconButtonPlayer3.Name = "iconButtonPlayer3";
             this.iconButtonPlayer3.Size = new System.Drawing.Size(35, 124);
             this.iconButtonPlayer3.TabIndex = 138;
@@ -398,7 +398,7 @@ namespace TOAMediaPlayer
             this.iconButtonPlayer2.IconChar = FontAwesome.Sharp.IconChar.None;
             this.iconButtonPlayer2.IconColor = System.Drawing.Color.Black;
             this.iconButtonPlayer2.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.iconButtonPlayer2.Location = new System.Drawing.Point(963, 128);
+            this.iconButtonPlayer2.Location = new System.Drawing.Point(962, 129);
             this.iconButtonPlayer2.Name = "iconButtonPlayer2";
             this.iconButtonPlayer2.Size = new System.Drawing.Size(35, 124);
             this.iconButtonPlayer2.TabIndex = 11;
@@ -414,9 +414,9 @@ namespace TOAMediaPlayer
             this.iconButtonPlayer1.IconChar = FontAwesome.Sharp.IconChar.None;
             this.iconButtonPlayer1.IconColor = System.Drawing.Color.LawnGreen;
             this.iconButtonPlayer1.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.iconButtonPlayer1.Location = new System.Drawing.Point(963, 3);
+            this.iconButtonPlayer1.Location = new System.Drawing.Point(962, -1);
             this.iconButtonPlayer1.Name = "iconButtonPlayer1";
-            this.iconButtonPlayer1.Size = new System.Drawing.Size(35, 124);
+            this.iconButtonPlayer1.Size = new System.Drawing.Size(35, 130);
             this.iconButtonPlayer1.TabIndex = 10;
             this.iconButtonPlayer1.Text = "1";
             this.iconButtonPlayer1.UseVisualStyleBackColor = false;
@@ -440,8 +440,8 @@ namespace TOAMediaPlayer
             this.splitContainer2.Panel2.Controls.Add(this.myListView);
             this.splitContainer2.Panel2.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.splitContainer2.Panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer2_Panel2_Paint);
-            this.splitContainer2.Size = new System.Drawing.Size(641, 924);
-            this.splitContainer2.SplitterDistance = 28;
+            this.splitContainer2.Size = new System.Drawing.Size(519, 1035);
+            this.splitContainer2.SplitterDistance = 31;
             this.splitContainer2.TabIndex = 0;
             // 
             // panel2
@@ -458,7 +458,7 @@ namespace TOAMediaPlayer
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(641, 28);
+            this.panel2.Size = new System.Drawing.Size(519, 31);
             this.panel2.TabIndex = 2;
             // 
             // lblPlayerId
@@ -607,13 +607,13 @@ namespace TOAMediaPlayer
             this.nPlayer8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(62)))));
             this.nPlayer8.CurrentMedia = null;
             this.nPlayer8.CurrentPlaylist = null;
-            this.nPlayer8.Location = new System.Drawing.Point(4, 873);
+            this.nPlayer8.Location = new System.Drawing.Point(2, 879);
             this.nPlayer8.Margin = new System.Windows.Forms.Padding(4);
             this.nPlayer8.MediaPlaybackState = NAudio.Wave.PlaybackState.Stopped;
             this.nPlayer8.Name = "nPlayer8";
             this.nPlayer8.PlayedFileName = null;
             this.nPlayer8.PlayerName = null;
-            this.nPlayer8.Size = new System.Drawing.Size(960, 128);
+            this.nPlayer8.Size = new System.Drawing.Size(962, 128);
             this.nPlayer8.TabIndex = 0;
             this.nPlayer8.Volume = 0F;
             // 
@@ -622,13 +622,13 @@ namespace TOAMediaPlayer
             this.nPlayer7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(62)))));
             this.nPlayer7.CurrentMedia = null;
             this.nPlayer7.CurrentPlaylist = null;
-            this.nPlayer7.Location = new System.Drawing.Point(4, 748);
+            this.nPlayer7.Location = new System.Drawing.Point(2, 754);
             this.nPlayer7.Margin = new System.Windows.Forms.Padding(4);
             this.nPlayer7.MediaPlaybackState = NAudio.Wave.PlaybackState.Stopped;
             this.nPlayer7.Name = "nPlayer7";
             this.nPlayer7.PlayedFileName = null;
             this.nPlayer7.PlayerName = null;
-            this.nPlayer7.Size = new System.Drawing.Size(960, 128);
+            this.nPlayer7.Size = new System.Drawing.Size(962, 128);
             this.nPlayer7.TabIndex = 1;
             this.nPlayer7.Volume = 0F;
             // 
@@ -637,13 +637,13 @@ namespace TOAMediaPlayer
             this.nPlayer6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(62)))));
             this.nPlayer6.CurrentMedia = null;
             this.nPlayer6.CurrentPlaylist = null;
-            this.nPlayer6.Location = new System.Drawing.Point(4, 624);
+            this.nPlayer6.Location = new System.Drawing.Point(0, 626);
             this.nPlayer6.Margin = new System.Windows.Forms.Padding(4);
             this.nPlayer6.MediaPlaybackState = NAudio.Wave.PlaybackState.Stopped;
             this.nPlayer6.Name = "nPlayer6";
             this.nPlayer6.PlayedFileName = null;
             this.nPlayer6.PlayerName = null;
-            this.nPlayer6.Size = new System.Drawing.Size(960, 128);
+            this.nPlayer6.Size = new System.Drawing.Size(964, 128);
             this.nPlayer6.TabIndex = 2;
             this.nPlayer6.Volume = 0F;
             // 
@@ -652,13 +652,13 @@ namespace TOAMediaPlayer
             this.nPlayer5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(62)))));
             this.nPlayer5.CurrentMedia = null;
             this.nPlayer5.CurrentPlaylist = null;
-            this.nPlayer5.Location = new System.Drawing.Point(4, 500);
+            this.nPlayer5.Location = new System.Drawing.Point(2, 501);
             this.nPlayer5.Margin = new System.Windows.Forms.Padding(4);
             this.nPlayer5.MediaPlaybackState = NAudio.Wave.PlaybackState.Stopped;
             this.nPlayer5.Name = "nPlayer5";
             this.nPlayer5.PlayedFileName = null;
             this.nPlayer5.PlayerName = null;
-            this.nPlayer5.Size = new System.Drawing.Size(960, 128);
+            this.nPlayer5.Size = new System.Drawing.Size(962, 128);
             this.nPlayer5.TabIndex = 3;
             this.nPlayer5.Volume = 0F;
             // 
@@ -667,13 +667,13 @@ namespace TOAMediaPlayer
             this.nPlayer4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(62)))));
             this.nPlayer4.CurrentMedia = null;
             this.nPlayer4.CurrentPlaylist = null;
-            this.nPlayer4.Location = new System.Drawing.Point(3, 376);
+            this.nPlayer4.Location = new System.Drawing.Point(2, 378);
             this.nPlayer4.Margin = new System.Windows.Forms.Padding(4);
             this.nPlayer4.MediaPlaybackState = NAudio.Wave.PlaybackState.Stopped;
             this.nPlayer4.Name = "nPlayer4";
             this.nPlayer4.PlayedFileName = null;
             this.nPlayer4.PlayerName = null;
-            this.nPlayer4.Size = new System.Drawing.Size(960, 128);
+            this.nPlayer4.Size = new System.Drawing.Size(962, 128);
             this.nPlayer4.TabIndex = 4;
             this.nPlayer4.Volume = 0F;
             // 
@@ -682,7 +682,7 @@ namespace TOAMediaPlayer
             this.nPlayer3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(62)))));
             this.nPlayer3.CurrentMedia = null;
             this.nPlayer3.CurrentPlaylist = null;
-            this.nPlayer3.Location = new System.Drawing.Point(2, 251);
+            this.nPlayer3.Location = new System.Drawing.Point(2, 252);
             this.nPlayer3.Margin = new System.Windows.Forms.Padding(4);
             this.nPlayer3.MediaPlaybackState = NAudio.Wave.PlaybackState.Stopped;
             this.nPlayer3.Name = "nPlayer3";
@@ -697,7 +697,7 @@ namespace TOAMediaPlayer
             this.nPlayer2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(62)))));
             this.nPlayer2.CurrentMedia = null;
             this.nPlayer2.CurrentPlaylist = null;
-            this.nPlayer2.Location = new System.Drawing.Point(2, 129);
+            this.nPlayer2.Location = new System.Drawing.Point(2, 128);
             this.nPlayer2.Margin = new System.Windows.Forms.Padding(4);
             this.nPlayer2.MediaPlaybackState = NAudio.Wave.PlaybackState.Stopped;
             this.nPlayer2.Name = "nPlayer2";
@@ -719,7 +719,7 @@ namespace TOAMediaPlayer
             otsMedia1.Shuffle = false;
             this.nPlayer1.CurrentMedia = otsMedia1;
             this.nPlayer1.CurrentPlaylist = null;
-            this.nPlayer1.Location = new System.Drawing.Point(2, 4);
+            this.nPlayer1.Location = new System.Drawing.Point(2, 0);
             this.nPlayer1.Margin = new System.Windows.Forms.Padding(4);
             this.nPlayer1.MediaPlaybackState = NAudio.Wave.PlaybackState.Stopped;
             this.nPlayer1.Name = "nPlayer1";
@@ -748,7 +748,7 @@ namespace TOAMediaPlayer
             this.myListView.Location = new System.Drawing.Point(0, 0);
             this.myListView.Margin = new System.Windows.Forms.Padding(4);
             this.myListView.Name = "myListView";
-            this.myListView.Size = new System.Drawing.Size(641, 892);
+            this.myListView.Size = new System.Drawing.Size(519, 1000);
             this.myListView.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.myListView.TabIndex = 2;
             this.myListView.UseCompatibleStateImageBehavior = false;
@@ -788,7 +788,7 @@ namespace TOAMediaPlayer
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Gray;
-            this.ClientSize = new System.Drawing.Size(1904, 950);
+            this.ClientSize = new System.Drawing.Size(1542, 1061);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.panel1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

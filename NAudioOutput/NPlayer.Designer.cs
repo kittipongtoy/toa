@@ -1,4 +1,6 @@
-﻿namespace TOAMediaPlayer.NAudioOutput
+﻿using System.Drawing;
+
+namespace TOAMediaPlayer.NAudioOutput
 {
     partial class NPlayer
     {
@@ -95,6 +97,7 @@
             this.gbPlayer3.Location = new System.Drawing.Point(3, 19);
             this.gbPlayer3.Name = "gbPlayer3";
             this.gbPlayer3.Size = new System.Drawing.Size(531, 41);
+            this.gbPlayer3.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
             this.gbPlayer3.TabIndex = 128;
             this.gbPlayer3.TabStop = false;
             // 
@@ -181,7 +184,7 @@
             this.lblVolumeLevel.AutoSize = true;
             this.lblVolumeLevel.Font = new System.Drawing.Font("Lucida Bright", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblVolumeLevel.ForeColor = System.Drawing.Color.White;
-            this.lblVolumeLevel.Location = new System.Drawing.Point(207, 19);
+            this.lblVolumeLevel.Location = new System.Drawing.Point(205, 42);
             this.lblVolumeLevel.Name = "lblVolumeLevel";
             this.lblVolumeLevel.Size = new System.Drawing.Size(0, 23);
             this.lblVolumeLevel.TabIndex = 0;
@@ -195,7 +198,7 @@
             this.IncreaseVolumeButton.IconColor = System.Drawing.Color.White;
             this.IncreaseVolumeButton.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.IncreaseVolumeButton.IconSize = 45;
-            this.IncreaseVolumeButton.Location = new System.Drawing.Point(127, 11);
+            this.IncreaseVolumeButton.Location = new System.Drawing.Point(130, 32);
             this.IncreaseVolumeButton.Name = "IncreaseVolumeButton";
             this.IncreaseVolumeButton.Size = new System.Drawing.Size(46, 44);
             this.IncreaseVolumeButton.TabIndex = 1;
@@ -211,7 +214,7 @@
             this.DecreaseVolumeButton.IconColor = System.Drawing.Color.White;
             this.DecreaseVolumeButton.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.DecreaseVolumeButton.IconSize = 45;
-            this.DecreaseVolumeButton.Location = new System.Drawing.Point(77, 11);
+            this.DecreaseVolumeButton.Location = new System.Drawing.Point(80, 32);
             this.DecreaseVolumeButton.Name = "DecreaseVolumeButton";
             this.DecreaseVolumeButton.Size = new System.Drawing.Size(44, 46);
             this.DecreaseVolumeButton.TabIndex = 2;
@@ -224,7 +227,7 @@
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Lucida Bright", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(14, 25);
+            this.label1.Location = new System.Drawing.Point(17, 47);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(50, 14);
             this.label1.TabIndex = 3;
@@ -237,9 +240,9 @@
             this.panel4.Controls.Add(this.DecreaseVolumeButton);
             this.panel4.Controls.Add(this.lblVolumeLevel);
             this.panel4.Controls.Add(this.IncreaseVolumeButton);
-            this.panel4.Location = new System.Drawing.Point(687, 33);
+            this.panel4.Location = new System.Drawing.Point(687, 24);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(270, 66);
+            this.panel4.Size = new System.Drawing.Size(270, 100);
             this.panel4.TabIndex = 138;
             // 
             // labelTotalTime
@@ -271,7 +274,7 @@
             this.Controls.Add(this.trackBarPosition);
             this.Controls.Add(this.gbPlayer3);
             this.Name = "NPlayer";
-            this.Size = new System.Drawing.Size(972, 118);
+            this.Size = new System.Drawing.Size(972, 124);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.gbPlayer3.ResumeLayout(false);

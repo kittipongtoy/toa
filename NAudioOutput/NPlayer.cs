@@ -516,6 +516,15 @@ namespace TOAMediaPlayer.NAudioOutput
                 {
                     ListOTSMedia.Add((OTSMedia)_CurrentPlaylist[i]);
                 }
+
+                //ListOTSMedia.AddRange(Enumerable.Range(0, _CurrentPlaylist.count).Select(i => (OTSMedia)_CurrentPlaylist[i]));
+
+                //var medias = Enumerable.Range(0, _CurrentPlaylist.count)
+                //       .Select(i => _CurrentPlaylist[i])
+                //       .OfType<OTSMedia>(); // ปลอดภัย + กรองได้
+
+                //ListOTSMedia.AddRange(medias);
+
                 //CurrentPlaylistChanged(this, e);
             }
 

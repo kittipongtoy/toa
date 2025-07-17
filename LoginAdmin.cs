@@ -2,6 +2,7 @@
 using NAudio.CoreAudioApi;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
+using NLog.Fluent;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -46,11 +47,11 @@ namespace TOAMediaPlayer
                 if (user.ToLower() == "admin" && pass.ToLower() == "toa12345")
                 {
                     this.Close();
-                    //SetupOutput xForm = new SetupOutput(player);
-                    //xForm.StartPosition = FormStartPosition.CenterParent;
-                    //xForm.ShowDialog();
+                    SetupOutput xForm = new SetupOutput(player);
+                    xForm.StartPosition = FormStartPosition.CenterParent;
+                    xForm.ShowDialog();
 
-                    ShowSetting();
+                    //ShowSetting();
                 }
                 else
                 {
@@ -151,14 +152,42 @@ namespace TOAMediaPlayer
             cbOutputDriver.SelectedIndex = 0;
 
             Label lblDriver = new Label { Text = "Driver", Left = 20, Top = 90, Width = 100 };
-            cbOutputDeviceName = new ComboBox { Left = 130, Top = 85, Width = 200 };
-            for (int i = 0; i < WaveOut.DeviceCount; i++)
+            cbOutputDeviceName = new ComboBox { Left = 130, Top = 85, Width = 300 };
+            //for (int i = 0; i < WaveOut.DeviceCount; i++)
+            //{
+            //    var deviceInfo = WaveOut.GetCapabilities(i);
+            //    cbOutputDeviceName.Items.Add(deviceInfo.ProductName);
+            //}
+
+            //cbOutputDeviceName.DisplayMember = "Value";  // แสดงชื่อ
+            //cbOutputDeviceName.ValueMember = "Key";      // ใช้ index อ้างอิง
+
+            //for (int i = 0; i < WaveOut.DeviceCount; i++)
+            //{
+            //    var deviceInfo = WaveOut.GetCapabilities(i);
+            //    cbOutputDeviceName.Items.Add(new KeyValuePair<int, string>(i, deviceInfo.ProductName));
+            //}
+
+            //if (cbOutputDeviceName.Items.Count > 0)
+            //    cbOutputDeviceName.SelectedIndex = 0;
+
+            // ก่อนใช้งาน ต้องตั้ง DisplayMember/ValueMember
+            cbOutputDeviceName.DisplayMember = "Value"; // ชื่อแสดง
+            cbOutputDeviceName.ValueMember = "Key";     // index หรือ id ที่จะใช้จริง
+
+            var enumerator = new MMDeviceEnumerator();
+            var devices = enumerator.EnumerateAudioEndPoints(DataFlow.Render, DeviceState.Active);
+
+            cbOutputDeviceName.Items.Clear();
+            for (int i = 0; i < devices.Count; i++)
             {
-                var deviceInfo = WaveOut.GetCapabilities(i);
-                cbOutputDeviceName.Items.Add(deviceInfo.ProductName);
+                var device1 = devices[i];
+                cbOutputDeviceName.Items.Add(new KeyValuePair<int, string>(i, device1.FriendlyName));
             }
+
             if (cbOutputDeviceName.Items.Count > 0)
                 cbOutputDeviceName.SelectedIndex = 0;
+
 
             CheckBox chkEventCallback = new CheckBox { Text = "Event Callback", Left = 20, Top = 130 };
             CheckBox chkExclusive = new CheckBox { Text = "Exclusive Mode", Left = 150, Top = 130 };
@@ -197,7 +226,7 @@ namespace TOAMediaPlayer
                 TickFrequency = 10
             };
 
-            MMDeviceEnumerator enumerator = new MMDeviceEnumerator();
+            //MMDeviceEnumerator enumerator = new MMDeviceEnumerator();
             MMDevice device = enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
             float currentVolume = device.AudioEndpointVolume.MasterVolumeLevelScalar;
             tbVolume.Value = (int)(currentVolume * 100);
@@ -448,9 +477,34 @@ namespace TOAMediaPlayer
             #endregion
             #endregion
 
-            Panel panelLogs = new Panel { Left = 20, Top = 220, Width = 790, Height = 250, BorderStyle = BorderStyle.FixedSingle, BackColor = Color.LightGray, Visible = false };
-            RichTextBox rtbLogs = new RichTextBox { Left = 10, Top = 10, Width = 770, Height = 230, BackColor = Color.White, BorderStyle = BorderStyle.None, ReadOnly = true };
+            Panel panelLogs = new Panel 
+            { 
+                Left = 20, 
+                Top = 220, 
+                Width = 790, 
+                Height = 250, 
+                BorderStyle = BorderStyle.FixedSingle, 
+                BackColor = Color.LightGray, 
+                Visible = false 
+            };
+            RichTextBox rtbLogs = new RichTextBox 
+            { 
+                Left = 10, 
+                Top = 40, 
+                Width = 770, 
+                Height = 230, 
+                BackColor = Color.White, 
+                BorderStyle = BorderStyle.None, 
+                ReadOnly = true 
+            };
             rtbLogs.Clear(); // ล้างข้อความก่อน
+
+            Button btnClearlog = new Button { Text = "Clear log", Left = 680, Top = 5, Width = 90, Height = 30 };
+            btnClearlog.Click += (s, e) =>
+            {
+                rtbLogs.Clear();
+            };
+
             var reads = files.Read();
             string[] stringSeparators = new string[] { "\r\n" };
             var linewrite = reads.ToString().Split(stringSeparators, StringSplitOptions.None);
@@ -464,7 +518,10 @@ namespace TOAMediaPlayer
                     //}
                 }
             }
-            panelLogs.Controls.Add(rtbLogs);
+            panelLogs.Controls.AddRange(new Control[] 
+            { 
+                btnClearlog, rtbLogs 
+            });
 
             Button btnRoute = new Button { Text = "Route", Left = 20, Top = 490, Width = 90, Height = 30 };
             Button btnIPGain = new Button { Text = "IP and Gain", Left = 120, Top = 490, Width = 110, Height = 30 };
@@ -605,7 +662,7 @@ namespace TOAMediaPlayer
                 cbPort.Text = configsocket.GetValue("port").ToString();
             }
 
-            txtbox.Text = configsocket.GetValue("dB").ToString();
+            txtbox.Text = configsocket.GetValue("dB1").ToString();
             txtbox2.Text = configsocket.GetValue("dB2").ToString();
             txtbox3.Text = configsocket.GetValue("dB3").ToString();
             txtbox4.Text = configsocket.GetValue("dB4").ToString();
@@ -613,7 +670,7 @@ namespace TOAMediaPlayer
             txtbox6.Text = configsocket.GetValue("dB6").ToString();
             txtbox7.Text = configsocket.GetValue("dB7").ToString();
             txtbox8.Text = configsocket.GetValue("dB8").ToString();
-            var chks = configsocket.GetValue("adB").ToString() == "active";
+            var chks = configsocket.GetValue("adB1").ToString() == "active";
             if (chks)
             {
                 chk.Checked = true;
@@ -622,6 +679,70 @@ namespace TOAMediaPlayer
             {
                 chk.Checked = false;
             }
+            var chks2 = configsocket.GetValue("adB2").ToString() == "active";
+            if (chks2)
+            {
+                chk2.Checked = true;
+            }
+            else
+            {
+                chk2.Checked = false;
+            }
+            var chks3 = configsocket.GetValue("adB3").ToString() == "active";
+            if (chks3)
+            {
+                chk3.Checked = true;
+            }
+            else
+            {
+                chk3.Checked = false;
+            }
+            var chks4 = configsocket.GetValue("adB4").ToString() == "active";
+            if (chks4)
+            {
+                chk4.Checked = true;
+            }
+            else
+            {
+                chk4.Checked = false;
+            }
+            var chks5 = configsocket.GetValue("adB5").ToString() == "active";
+            if (chks5)
+            {
+                chk5.Checked = true;
+            }
+            else
+            {
+                chk5.Checked = false;
+            }
+            var chks6 = configsocket.GetValue("adB6").ToString() == "active";
+            if (chks6)
+            {
+                chk6.Checked = true;
+            }
+            else
+            {
+                chk6.Checked = false;
+            }
+            var chks7 = configsocket.GetValue("adB7").ToString() == "active";
+            if (chks7)
+            {
+                chk7.Checked = true;
+            }
+            else
+            {
+                chk7.Checked = false;
+            }
+            var chks8 = configsocket.GetValue("adB8").ToString() == "active";
+            if (chks8)
+            {
+                chk8.Checked = true;
+            }
+            else
+            {
+                chk8.Checked = false;
+            }
+
 
             prompt.ShowDialog();
         }
@@ -654,7 +775,10 @@ namespace TOAMediaPlayer
             string playerName = cbPlayer.SelectedItem?.ToString();
 
             // ดึง Output Device จาก Panel
-            string DeviceName = cbOutputDeviceName.SelectedItem?.ToString();
+            //string DeviceName = cbOutputDeviceName.SelectedItem?.ToString();
+            int selectedDeviceIndex = cbOutputDeviceName.SelectedValue is int value ? value : -1;
+
+            string DeviceName = ((KeyValuePair<int, string>)cbOutputDeviceName.SelectedItem).Value;
 
             if (!string.IsNullOrEmpty(playerName) && HKLMSoftwareTOAPlayer != null)
             {
@@ -669,13 +793,17 @@ namespace TOAMediaPlayer
                 MMDeviceEnumerator enumerator = new MMDeviceEnumerator();
                 var allDevices = enumerator.EnumerateAudioEndPoints(DataFlow.Render, DeviceState.Active);
                 // หา device ที่ชื่อเหมือนกัน
-                var selectedDevice = allDevices.FirstOrDefault(d => d.FriendlyName == DeviceName);
+                string deviceNameNormalized = DeviceName.ToLower().Trim();
+
+                // หา device ที่ชื่อคล้ายกัน
+                var selectedDevice = allDevices.FirstOrDefault(d => d.FriendlyName.ToLower().Contains(deviceNameNormalized));
                 if (selectedDevice != null)
                 {
                     cHKLMPlayer.SetValue("OutputID", selectedDevice.ID, RegistryValueKind.String);
                 }
                 else
                 {
+                    // fallback ป้องกัน null
                     cHKLMPlayer.SetValue("OutputID", Guid.NewGuid().ToString(), RegistryValueKind.String);
                 }
                 cHKLMPlayer.SetValue("Priority", 1, RegistryValueKind.DWord);
@@ -739,6 +867,7 @@ namespace TOAMediaPlayer
             var txt = "";
             int value;
             var messagebox = new Helper.MessageBox();
+            bool message = true;
             if (int.TryParse(txtbox.Text, out value))
             {
                 RegistryKey configsocket = this.HKLMSoftwareTOAConfig.OpenSubKey("trackname", true);
@@ -747,15 +876,19 @@ namespace TOAMediaPlayer
                 {
                     txt = "ค่าของ dB มากเกินไป ตัวเลขสูงสุด คือ 93";
                     messagebox.ShowCenter_DialogError(txt, "Error");
+                    message = false;
                 }
                 else if (val <= 50)
                 {
                     txt = "ค่าของ dB น้อยเกินไป ตัวเลขขั้นต่ำ คือ 50";
                     messagebox.ShowCenter_DialogError(txt, "Error");
+                    message = false;
                 }
                 else
                 {
-                    if (configsocket.GetValue("adB").ToString() == "active")
+                    configsocket.SetValue("dB1", txtbox.Text == "" ? "50" : txtbox.Text);
+                    configsocket.SetValue("adB1", chk.Checked == true ? "active" : "unactive");
+                    if (configsocket.GetValue("adB1").ToString() == "active")
                     {
                         chk.Checked = true;
                     }
@@ -763,12 +896,12 @@ namespace TOAMediaPlayer
                     {
                         chk.Checked = false;
                     }
-                    configsocket.SetValue("dB", txtbox.Text == "" ? "50" : txtbox.Text);
-                    configsocket.SetValue("adB", chk.Checked == true ? "active" : "unactive");
                 }
 
-                var message = new Helper.MessageBox();
-                message.ShowCenter_DialogError("บันทึก player1 เรียบร้อยแล้ว", "แจ้งเตือน");
+                if (message)
+                {
+                    messagebox.ShowCenter_DialogError("บันทึก player1 เรียบร้อยแล้ว", "แจ้งเตือน");
+                }
             }
             else
             {
@@ -781,6 +914,7 @@ namespace TOAMediaPlayer
             var txt = "";
             int value;
             var messagebox = new Helper.MessageBox();
+            bool message = true;
             if (int.TryParse(txtbox2.Text, out value))
             {
                 RegistryKey configsocket = this.HKLMSoftwareTOAConfig.OpenSubKey("trackname", true);
@@ -789,14 +923,18 @@ namespace TOAMediaPlayer
                 {
                     txt = "ค่าของ dB มากเกินไป ตัวเลขสูงสุด คือ 93";
                     messagebox.ShowCenter_DialogError(txt, "Error");
+                    message = false;
                 }
                 else if (val <= 50)
                 {
                     txt = "ค่าของ dB น้อยเกินไป ตัวเลขขั้นต่ำ คือ 50";
                     messagebox.ShowCenter_DialogError(txt, "Error");
+                    message = false;
                 }
                 else
                 {
+                    configsocket.SetValue("dB2", txtbox2.Text == "" ? "50" : txtbox2.Text);
+                    configsocket.SetValue("adB2", chk2.Checked == true ? "active" : "unactive");
                     if (configsocket.GetValue("adB2").ToString() == "active")
                     {
                         chk2.Checked = true;
@@ -805,12 +943,12 @@ namespace TOAMediaPlayer
                     {
                         chk2.Checked = false;
                     }
-                    configsocket.SetValue("dB2", txtbox2.Text == "" ? "50" : txtbox.Text);
-                    configsocket.SetValue("adB2", chk2.Checked == true ? "active" : "unactive");
                 }
 
-                var message = new Helper.MessageBox();
-                message.ShowCenter_DialogError("บันทึก player2 เรียบร้อยแล้ว", "แจ้งเตือน");
+                if (message)
+                { 
+                    messagebox.ShowCenter_DialogError("บันทึก player2 เรียบร้อยแล้ว", "แจ้งเตือน");
+                }
             }
             else
             {
@@ -823,6 +961,7 @@ namespace TOAMediaPlayer
             var txt = "";
             int value;
             var messagebox = new Helper.MessageBox();
+            bool message = true;
             if (int.TryParse(txtbox3.Text, out value))
             {
                 RegistryKey configsocket = this.HKLMSoftwareTOAConfig.OpenSubKey("trackname", true);
@@ -831,14 +970,18 @@ namespace TOAMediaPlayer
                 {
                     txt = "ค่าของ dB มากเกินไป ตัวเลขสูงสุด คือ 93";
                     messagebox.ShowCenter_DialogError(txt, "Error");
+                    message = false;
                 }
                 else if (val <= 50)
                 {
                     txt = "ค่าของ dB น้อยเกินไป ตัวเลขขั้นต่ำ คือ 50";
                     messagebox.ShowCenter_DialogError(txt, "Error");
+                    message = false;
                 }
                 else
-                {
+                {                    
+                    configsocket.SetValue("dB3", txtbox3.Text == "" ? "50" : txtbox3.Text);
+                    configsocket.SetValue("adB3", chk3.Checked == true ? "active" : "unactive");
                     if (configsocket.GetValue("adB3").ToString() == "active")
                     {
                         chk3.Checked = true;
@@ -847,12 +990,12 @@ namespace TOAMediaPlayer
                     {
                         chk3.Checked = false;
                     }
-                    configsocket.SetValue("dB3", txtbox3.Text == "" ? "50" : txtbox.Text);
-                    configsocket.SetValue("adB3", chk3.Checked == true ? "active" : "unactive");
                 }
 
-                var message = new Helper.MessageBox();
-                message.ShowCenter_DialogError("บันทึก player3 เรียบร้อยแล้ว", "แจ้งเตือน");
+                if (message)
+                {
+                    messagebox.ShowCenter_DialogError("บันทึก player3 เรียบร้อยแล้ว", "แจ้งเตือน");
+                }
             }
             else
             {
@@ -865,6 +1008,7 @@ namespace TOAMediaPlayer
             var txt = "";
             int value;
             var messagebox = new Helper.MessageBox();
+            bool message = true;
             if (int.TryParse(txtbox4.Text, out value))
             {
                 RegistryKey configsocket = this.HKLMSoftwareTOAConfig.OpenSubKey("trackname", true);
@@ -873,14 +1017,18 @@ namespace TOAMediaPlayer
                 {
                     txt = "ค่าของ dB มากเกินไป ตัวเลขสูงสุด คือ 93";
                     messagebox.ShowCenter_DialogError(txt, "Error");
+                    message = false;
                 }
                 else if (val <= 50)
                 {
                     txt = "ค่าของ dB น้อยเกินไป ตัวเลขขั้นต่ำ คือ 50";
                     messagebox.ShowCenter_DialogError(txt, "Error");
+                    message = false;
                 }
                 else
                 {
+                    configsocket.SetValue("dB4", txtbox4.Text == "" ? "50" : txtbox4.Text);
+                    configsocket.SetValue("adB4", chk4.Checked == true ? "active" : "unactive");
                     if (configsocket.GetValue("adB4").ToString() == "active")
                     {
                         chk4.Checked = true;
@@ -889,12 +1037,12 @@ namespace TOAMediaPlayer
                     {
                         chk4.Checked = false;
                     }
-                    configsocket.SetValue("dB4", txtbox4.Text == "" ? "50" : txtbox.Text);
-                    configsocket.SetValue("adB4", chk4.Checked == true ? "active" : "unactive");
                 }
 
-                var message = new Helper.MessageBox();
-                message.ShowCenter_DialogError("บันทึก player4 เรียบร้อยแล้ว", "แจ้งเตือน");
+                if (message)
+                {
+                    messagebox.ShowCenter_DialogError("บันทึก player4 เรียบร้อยแล้ว", "แจ้งเตือน");
+                }
             }
             else
             {
@@ -907,6 +1055,7 @@ namespace TOAMediaPlayer
             var txt = "";
             int value;
             var messagebox = new Helper.MessageBox();
+            bool message = true;
             if (int.TryParse(txtbox5.Text, out value))
             {
                 RegistryKey configsocket = this.HKLMSoftwareTOAConfig.OpenSubKey("trackname", true);
@@ -915,14 +1064,18 @@ namespace TOAMediaPlayer
                 {
                     txt = "ค่าของ dB มากเกินไป ตัวเลขสูงสุด คือ 93";
                     messagebox.ShowCenter_DialogError(txt, "Error");
+                    message = false;
                 }
                 else if (val <= 50)
                 {
                     txt = "ค่าของ dB น้อยเกินไป ตัวเลขขั้นต่ำ คือ 50";
                     messagebox.ShowCenter_DialogError(txt, "Error");
+                    message = false;
                 }
                 else
                 {
+                    configsocket.SetValue("dB5", txtbox5.Text == "" ? "50" : txtbox5.Text);
+                    configsocket.SetValue("adB5", chk5.Checked == true ? "active" : "unactive");
                     if (configsocket.GetValue("adB5").ToString() == "active")
                     {
                         chk5.Checked = true;
@@ -931,12 +1084,12 @@ namespace TOAMediaPlayer
                     {
                         chk5.Checked = false;
                     }
-                    configsocket.SetValue("dB5", txtbox5.Text == "" ? "50" : txtbox.Text);
-                    configsocket.SetValue("adB5", chk5.Checked == true ? "active" : "unactive");
                 }
 
-                var message = new Helper.MessageBox();
-                message.ShowCenter_DialogError("บันทึก player5 เรียบร้อยแล้ว", "แจ้งเตือน");
+                if (message)
+                {
+                    messagebox.ShowCenter_DialogError("บันทึก player5 เรียบร้อยแล้ว", "แจ้งเตือน");
+                }
             }
             else
             {
@@ -949,6 +1102,7 @@ namespace TOAMediaPlayer
             var txt = "";
             int value;
             var messagebox = new Helper.MessageBox();
+            bool message = true;
             if (int.TryParse(txtbox6.Text, out value))
             {
                 RegistryKey configsocket = this.HKLMSoftwareTOAConfig.OpenSubKey("trackname", true);
@@ -957,14 +1111,18 @@ namespace TOAMediaPlayer
                 {
                     txt = "ค่าของ dB มากเกินไป ตัวเลขสูงสุด คือ 93";
                     messagebox.ShowCenter_DialogError(txt, "Error");
+                    message = false;
                 }
                 else if (val <= 50)
                 {
                     txt = "ค่าของ dB น้อยเกินไป ตัวเลขขั้นต่ำ คือ 50";
                     messagebox.ShowCenter_DialogError(txt, "Error");
+                    message = false;
                 }
                 else
                 {
+                    configsocket.SetValue("dB6", txtbox6.Text == "" ? "50" : txtbox6.Text);
+                    configsocket.SetValue("adB6", chk6.Checked == true ? "active" : "unactive");
                     if (configsocket.GetValue("adB6").ToString() == "active")
                     {
                         chk6.Checked = true;
@@ -973,12 +1131,12 @@ namespace TOAMediaPlayer
                     {
                         chk6.Checked = false;
                     }
-                    configsocket.SetValue("dB6", txtbox6.Text == "" ? "50" : txtbox.Text);
-                    configsocket.SetValue("adB6", chk6.Checked == true ? "active" : "unactive");
                 }
 
-                var message = new Helper.MessageBox();
-                message.ShowCenter_DialogError("บันทึก player6 เรียบร้อยแล้ว", "แจ้งเตือน");
+                if (message)
+                {
+                    messagebox.ShowCenter_DialogError("บันทึก player6 เรียบร้อยแล้ว", "แจ้งเตือน");
+                }
             }
             else
             {
@@ -991,6 +1149,7 @@ namespace TOAMediaPlayer
             var txt = "";
             int value;
             var messagebox = new Helper.MessageBox();
+            bool message = true;
             if (int.TryParse(txtbox7.Text, out value))
             {
                 RegistryKey configsocket = this.HKLMSoftwareTOAConfig.OpenSubKey("trackname", true);
@@ -1007,6 +1166,8 @@ namespace TOAMediaPlayer
                 }
                 else
                 {
+                    configsocket.SetValue("dB7", txtbox7.Text == "" ? "50" : txtbox7.Text);
+                    configsocket.SetValue("adB7", chk7.Checked == true ? "active" : "unactive");
                     if (configsocket.GetValue("adB7").ToString() == "active")
                     {
                         chk7.Checked = true;
@@ -1015,12 +1176,12 @@ namespace TOAMediaPlayer
                     {
                         chk7.Checked = false;
                     }
-                    configsocket.SetValue("dB7", txtbox7.Text == "" ? "50" : txtbox.Text);
-                    configsocket.SetValue("adB7", chk7.Checked == true ? "active" : "unactive");
                 }
 
-                var message = new Helper.MessageBox();
-                message.ShowCenter_DialogError("บันทึก player7 เรียบร้อยแล้ว", "แจ้งเตือน");
+                if (message)
+                { 
+                    messagebox.ShowCenter_DialogError("บันทึก player7 เรียบร้อยแล้ว", "แจ้งเตือน");
+                }
             }
             else
             {
@@ -1049,6 +1210,8 @@ namespace TOAMediaPlayer
                 }
                 else
                 {
+                    configsocket.SetValue("dB8", txtbox8.Text == "" ? "50" : txtbox8.Text);
+                    configsocket.SetValue("adB8", chk8.Checked == true ? "active" : "unactive");
                     if (configsocket.GetValue("adB8").ToString() == "active")
                     {
                         chk8.Checked = true;
@@ -1057,8 +1220,6 @@ namespace TOAMediaPlayer
                     {
                         chk8.Checked = false;
                     }
-                    configsocket.SetValue("dB8", txtbox8.Text == "" ? "50" : txtbox.Text);
-                    configsocket.SetValue("adB8", chk8.Checked == true ? "active" : "unactive");
                 }
 
                 var message = new Helper.MessageBox();
