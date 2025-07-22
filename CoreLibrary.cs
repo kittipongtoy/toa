@@ -40,30 +40,6 @@ namespace TOAMediaPlayer
             return $"{numBytes / 1152921504606846976d:0.#0} EB";
         }
 
-        //public static bool check_audio_file(String fileName)
-        //{
-        //    try
-        //    {
-        //        if (fileName.EndsWith(".mp3"))
-        //        {
-        //            WaveStream pcm = WaveFormatConversionStream.CreatePcmStream(new Mp3FileReader(fileName));
-        //            BlockAlignReductionStream stream = new BlockAlignReductionStream(pcm);
-        //            return true;
-
-        //        }
-        //        else if (fileName.EndsWith(".wav"))
-        //        {
-        //            WaveFileReader wave = new WaveFileReader(fileName);
-        //            return true;
-
-        //        }
-        //        return false;
-        //    }catch(Exception ex)
-        //    {
-        //        return false;
-        //    }
-        //}
-
         public static bool check_audio_file(string fileName) {
             try {
                 if (fileName.EndsWith(".mp3", StringComparison.OrdinalIgnoreCase)) {

@@ -108,6 +108,9 @@ namespace TOAMediaPlayer
 
         private TextBox txtbox8;
         private CheckBox chk8;
+
+        private CheckBox chkOnline;
+
         DataGridView dgvPlayers2 = new DataGridView
         {
             Left = 20,
@@ -198,7 +201,7 @@ namespace TOAMediaPlayer
             cbPlayer.SelectedItem = "nPlayer1";
 
             Button btnApply = new Button { Text = "Apply", Left = 350, Top = 165 };
-            CheckBox chkOnline = new CheckBox { Text = "Online", Left = 470, Top = 180, Width = 60 };
+            chkOnline = new CheckBox { Text = "Online", Left = 470, Top = 180, Width = 60 };
 
             btnApply.Click += SubmitApply;
             #endregion
@@ -391,7 +394,7 @@ namespace TOAMediaPlayer
             };
 
             // Auto Gain Label
-            Label lblAutoGain = new Label { Text = "Auto Gain Control (default 89.0)", Left = 10, Top = 10, Width = 300 };
+            Label lblAutoGain = new Label { Text = "Auto Gain Control (default 89.0)", Left = 10, Top = 10, Width = 200 };
             panelWhiteArea.Controls.Add(lblAutoGain);
 
             // วน Player 1–8 ฝั่งซ้าย + ขวา
@@ -743,6 +746,9 @@ namespace TOAMediaPlayer
                 chk8.Checked = false;
             }
 
+            RegistryKey configsocket1 = HKLMSoftwareTOAConfig.OpenSubKey("StatusProgram", true);
+            var socket_st = configsocket1.GetValue("Sockets");
+            chkOnline.Checked = Convert.ToBoolean(socket_st);
 
             prompt.ShowDialog();
         }
@@ -830,6 +836,23 @@ namespace TOAMediaPlayer
                 string deviceName = registryKeys[i].GetValue("DeviceName")?.ToString() ?? "รอตั้งค่า";
                 dgvPlayers2.Rows.Add($"Player {i + 1}", deviceName);
             }
+
+            //Online
+            RegistryKey configsocket = HKLMSoftwareTOAConfig.OpenSubKey("StatusProgram", true);
+
+            if (chkOnline.Checked)
+            {
+                configsocket.SetValue("Sockets", true.ToString(), RegistryValueKind.String);
+            }
+            else
+            {
+                configsocket.SetValue("Sockets", false.ToString(), RegistryValueKind.String);
+            }
+            var socket_st = configsocket.GetValue("Sockets");
+            chkOnline.Checked = Convert.ToBoolean(socket_st);
+
+            var message = new Helper.MessageBox();
+            message.ShowCenter_DialogError("Apply เรียบร้อยแล้ว", "แจ้งเตือน");
         }
 
         public void SubmitWebSetIP(object sender, EventArgs e)

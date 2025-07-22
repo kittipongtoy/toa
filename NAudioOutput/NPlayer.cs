@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using MetroFramework.Native;
+using Microsoft.Win32;
 using NAudio.CoreAudioApi;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
@@ -2106,6 +2107,7 @@ namespace TOAMediaPlayer.NAudioOutput
                     {
                         TimeSpan currentTime = (wavePlayer.PlaybackState == PlaybackState.Stopped) ? TimeSpan.Zero : audioFileReader.CurrentTime;
                         trackBarPosition.Value = Math.Min(trackBarPosition.Maximum, (int)(100 * currentTime.TotalSeconds / audioFileReader.TotalTime.TotalSeconds));
+                        trackBarPosition.Location = new System.Drawing.Point(3, 73);
                         var val = (xx * audioFileReader.TotalTime.TotalSeconds) / 100;
                         audioFileReader.CurrentTime = TimeSpan.FromSeconds(val);
                         this.trigger_url();
@@ -2120,6 +2122,7 @@ namespace TOAMediaPlayer.NAudioOutput
                 {
                     TimeSpan currentTime = (wavePlayer.PlaybackState == PlaybackState.Stopped) ? TimeSpan.Zero : audioFileReader.CurrentTime;
                     trackBarPosition.Value = Math.Min(trackBarPosition.Maximum, (int)(100 * currentTime.TotalSeconds / audioFileReader.TotalTime.TotalSeconds));
+                    trackBarPosition.Location = new System.Drawing.Point(3, 73);
                     var val = (xx * audioFileReader.TotalTime.TotalSeconds) / 100;
                     audioFileReader.CurrentTime = TimeSpan.FromSeconds(val);
                     this.trigger_url();

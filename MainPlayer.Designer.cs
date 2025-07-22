@@ -32,8 +32,8 @@ namespace TOAMediaPlayer
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainPlayer));
             TOAMediaPlayer.TOAPlaylist.OTSMedia otsMedia1 = new TOAMediaPlayer.TOAPlaylist.OTSMedia();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainPlayer));
             this.panel1 = new System.Windows.Forms.Panel();
             this.iconButton2 = new FontAwesome.Sharp.IconButton();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
@@ -45,6 +45,14 @@ namespace TOAMediaPlayer
             this.iconWindowMaximize = new FontAwesome.Sharp.IconPictureBox();
             this.iconLogo = new FontAwesome.Sharp.IconButton();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.nPlayer8 = new TOAMediaPlayer.NAudioOutput.NPlayer();
+            this.nPlayer7 = new TOAMediaPlayer.NAudioOutput.NPlayer();
+            this.nPlayer6 = new TOAMediaPlayer.NAudioOutput.NPlayer();
+            this.nPlayer5 = new TOAMediaPlayer.NAudioOutput.NPlayer();
+            this.nPlayer4 = new TOAMediaPlayer.NAudioOutput.NPlayer();
+            this.nPlayer3 = new TOAMediaPlayer.NAudioOutput.NPlayer();
+            this.nPlayer2 = new TOAMediaPlayer.NAudioOutput.NPlayer();
+            this.nPlayer1 = new TOAMediaPlayer.NAudioOutput.NPlayer();
             this.iconButtonPlayer8 = new FontAwesome.Sharp.IconButton();
             this.iconButtonPlayer7 = new FontAwesome.Sharp.IconButton();
             this.iconButtonPlayer6 = new FontAwesome.Sharp.IconButton();
@@ -64,19 +72,11 @@ namespace TOAMediaPlayer
             this.btnPlaylistRemove = new FontAwesome.Sharp.IconPictureBox();
             this.btnPlaylistAddFile = new FontAwesome.Sharp.IconPictureBox();
             this.btnPlaylistAddFolder = new FontAwesome.Sharp.IconPictureBox();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.nPlayer8 = new TOAMediaPlayer.NAudioOutput.NPlayer();
-            this.nPlayer7 = new TOAMediaPlayer.NAudioOutput.NPlayer();
-            this.nPlayer6 = new TOAMediaPlayer.NAudioOutput.NPlayer();
-            this.nPlayer5 = new TOAMediaPlayer.NAudioOutput.NPlayer();
-            this.nPlayer4 = new TOAMediaPlayer.NAudioOutput.NPlayer();
-            this.nPlayer3 = new TOAMediaPlayer.NAudioOutput.NPlayer();
-            this.nPlayer2 = new TOAMediaPlayer.NAudioOutput.NPlayer();
-            this.nPlayer1 = new TOAMediaPlayer.NAudioOutput.NPlayer();
             this.myListView = new ListViewCustomReorder.ListViewEx();
             this.colSeq = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colSongName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colLength = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.iconPictureBox1)).BeginInit();
@@ -290,9 +290,137 @@ namespace TOAMediaPlayer
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
-            this.splitContainer1.Size = new System.Drawing.Size(1542, 1035);
-            this.splitContainer1.SplitterDistance = 1019;
+            this.splitContainer1.Size = new System.Drawing.Size(1542, 855);
+            this.splitContainer1.SplitterDistance = 1018;
             this.splitContainer1.TabIndex = 9;
+            // 
+            // nPlayer8
+            // 
+            this.nPlayer8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(62)))));
+            this.nPlayer8.CurrentMedia = null;
+            this.nPlayer8.CurrentPlaylist = null;
+            this.nPlayer8.Location = new System.Drawing.Point(2, 879);
+            this.nPlayer8.Margin = new System.Windows.Forms.Padding(4);
+            this.nPlayer8.MediaPlaybackState = NAudio.Wave.PlaybackState.Stopped;
+            this.nPlayer8.Name = "nPlayer8";
+            this.nPlayer8.PlayedFileName = null;
+            this.nPlayer8.PlayerName = null;
+            this.nPlayer8.Size = new System.Drawing.Size(962, 128);
+            this.nPlayer8.TabIndex = 0;
+            this.nPlayer8.Volume = 0F;
+            // 
+            // nPlayer7
+            // 
+            this.nPlayer7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(62)))));
+            this.nPlayer7.CurrentMedia = null;
+            this.nPlayer7.CurrentPlaylist = null;
+            this.nPlayer7.Location = new System.Drawing.Point(2, 754);
+            this.nPlayer7.Margin = new System.Windows.Forms.Padding(4);
+            this.nPlayer7.MediaPlaybackState = NAudio.Wave.PlaybackState.Stopped;
+            this.nPlayer7.Name = "nPlayer7";
+            this.nPlayer7.PlayedFileName = null;
+            this.nPlayer7.PlayerName = null;
+            this.nPlayer7.Size = new System.Drawing.Size(962, 128);
+            this.nPlayer7.TabIndex = 1;
+            this.nPlayer7.Volume = 0F;
+            // 
+            // nPlayer6
+            // 
+            this.nPlayer6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(62)))));
+            this.nPlayer6.CurrentMedia = null;
+            this.nPlayer6.CurrentPlaylist = null;
+            this.nPlayer6.Location = new System.Drawing.Point(0, 626);
+            this.nPlayer6.Margin = new System.Windows.Forms.Padding(4);
+            this.nPlayer6.MediaPlaybackState = NAudio.Wave.PlaybackState.Stopped;
+            this.nPlayer6.Name = "nPlayer6";
+            this.nPlayer6.PlayedFileName = null;
+            this.nPlayer6.PlayerName = null;
+            this.nPlayer6.Size = new System.Drawing.Size(964, 128);
+            this.nPlayer6.TabIndex = 2;
+            this.nPlayer6.Volume = 0F;
+            // 
+            // nPlayer5
+            // 
+            this.nPlayer5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(62)))));
+            this.nPlayer5.CurrentMedia = null;
+            this.nPlayer5.CurrentPlaylist = null;
+            this.nPlayer5.Location = new System.Drawing.Point(2, 501);
+            this.nPlayer5.Margin = new System.Windows.Forms.Padding(4);
+            this.nPlayer5.MediaPlaybackState = NAudio.Wave.PlaybackState.Stopped;
+            this.nPlayer5.Name = "nPlayer5";
+            this.nPlayer5.PlayedFileName = null;
+            this.nPlayer5.PlayerName = null;
+            this.nPlayer5.Size = new System.Drawing.Size(962, 128);
+            this.nPlayer5.TabIndex = 3;
+            this.nPlayer5.Volume = 0F;
+            // 
+            // nPlayer4
+            // 
+            this.nPlayer4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(62)))));
+            this.nPlayer4.CurrentMedia = null;
+            this.nPlayer4.CurrentPlaylist = null;
+            this.nPlayer4.Location = new System.Drawing.Point(2, 378);
+            this.nPlayer4.Margin = new System.Windows.Forms.Padding(4);
+            this.nPlayer4.MediaPlaybackState = NAudio.Wave.PlaybackState.Stopped;
+            this.nPlayer4.Name = "nPlayer4";
+            this.nPlayer4.PlayedFileName = null;
+            this.nPlayer4.PlayerName = null;
+            this.nPlayer4.Size = new System.Drawing.Size(962, 128);
+            this.nPlayer4.TabIndex = 4;
+            this.nPlayer4.Volume = 0F;
+            // 
+            // nPlayer3
+            // 
+            this.nPlayer3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(62)))));
+            this.nPlayer3.CurrentMedia = null;
+            this.nPlayer3.CurrentPlaylist = null;
+            this.nPlayer3.Location = new System.Drawing.Point(2, 252);
+            this.nPlayer3.Margin = new System.Windows.Forms.Padding(4);
+            this.nPlayer3.MediaPlaybackState = NAudio.Wave.PlaybackState.Stopped;
+            this.nPlayer3.Name = "nPlayer3";
+            this.nPlayer3.PlayedFileName = null;
+            this.nPlayer3.PlayerName = null;
+            this.nPlayer3.Size = new System.Drawing.Size(960, 128);
+            this.nPlayer3.TabIndex = 5;
+            this.nPlayer3.Volume = 0F;
+            // 
+            // nPlayer2
+            // 
+            this.nPlayer2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(62)))));
+            this.nPlayer2.CurrentMedia = null;
+            this.nPlayer2.CurrentPlaylist = null;
+            this.nPlayer2.Location = new System.Drawing.Point(2, 128);
+            this.nPlayer2.Margin = new System.Windows.Forms.Padding(4);
+            this.nPlayer2.MediaPlaybackState = NAudio.Wave.PlaybackState.Stopped;
+            this.nPlayer2.Name = "nPlayer2";
+            this.nPlayer2.PlayedFileName = null;
+            this.nPlayer2.PlayerName = null;
+            this.nPlayer2.Size = new System.Drawing.Size(960, 128);
+            this.nPlayer2.TabIndex = 6;
+            this.nPlayer2.Volume = 0F;
+            // 
+            // nPlayer1
+            // 
+            this.nPlayer1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(62)))));
+            otsMedia1.CurrentPlaybackState = NAudio.Wave.PlaybackState.Stopped;
+            otsMedia1.duration = System.TimeSpan.Parse("-10675199.02:48:05.4775808");
+            otsMedia1.fileLocation = null;
+            otsMedia1.fileName = null;
+            otsMedia1.Id = 0;
+            otsMedia1.Loop = false;
+            otsMedia1.Shuffle = false;
+            this.nPlayer1.CurrentMedia = otsMedia1;
+            this.nPlayer1.CurrentPlaylist = null;
+            this.nPlayer1.Location = new System.Drawing.Point(2, 0);
+            this.nPlayer1.Margin = new System.Windows.Forms.Padding(4);
+            this.nPlayer1.MediaPlaybackState = NAudio.Wave.PlaybackState.Stopped;
+            this.nPlayer1.Name = "nPlayer1";
+            this.nPlayer1.PlayedFileName = null;
+            this.nPlayer1.PlayerName = "nPlayer1";
+            this.nPlayer1.Size = new System.Drawing.Size(960, 128);
+            this.nPlayer1.TabIndex = 141;
+            this.nPlayer1.Volume = 0F;
+            this.nPlayer1.CurrentPlaylistChanged += new System.EventHandler(this.NPlayer1_CurrentPlaylistChanged);
             // 
             // iconButtonPlayer8
             // 
@@ -440,8 +568,8 @@ namespace TOAMediaPlayer
             this.splitContainer2.Panel2.Controls.Add(this.myListView);
             this.splitContainer2.Panel2.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.splitContainer2.Panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer2_Panel2_Paint);
-            this.splitContainer2.Size = new System.Drawing.Size(519, 1035);
-            this.splitContainer2.SplitterDistance = 31;
+            this.splitContainer2.Size = new System.Drawing.Size(520, 855);
+            this.splitContainer2.SplitterDistance = 25;
             this.splitContainer2.TabIndex = 0;
             // 
             // panel2
@@ -458,7 +586,7 @@ namespace TOAMediaPlayer
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(519, 31);
+            this.panel2.Size = new System.Drawing.Size(520, 25);
             this.panel2.TabIndex = 2;
             // 
             // lblPlayerId
@@ -602,134 +730,6 @@ namespace TOAMediaPlayer
             this.btnPlaylistAddFolder.Click += new System.EventHandler(this.btnPlaylistAddFolder_Click);
             this.btnPlaylistAddFolder.MouseHover += new System.EventHandler(this.btnPlaylistAddFolder_MouseHover);
             // 
-            // nPlayer8
-            // 
-            this.nPlayer8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(62)))));
-            this.nPlayer8.CurrentMedia = null;
-            this.nPlayer8.CurrentPlaylist = null;
-            this.nPlayer8.Location = new System.Drawing.Point(2, 879);
-            this.nPlayer8.Margin = new System.Windows.Forms.Padding(4);
-            this.nPlayer8.MediaPlaybackState = NAudio.Wave.PlaybackState.Stopped;
-            this.nPlayer8.Name = "nPlayer8";
-            this.nPlayer8.PlayedFileName = null;
-            this.nPlayer8.PlayerName = null;
-            this.nPlayer8.Size = new System.Drawing.Size(962, 128);
-            this.nPlayer8.TabIndex = 0;
-            this.nPlayer8.Volume = 0F;
-            // 
-            // nPlayer7
-            // 
-            this.nPlayer7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(62)))));
-            this.nPlayer7.CurrentMedia = null;
-            this.nPlayer7.CurrentPlaylist = null;
-            this.nPlayer7.Location = new System.Drawing.Point(2, 754);
-            this.nPlayer7.Margin = new System.Windows.Forms.Padding(4);
-            this.nPlayer7.MediaPlaybackState = NAudio.Wave.PlaybackState.Stopped;
-            this.nPlayer7.Name = "nPlayer7";
-            this.nPlayer7.PlayedFileName = null;
-            this.nPlayer7.PlayerName = null;
-            this.nPlayer7.Size = new System.Drawing.Size(962, 128);
-            this.nPlayer7.TabIndex = 1;
-            this.nPlayer7.Volume = 0F;
-            // 
-            // nPlayer6
-            // 
-            this.nPlayer6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(62)))));
-            this.nPlayer6.CurrentMedia = null;
-            this.nPlayer6.CurrentPlaylist = null;
-            this.nPlayer6.Location = new System.Drawing.Point(0, 626);
-            this.nPlayer6.Margin = new System.Windows.Forms.Padding(4);
-            this.nPlayer6.MediaPlaybackState = NAudio.Wave.PlaybackState.Stopped;
-            this.nPlayer6.Name = "nPlayer6";
-            this.nPlayer6.PlayedFileName = null;
-            this.nPlayer6.PlayerName = null;
-            this.nPlayer6.Size = new System.Drawing.Size(964, 128);
-            this.nPlayer6.TabIndex = 2;
-            this.nPlayer6.Volume = 0F;
-            // 
-            // nPlayer5
-            // 
-            this.nPlayer5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(62)))));
-            this.nPlayer5.CurrentMedia = null;
-            this.nPlayer5.CurrentPlaylist = null;
-            this.nPlayer5.Location = new System.Drawing.Point(2, 501);
-            this.nPlayer5.Margin = new System.Windows.Forms.Padding(4);
-            this.nPlayer5.MediaPlaybackState = NAudio.Wave.PlaybackState.Stopped;
-            this.nPlayer5.Name = "nPlayer5";
-            this.nPlayer5.PlayedFileName = null;
-            this.nPlayer5.PlayerName = null;
-            this.nPlayer5.Size = new System.Drawing.Size(962, 128);
-            this.nPlayer5.TabIndex = 3;
-            this.nPlayer5.Volume = 0F;
-            // 
-            // nPlayer4
-            // 
-            this.nPlayer4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(62)))));
-            this.nPlayer4.CurrentMedia = null;
-            this.nPlayer4.CurrentPlaylist = null;
-            this.nPlayer4.Location = new System.Drawing.Point(2, 378);
-            this.nPlayer4.Margin = new System.Windows.Forms.Padding(4);
-            this.nPlayer4.MediaPlaybackState = NAudio.Wave.PlaybackState.Stopped;
-            this.nPlayer4.Name = "nPlayer4";
-            this.nPlayer4.PlayedFileName = null;
-            this.nPlayer4.PlayerName = null;
-            this.nPlayer4.Size = new System.Drawing.Size(962, 128);
-            this.nPlayer4.TabIndex = 4;
-            this.nPlayer4.Volume = 0F;
-            // 
-            // nPlayer3
-            // 
-            this.nPlayer3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(62)))));
-            this.nPlayer3.CurrentMedia = null;
-            this.nPlayer3.CurrentPlaylist = null;
-            this.nPlayer3.Location = new System.Drawing.Point(2, 252);
-            this.nPlayer3.Margin = new System.Windows.Forms.Padding(4);
-            this.nPlayer3.MediaPlaybackState = NAudio.Wave.PlaybackState.Stopped;
-            this.nPlayer3.Name = "nPlayer3";
-            this.nPlayer3.PlayedFileName = null;
-            this.nPlayer3.PlayerName = null;
-            this.nPlayer3.Size = new System.Drawing.Size(960, 128);
-            this.nPlayer3.TabIndex = 5;
-            this.nPlayer3.Volume = 0F;
-            // 
-            // nPlayer2
-            // 
-            this.nPlayer2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(62)))));
-            this.nPlayer2.CurrentMedia = null;
-            this.nPlayer2.CurrentPlaylist = null;
-            this.nPlayer2.Location = new System.Drawing.Point(2, 128);
-            this.nPlayer2.Margin = new System.Windows.Forms.Padding(4);
-            this.nPlayer2.MediaPlaybackState = NAudio.Wave.PlaybackState.Stopped;
-            this.nPlayer2.Name = "nPlayer2";
-            this.nPlayer2.PlayedFileName = null;
-            this.nPlayer2.PlayerName = null;
-            this.nPlayer2.Size = new System.Drawing.Size(960, 128);
-            this.nPlayer2.TabIndex = 6;
-            this.nPlayer2.Volume = 0F;
-            // 
-            // nPlayer1
-            // 
-            this.nPlayer1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(62)))));
-            otsMedia1.CurrentPlaybackState = NAudio.Wave.PlaybackState.Stopped;
-            otsMedia1.duration = System.TimeSpan.Parse("-10675199.02:48:05.4775808");
-            otsMedia1.fileLocation = null;
-            otsMedia1.fileName = null;
-            otsMedia1.Id = 0;
-            otsMedia1.Loop = false;
-            otsMedia1.Shuffle = false;
-            this.nPlayer1.CurrentMedia = otsMedia1;
-            this.nPlayer1.CurrentPlaylist = null;
-            this.nPlayer1.Location = new System.Drawing.Point(2, 0);
-            this.nPlayer1.Margin = new System.Windows.Forms.Padding(4);
-            this.nPlayer1.MediaPlaybackState = NAudio.Wave.PlaybackState.Stopped;
-            this.nPlayer1.Name = "nPlayer1";
-            this.nPlayer1.PlayedFileName = null;
-            this.nPlayer1.PlayerName = "nPlayer1";
-            this.nPlayer1.Size = new System.Drawing.Size(960, 128);
-            this.nPlayer1.TabIndex = 141;
-            this.nPlayer1.Volume = 0F;
-            this.nPlayer1.CurrentPlaylistChanged += new System.EventHandler(this.NPlayer1_CurrentPlaylistChanged);
-            // 
             // myListView
             // 
             this.myListView.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
@@ -748,7 +748,7 @@ namespace TOAMediaPlayer
             this.myListView.Location = new System.Drawing.Point(0, 0);
             this.myListView.Margin = new System.Windows.Forms.Padding(4);
             this.myListView.Name = "myListView";
-            this.myListView.Size = new System.Drawing.Size(519, 1000);
+            this.myListView.Size = new System.Drawing.Size(520, 826);
             this.myListView.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.myListView.TabIndex = 2;
             this.myListView.UseCompatibleStateImageBehavior = false;
@@ -788,7 +788,7 @@ namespace TOAMediaPlayer
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Gray;
-            this.ClientSize = new System.Drawing.Size(1542, 1061);
+            this.ClientSize = new System.Drawing.Size(1542, 881);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.panel1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

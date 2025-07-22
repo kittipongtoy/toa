@@ -63,21 +63,14 @@ namespace TOAMediaPlayer
         private Color InactiveBGColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
         TOASocket server;
         AudioPlaybackPanel pls;
-        //TOAHttpListener httpListener;
-        /*
-         * 
-        */
-        //private NAudio.Wave.BlockAlignReductionStream stream3 = null;
-        ////Wave file format
-        //private NAudio.Wave.WaveFileReader wave3 = null;
-        //private NAudio.Wave.DirectSoundOut output3 = null;
+
         RegistryKey HKLMSoftware = Registry.CurrentUser.OpenSubKey("Software", true);
-        RegistryKey HKLMSoftwareTOA = Registry.CurrentUser.OpenSubKey(@"Software\TOA", true);
-        RegistryKey HKLMSoftwareTOAPlayer = Registry.CurrentUser.OpenSubKey(@"Software\TOA\Player", true);
+        //RegistryKey HKLMSoftwareTOA = Registry.CurrentUser.OpenSubKey(@"Software\TOA", true);
+        //RegistryKey HKLMSoftwareTOAPlayer = Registry.CurrentUser.OpenSubKey(@"Software\TOA\Player", true);
         RegistryKey HKLMSoftwareTOAConfig = Registry.CurrentUser.OpenSubKey(@"Software\TOA\Config", true);
-        RegistryKey HKLMSoftwareTOAPlayList = Registry.CurrentUser.OpenSubKey(@"Software\TOA\PlayList", true);
-        RegistryKey HKLMSoftwareTOAPlayListLoop = Registry.CurrentUser.OpenSubKey(@"Software\TOA\PlayList\Loop", true);
-        RegistryKey HKLMSoftwareTOAPlayListShuffle = Registry.CurrentUser.OpenSubKey(@"Software\TOA\PlayList\Shuffle", true);
+        //RegistryKey HKLMSoftwareTOAPlayList = Registry.CurrentUser.OpenSubKey(@"Software\TOA\PlayList", true);
+        //RegistryKey HKLMSoftwareTOAPlayListLoop = Registry.CurrentUser.OpenSubKey(@"Software\TOA\PlayList\Loop", true);
+        //RegistryKey HKLMSoftwareTOAPlayListShuffle = Registry.CurrentUser.OpenSubKey(@"Software\TOA\PlayList\Shuffle", true);
         RegistryKey HKL_COLOR = Registry.CurrentUser.OpenSubKey(@"Software\TOA\Config", true);
         public CancellationTokenSource source = new CancellationTokenSource();
 
@@ -653,7 +646,6 @@ namespace TOAMediaPlayer
                                 continue;
                             }
                             int checkfile = _file.Name.IndexOf(".mp3");
-                            //int checkfile = (_file.Name.IndexOf(".wav") == -1) ? _file.Name.IndexOf(".mp3") : _file.Name.IndexOf(".wav");
                             bool flag4 = checkfile != -1;
                             if (flag4)
                             {
@@ -662,9 +654,6 @@ namespace TOAMediaPlayer
                                 {
                                     seq++;
                                     var ggg = _file.FullName.Split('\\');
-                                    //string strCmdText;
-                                    //strCmdText = "ffmpeg -i "+ _file.FullName + " -filter:a loudnorm output.mp3";
-                                    //System.Diagnostics.Process.Start("CMD.exe", strCmdText);
                                     ListViewItem item = new ListViewItem(seq.ToString());
                                     item.SubItems.Add(_file.Name);
                                     item.SubItems.Add(string.Format("{0:hh\\:mm\\:ss}", CoreLibrary.GetNAudoSongLength(_file.FullName)));
@@ -3408,9 +3397,6 @@ namespace TOAMediaPlayer
 
         private void iconPictureBox1_Click(object sender, EventArgs e)
         {
-            //SetupOutput xForm = new SetupOutput();
-            //xForm.StartPosition = FormStartPosition.CenterParent;
-            //xForm.ShowDialog();
             LoginAdmin xForm = new LoginAdmin(this);
             xForm.StartPosition = FormStartPosition.CenterParent;
             xForm.ShowDialog();
