@@ -17,6 +17,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Markup;
 using TOAMediaPlayer.NAudioOutput;
 using TOAMediaPlayer.Properties;
 using TOAMediaPlayer.TOAPlaylist;
@@ -2099,6 +2100,34 @@ namespace TOAMediaPlayer
         {
             ListViewItem listViewItem = new ListViewItem(name);
 
+            //int indexMatched = this.myListView.Length; // ถ้าไม่เจอจะคืนค่าตาม data.Count
+            //int rowIndex = 0;
+
+            //var items = data.Select(_item =>
+            //{
+            //    var parts = _item.Split(new char[] { '\t' }, StringSplitOptions.RemoveEmptyEntries);
+            //    var item = new ListViewItem(parts[0]);
+
+            //    item.SubItems.Add(parts[1]);
+            //    item.SubItems.Add(parts[2]);
+            //    item.SubItems.Add(parts[3]);
+
+            //    if (!CoreLibrary.check_audio_file(parts[3]))
+            //        item.BackColor = Color.Red;
+
+            //    if (parts[1] == name && indexMatched == data.Length)
+            //        indexMatched = rowIndex;
+
+            //    rowIndex++;
+            //    return item;
+            //}).ToArray();
+
+            //myListView.Items.AddRange(items);
+            //return indexMatched;
+
+
+
+
             var ca = 0;
 
             foreach (ListViewItem item in this.myListView.Items)
@@ -2759,14 +2788,13 @@ namespace TOAMediaPlayer
             lblPlayerId.BackColor = ActiveBGColor;
             //Save Playlist First
             //SaveDefaultPlayList(lastId);
+            
             LoadDefaultPlaylist(id);
             
             switch (id)
             {
                 case 1:
                     {
-                        //iconButtonPlayer1.IconChar = FontAwesome.Sharp.IconChar.AngleRight;
-                        //iconButtonPlayer1.IconColor = Color.LightGreen;
                         iconButtonPlayer1.ForeColor = Color.LightGreen;
                         iconButtonPlayer1.BackColor = ActiveBGColor;
                         iconButtonPlayer1.Text = "1";
@@ -3172,22 +3200,44 @@ namespace TOAMediaPlayer
             if (File.Exists(fileName))
             {
                 List<String> data = System.IO.File.ReadAllLines(fileName).ToList();
-                foreach (string _item in data)
-                {
-                    string[] items = _item.Split(new char[] { '\t' }, StringSplitOptions.RemoveEmptyEntries);
-                    //myListView.Items.Add(new System.Windows.Forms.ListViewItem(item));
-                    System.Windows.Forms.ListViewItem item = new System.Windows.Forms.ListViewItem(items[0]);
 
-                    item.SubItems.Add(items[1]);
-                    item.SubItems.Add(items[2]);
-                    item.SubItems.Add(items[3]);
-                    if (CoreLibrary.check_audio_file(items[3]) == false)
+                var items = data.Select(_item =>
+                {
+                    var parts = _item.Split(new char[] { '\t' }, StringSplitOptions.RemoveEmptyEntries);
+                    var item = new ListViewItem(parts[0]);
+
+                    item.SubItems.Add(parts[1]);
+                    item.SubItems.Add(parts[2]);
+                    item.SubItems.Add(parts[3]);
+
+                    if (!CoreLibrary.check_audio_file(parts[3]))
                     {
                         item.BackColor = Color.Red;
                     }
-                    //item.SubItems.Add(items[4]);
-                    myListView.Items.Add(item);
-                }
+
+                    return item;
+                }).ToArray();
+
+                myListView.Items.AddRange(items);
+
+                //foreach (string _item in data)
+                //{
+                //    string[] items = _item.Split(new char[] { '\t' }, StringSplitOptions.RemoveEmptyEntries);
+                //    //myListView.Items.Add(new System.Windows.Forms.ListViewItem(item));
+                //    System.Windows.Forms.ListViewItem item = new System.Windows.Forms.ListViewItem(items[0]);
+
+                //    item.SubItems.Add(items[1]);
+                //    item.SubItems.Add(items[2]);
+                //    item.SubItems.Add(items[3]);
+                //    if (CoreLibrary.check_audio_file(items[3]) == false)
+                //    {
+                //        item.BackColor = Color.Red;
+                //    }
+                //    //item.SubItems.Add(items[4]);
+                //    myListView.Items.Add(item);
+                //}
+
+
                 ReOrderSequence();
             }
             LoadShuffleLoopState(Id);
