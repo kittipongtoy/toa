@@ -64,9 +64,10 @@ namespace TOAMediaPlayer.NAudioOutput
             // 
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.panel1.Controls.Add(this.label2);
+            this.panel1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(957, 18);
+            this.panel1.Size = new System.Drawing.Size(957, 30);
             this.panel1.TabIndex = 140;
             // 
             // label2
@@ -95,9 +96,9 @@ namespace TOAMediaPlayer.NAudioOutput
             // 
             this.gbPlayer3.Controls.Add(this.lblPlaySongName);
             this.gbPlayer3.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.gbPlayer3.Location = new System.Drawing.Point(3, 19);
+            this.gbPlayer3.Location = new System.Drawing.Point(3, 32);
             this.gbPlayer3.Name = "gbPlayer3";
-            this.gbPlayer3.Size = new System.Drawing.Size(531, 53);
+            this.gbPlayer3.Size = new System.Drawing.Size(531, 41);
             this.gbPlayer3.TabIndex = 128;
             this.gbPlayer3.TabStop = false;
             // 
@@ -105,7 +106,7 @@ namespace TOAMediaPlayer.NAudioOutput
             // 
             this.trackBarPosition.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
             this.trackBarPosition.LargeChange = 1;
-            this.trackBarPosition.Location = new System.Drawing.Point(3, 80);
+            this.trackBarPosition.Location = new System.Drawing.Point(3, 78);
             this.trackBarPosition.Margin = new System.Windows.Forms.Padding(2);
             this.trackBarPosition.Maximum = 100;
             this.trackBarPosition.Name = "trackBarPosition";
@@ -123,7 +124,7 @@ namespace TOAMediaPlayer.NAudioOutput
             this.BackwardButton.IconColor = System.Drawing.Color.LightGray;
             this.BackwardButton.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.BackwardButton.IconSize = 27;
-            this.BackwardButton.Location = new System.Drawing.Point(540, 30);
+            this.BackwardButton.Location = new System.Drawing.Point(540, 41);
             this.BackwardButton.Name = "BackwardButton";
             this.BackwardButton.Size = new System.Drawing.Size(30, 30);
             this.BackwardButton.TabIndex = 130;
@@ -139,7 +140,7 @@ namespace TOAMediaPlayer.NAudioOutput
             this.PlayButton.IconColor = System.Drawing.Color.LightGray;
             this.PlayButton.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.PlayButton.IconSize = 27;
-            this.PlayButton.Location = new System.Drawing.Point(576, 30);
+            this.PlayButton.Location = new System.Drawing.Point(576, 41);
             this.PlayButton.Name = "PlayButton";
             this.PlayButton.Size = new System.Drawing.Size(30, 30);
             this.PlayButton.TabIndex = 131;
@@ -155,7 +156,7 @@ namespace TOAMediaPlayer.NAudioOutput
             this.StopButton.IconColor = System.Drawing.Color.LightGray;
             this.StopButton.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.StopButton.IconSize = 27;
-            this.StopButton.Location = new System.Drawing.Point(612, 30);
+            this.StopButton.Location = new System.Drawing.Point(612, 41);
             this.StopButton.Name = "StopButton";
             this.StopButton.Size = new System.Drawing.Size(30, 30);
             this.StopButton.TabIndex = 132;
@@ -171,7 +172,7 @@ namespace TOAMediaPlayer.NAudioOutput
             this.ForwardButton.IconColor = System.Drawing.Color.LightGray;
             this.ForwardButton.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.ForwardButton.IconSize = 27;
-            this.ForwardButton.Location = new System.Drawing.Point(648, 30);
+            this.ForwardButton.Location = new System.Drawing.Point(648, 41);
             this.ForwardButton.Name = "ForwardButton";
             this.ForwardButton.Size = new System.Drawing.Size(30, 30);
             this.ForwardButton.TabIndex = 133;
@@ -184,7 +185,7 @@ namespace TOAMediaPlayer.NAudioOutput
             this.lblVolumeLevel.AutoSize = true;
             this.lblVolumeLevel.Font = new System.Drawing.Font("Lucida Bright", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblVolumeLevel.ForeColor = System.Drawing.Color.White;
-            this.lblVolumeLevel.Location = new System.Drawing.Point(177, 42);
+            this.lblVolumeLevel.Location = new System.Drawing.Point(191, 29);
             this.lblVolumeLevel.Name = "lblVolumeLevel";
             this.lblVolumeLevel.Size = new System.Drawing.Size(0, 23);
             this.lblVolumeLevel.TabIndex = 0;
@@ -198,7 +199,7 @@ namespace TOAMediaPlayer.NAudioOutput
             this.IncreaseVolumeButton.IconColor = System.Drawing.Color.White;
             this.IncreaseVolumeButton.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.IncreaseVolumeButton.IconSize = 45;
-            this.IncreaseVolumeButton.Location = new System.Drawing.Point(130, 32);
+            this.IncreaseVolumeButton.Location = new System.Drawing.Point(143, 23);
             this.IncreaseVolumeButton.Name = "IncreaseVolumeButton";
             this.IncreaseVolumeButton.Size = new System.Drawing.Size(46, 44);
             this.IncreaseVolumeButton.TabIndex = 1;
@@ -214,7 +215,7 @@ namespace TOAMediaPlayer.NAudioOutput
             this.DecreaseVolumeButton.IconColor = System.Drawing.Color.White;
             this.DecreaseVolumeButton.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.DecreaseVolumeButton.IconSize = 45;
-            this.DecreaseVolumeButton.Location = new System.Drawing.Point(80, 32);
+            this.DecreaseVolumeButton.Location = new System.Drawing.Point(104, 23);
             this.DecreaseVolumeButton.Name = "DecreaseVolumeButton";
             this.DecreaseVolumeButton.Size = new System.Drawing.Size(44, 46);
             this.DecreaseVolumeButton.TabIndex = 2;
@@ -225,11 +226,11 @@ namespace TOAMediaPlayer.NAudioOutput
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Lucida Bright", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Font = new System.Drawing.Font("Lucida Bright", 13.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(4, 43);
+            this.label1.Location = new System.Drawing.Point(4, 31);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(64, 17);
+            this.label1.Size = new System.Drawing.Size(80, 21);
             this.label1.TabIndex = 3;
             this.label1.Text = "Volume";
             // 
@@ -240,20 +241,20 @@ namespace TOAMediaPlayer.NAudioOutput
             this.panel4.Controls.Add(this.DecreaseVolumeButton);
             this.panel4.Controls.Add(this.lblVolumeLevel);
             this.panel4.Controls.Add(this.IncreaseVolumeButton);
-            this.panel4.Location = new System.Drawing.Point(687, 24);
+            this.panel4.Location = new System.Drawing.Point(687, 38);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(270, 100);
+            this.panel4.Size = new System.Drawing.Size(270, 84);
             this.panel4.TabIndex = 138;
             // 
             // labelTotalTime
             // 
             this.labelTotalTime.AutoSize = true;
-            this.labelTotalTime.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelTotalTime.Font = new System.Drawing.Font("Tahoma", 10.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelTotalTime.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.labelTotalTime.Location = new System.Drawing.Point(561, 77);
+            this.labelTotalTime.Location = new System.Drawing.Point(548, 77);
             this.labelTotalTime.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelTotalTime.Name = "labelTotalTime";
-            this.labelTotalTime.Size = new System.Drawing.Size(81, 13);
+            this.labelTotalTime.Size = new System.Drawing.Size(106, 17);
             this.labelTotalTime.TabIndex = 139;
             this.labelTotalTime.Text = "00:00 / 00:00";
             this.labelTotalTime.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
