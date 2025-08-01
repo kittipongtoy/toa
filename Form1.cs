@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -49,10 +50,30 @@ namespace TOAMediaPlayer
         }
         public void looplog()
         {
+            //listBox1.Items.Clear();
+            //var reads = files.Read();
+            //string[] stringSeparators = new string[] { "\r\n" };
+            //var linewrite = reads.ToString().Split(stringSeparators, StringSplitOptions.None);
+            //if (linewrite.Length > 0)
+            //{
+            //    foreach (var msg in linewrite)
+            //    {
+            //        add_items(msg);
+            //    }
+            //}
+
             listBox1.Items.Clear();
-            var reads = files.Read();
+
             string[] stringSeparators = new string[] { "\r\n" };
-            var linewrite = reads.ToString().Split(stringSeparators, StringSplitOptions.None);
+            string[] linewrite;
+
+            // อ่านและปิดไฟล์ทันทีหลังใช้งาน
+            using (var reader = new StreamReader("debugs.txt"))
+            {
+                var reads = reader.ReadToEnd();
+                linewrite = reads.Split(stringSeparators, StringSplitOptions.None);
+            }
+
             if (linewrite.Length > 0)
             {
                 foreach (var msg in linewrite)

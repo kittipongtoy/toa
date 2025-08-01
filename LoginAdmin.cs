@@ -28,7 +28,7 @@ namespace TOAMediaPlayer
         private RegistryKey HKLMSoftwareTOAPlayer17 = Registry.CurrentUser.OpenSubKey(@"Software\TOA\Player\nPlayer7", true);
         private RegistryKey HKLMSoftwareTOAPlayer18 = Registry.CurrentUser.OpenSubKey(@"Software\TOA\Player\nPlayer8", true);
         private RegistryKey HKLMSoftwareTOAConfig = Registry.CurrentUser.OpenSubKey(@"Software\TOA\Config", true);
-        private Loggers files = new Loggers("debugs.txt");
+        //private Loggers files = new Loggers("debugs.txt");
 
         public LoginAdmin(MainPlayer player)
         {
@@ -508,19 +508,37 @@ namespace TOAMediaPlayer
                 rtbLogs.Clear();
             };
 
-            var reads = files.Read();
+            //var reads = files.Read();
+            //string[] stringSeparators = new string[] { "\r\n" };
+            //var linewrite = reads.ToString().Split(stringSeparators, StringSplitOptions.None);
+            //if (linewrite.Length > 0)
+            //{
+            //    foreach (var msg in linewrite)
+            //    {
+            //        //foreach (string log in systemLogs)
+            //        //{
+            //            rtbLogs.AppendText(msg + "\n");
+            //        //}
+            //    }
+            //}
+
             string[] stringSeparators = new string[] { "\r\n" };
-            var linewrite = reads.ToString().Split(stringSeparators, StringSplitOptions.None);
+            string[] linewrite;
+
+            using (var readers = new StreamReader("debugs.txt"))
+            {
+                var reads = readers.ReadToEnd(); // ← ได้ string เนื้อหาในไฟล์จริงๆ
+                linewrite = reads.Split(stringSeparators, StringSplitOptions.None);
+            }
+
             if (linewrite.Length > 0)
             {
                 foreach (var msg in linewrite)
                 {
-                    //foreach (string log in systemLogs)
-                    //{
-                        rtbLogs.AppendText(msg + "\n");
-                    //}
+                    rtbLogs.AppendText(msg + "\n");
                 }
             }
+
             panelLogs.Controls.AddRange(new Control[] 
             { 
                 btnClearlog, rtbLogs 
