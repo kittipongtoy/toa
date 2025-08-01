@@ -74,11 +74,11 @@ namespace TOAMediaPlayer.NAudioOutput
             // 
             this.label2.AutoSize = true;
             this.label2.BackColor = System.Drawing.Color.Transparent;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.label2.Location = new System.Drawing.Point(1, 0);
+            this.label2.Location = new System.Drawing.Point(1, 1);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(46, 17);
+            this.label2.Size = new System.Drawing.Size(51, 20);
             this.label2.TabIndex = 0;
             this.label2.Text = "label2";
             this.label2.Click += new System.EventHandler(this.label2_Click);
@@ -124,7 +124,7 @@ namespace TOAMediaPlayer.NAudioOutput
             this.BackwardButton.IconColor = System.Drawing.Color.LightGray;
             this.BackwardButton.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.BackwardButton.IconSize = 27;
-            this.BackwardButton.Location = new System.Drawing.Point(540, 41);
+            this.BackwardButton.Location = new System.Drawing.Point(540, 43);
             this.BackwardButton.Name = "BackwardButton";
             this.BackwardButton.Size = new System.Drawing.Size(30, 30);
             this.BackwardButton.TabIndex = 130;
@@ -140,7 +140,7 @@ namespace TOAMediaPlayer.NAudioOutput
             this.PlayButton.IconColor = System.Drawing.Color.LightGray;
             this.PlayButton.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.PlayButton.IconSize = 27;
-            this.PlayButton.Location = new System.Drawing.Point(576, 41);
+            this.PlayButton.Location = new System.Drawing.Point(576, 43);
             this.PlayButton.Name = "PlayButton";
             this.PlayButton.Size = new System.Drawing.Size(30, 30);
             this.PlayButton.TabIndex = 131;
@@ -156,7 +156,7 @@ namespace TOAMediaPlayer.NAudioOutput
             this.StopButton.IconColor = System.Drawing.Color.LightGray;
             this.StopButton.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.StopButton.IconSize = 27;
-            this.StopButton.Location = new System.Drawing.Point(612, 41);
+            this.StopButton.Location = new System.Drawing.Point(612, 43);
             this.StopButton.Name = "StopButton";
             this.StopButton.Size = new System.Drawing.Size(30, 30);
             this.StopButton.TabIndex = 132;
@@ -172,7 +172,7 @@ namespace TOAMediaPlayer.NAudioOutput
             this.ForwardButton.IconColor = System.Drawing.Color.LightGray;
             this.ForwardButton.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.ForwardButton.IconSize = 27;
-            this.ForwardButton.Location = new System.Drawing.Point(648, 41);
+            this.ForwardButton.Location = new System.Drawing.Point(648, 43);
             this.ForwardButton.Name = "ForwardButton";
             this.ForwardButton.Size = new System.Drawing.Size(30, 30);
             this.ForwardButton.TabIndex = 133;
@@ -251,7 +251,7 @@ namespace TOAMediaPlayer.NAudioOutput
             this.labelTotalTime.AutoSize = true;
             this.labelTotalTime.Font = new System.Drawing.Font("Tahoma", 10.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelTotalTime.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.labelTotalTime.Location = new System.Drawing.Point(548, 77);
+            this.labelTotalTime.Location = new System.Drawing.Point(545, 89);
             this.labelTotalTime.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelTotalTime.Name = "labelTotalTime";
             this.labelTotalTime.Size = new System.Drawing.Size(106, 17);

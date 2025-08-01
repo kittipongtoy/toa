@@ -2608,9 +2608,12 @@ namespace TOAMediaPlayer
                 {
                     if (nPlayer1.wavePlayer.PlaybackState == PlaybackState.Playing)
                     {
-                        var ns = nPlayer1.playlist[nPlayer1.get_runorder() - 1];
-                        var namemusic = ns.Split('\\');
-                        change_namemedia(Index_item(namemusic[namemusic.Length - 1]));
+                        if (nPlayer1.playlist.Count() != 0)
+                        { 
+                            var ns = nPlayer1.playlist[nPlayer1.get_runorder() - 1];
+                            var namemusic = ns.Split('\\');
+                            change_namemedia(Index_item(namemusic[namemusic.Length - 1]));
+                        }
                     }
                 }
             }
@@ -2633,9 +2636,12 @@ namespace TOAMediaPlayer
 
                     if (nPlayer2.wavePlayer.PlaybackState == PlaybackState.Playing)
                     {
-                        var ns = nPlayer2.playlist[nPlayer2.get_runorder() - 1];
-                        var namemusic = ns.Split('\\');
-                        change_namemedia(Index_item(namemusic[namemusic.Length - 1]));
+                        if (nPlayer2.playlist.Count() != 0)
+                        { 
+                            var ns = nPlayer2.playlist[nPlayer2.get_runorder() - 1];
+                            var namemusic = ns.Split('\\');
+                            change_namemedia(Index_item(namemusic[namemusic.Length - 1]));
+                        }
                     }
                 }
             }
@@ -2656,9 +2662,12 @@ namespace TOAMediaPlayer
                 {
                     if (nPlayer3.wavePlayer.PlaybackState == PlaybackState.Playing)
                     {
-                        var ns = nPlayer3.playlist[nPlayer3.get_runorder() - 1];
-                        var namemusic = ns.Split('\\');
-                        change_namemedia(Index_item(namemusic[namemusic.Length - 1]));
+                        if (nPlayer3.playlist.Count() != 0)
+                        { 
+                            var ns = nPlayer3.playlist[nPlayer3.get_runorder() - 1];
+                            var namemusic = ns.Split('\\');
+                            change_namemedia(Index_item(namemusic[namemusic.Length - 1]));
+                        }
                     }
                 }
             }
@@ -2680,9 +2689,12 @@ namespace TOAMediaPlayer
                 {
                     if (nPlayer4.wavePlayer.PlaybackState == PlaybackState.Playing)
                     {
-                        var ns = nPlayer4.playlist[nPlayer4.get_runorder() - 1];
-                        var namemusic = ns.Split('\\');
-                        change_namemedia(Index_item(namemusic[namemusic.Length - 1]));
+                        if (nPlayer4.playlist.Count() != 0)
+                        {
+                            var ns = nPlayer4.playlist[nPlayer4.get_runorder() - 1];
+                            var namemusic = ns.Split('\\');
+                            change_namemedia(Index_item(namemusic[namemusic.Length - 1]));
+                        }
                     }
                 }
             }
@@ -2703,9 +2715,12 @@ namespace TOAMediaPlayer
                 {
                     if (nPlayer5.wavePlayer.PlaybackState == PlaybackState.Playing)
                     {
-                        var ns = nPlayer5.playlist[nPlayer5.get_runorder() - 1];
-                        var namemusic = ns.Split('\\');
-                        change_namemedia(Index_item(namemusic[namemusic.Length - 1]));
+                        if (nPlayer5.playlist.Count() != 0)
+                        { 
+                            var ns = nPlayer5.playlist[nPlayer5.get_runorder() - 1];
+                            var namemusic = ns.Split('\\');
+                            change_namemedia(Index_item(namemusic[namemusic.Length - 1]));
+                        }
                     }
                 }
             }
@@ -2726,9 +2741,12 @@ namespace TOAMediaPlayer
                 {
                     if (nPlayer6.wavePlayer.PlaybackState == PlaybackState.Playing)
                     {
-                        var ns = nPlayer6.playlist[nPlayer6.get_runorder() - 1];
-                        var namemusic = ns.Split('\\');
-                        change_namemedia(Index_item(namemusic[namemusic.Length - 1]));
+                        if (nPlayer6.playlist.Count() != 0)
+                        { 
+                            var ns = nPlayer6.playlist[nPlayer6.get_runorder() - 1];
+                            var namemusic = ns.Split('\\');
+                            change_namemedia(Index_item(namemusic[namemusic.Length - 1]));
+                        }
                     }
                 }
             }
@@ -2749,9 +2767,12 @@ namespace TOAMediaPlayer
                 {
                     if (nPlayer7.wavePlayer.PlaybackState == PlaybackState.Playing)
                     {
-                        var ns = nPlayer7.playlist[nPlayer7.get_runorder() - 1];
-                        var namemusic = ns.Split('\\');
-                        change_namemedia(Index_item(namemusic[namemusic.Length - 1]));
+                        if (nPlayer7.playlist.Count() != 0)
+                        { 
+                            var ns = nPlayer7.playlist[nPlayer7.get_runorder() - 1];
+                            var namemusic = ns.Split('\\');
+                            change_namemedia(Index_item(namemusic[namemusic.Length - 1]));
+                        }
                     }
                 }
             }
@@ -2772,9 +2793,12 @@ namespace TOAMediaPlayer
                 {
                     if (nPlayer8.wavePlayer.PlaybackState == PlaybackState.Playing)
                     {
-                        var ns = nPlayer8.playlist[nPlayer8.get_runorder() - 1];
-                        var namemusic = ns.Split('\\');
-                        change_namemedia(Index_item(namemusic[namemusic.Length - 1]));
+                        if (nPlayer8.playlist.Count() != 0)
+                        { 
+                            var ns = nPlayer8.playlist[nPlayer8.get_runorder() - 1];
+                            var namemusic = ns.Split('\\');
+                            change_namemedia(Index_item(namemusic[namemusic.Length - 1]));
+                        }
                     }
                 }
             }
