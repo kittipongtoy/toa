@@ -5,6 +5,7 @@ using System;
 using System.Drawing;
 using System.Globalization;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using static TOAMediaPlayer.jsonWebAPI;
 
@@ -582,7 +583,7 @@ namespace TOAMediaPlayer
             return Tuple.Create(false, "ไม่พบปัญหา");
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private async void button1_Click(object sender, EventArgs e)
         {
             var ggg = this.cksetting();
             if (ggg.Item1 == false)
@@ -590,16 +591,21 @@ namespace TOAMediaPlayer
                 player.timersc = false;
                 player.showtimeset = false;
                 updatereg();
-                this.Hide();
+
+                Task.Run(() => trigger_url()); // รันแบบ background
+                this.Hide();                   // ซ่อนได้เลย ไม่รอ
+
+                //await this.trigger_url();
+
+                //this.Hide();
             }
             else
             {
                 MessageBox.Show(ggg.Item2);
             }
-            this.trigger_url();
         }
 
-        public async void trigger_url()
+        public async Task trigger_url()
         {
             RegistryKey configsocket = HKLMSoftwareTOAConfig.OpenSubKey("trackname", true);
             var stringurl = "http://" + configsocket.GetValue("ip").ToString() + "/api/updateData?ip_address=" + configsocket.GetValue("ip1") + "&port=" + configsocket.GetValue("port");
